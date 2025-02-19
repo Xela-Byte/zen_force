@@ -14,6 +14,7 @@ import AppPressable from '../button/AppPressable';
 import AppText from '../text/AppText';
 import PartnerLinkSuccess from './PartnerLinkSuccess';
 import CodeInputComponent from './CodeInputComponent';
+import AbsoluteOverlay from '../background/AbsoluteOverlay';
 
 interface Props {
   handleStep: (value: number) => void;
@@ -89,10 +90,14 @@ const StepFive = (props: Props) => {
         <CodeInputComponent />
       </View>
 
-      <PartnerLinkSuccess
-        setShowBottomTab={setShowBottomTab}
-        showBottomTab={showBottomTab}
-      />
+      {showBottomTab && (
+        <AbsoluteOverlay>
+          <PartnerLinkSuccess
+            setShowBottomTab={setShowBottomTab}
+            showBottomTab={showBottomTab}
+          />
+        </AbsoluteOverlay>
+      )}
 
       <AppButton
         title="Connect Now"

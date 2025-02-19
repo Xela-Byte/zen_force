@@ -9,8 +9,8 @@ const Navigator = (props: Props) => {
   return (
     <NavigationContainer>
       <StatusBar />
-      <AuthNavigator />
-      {/* <BottomTabNavigator /> */}
+      {/* <AuthNavigator /> */}
+      <BottomTabNavigator />
     </NavigationContainer>
   );
 };
