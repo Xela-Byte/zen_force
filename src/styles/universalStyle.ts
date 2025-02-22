@@ -16,7 +16,14 @@ export const appColors = {
   textGrey: '#808080',
   lightCyan: '#E9F1E7',
   gray: '#F7F7F7',
+  lightPink: '#FFD6DD',
   lightGray: '#EEF3EB',
+  brightGreen: '#F3FFCC',
+  brown: '#660012',
+  transGreen: '#A9D280',
+  limeGreen: '#83AD58',
+  input: '#AACF95',
+  card: '#EFF8ED',
 };
 
 export const screenWidth = Dimensions.get('screen').width;

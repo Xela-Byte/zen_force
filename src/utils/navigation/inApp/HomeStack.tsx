@@ -22,14 +22,6 @@ const HomeStack = () => {
 
   return (
     <>
-      {/* <StatusBar
-        backgroundColor={
-          darkMode
-            ? appColors['dark'].background
-            : appColors['light'].background
-        }
-        barStyle={darkMode ? 'light-content' : 'dark-content'}
-      /> */}
       <Stack.Navigator
         screenOptions={{
           ...TransitionPresets.SlideFromRightIOS,
