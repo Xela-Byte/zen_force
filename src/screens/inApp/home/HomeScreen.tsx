@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ScrollView, StatusBar, View} from 'react-native';
 import Avatar from '../../../assets/images/avatar.png';
 import FemaleIcon from '../../../assets/images/female.svg';
 import GraphIcon from '../../../assets/images/graph_icon.svg';
 import MaleIcon from '../../../assets/images/male.svg';
 import OrbIcon from '../../../assets/images/orb_icon.svg';
+import PulseIcon from '../../../assets/images/pulse.svg';
 import PuzzleIcon from '../../../assets/images/puzzle_icon.svg';
 import SunIcon from '../../../assets/images/sun_icon.svg';
 import ArrowLeft from '../../../assets/svgsComponents/ArrowLeft';
@@ -22,7 +23,7 @@ import {
   universalStyle,
 } from '../../../styles/universalStyle';
 import {HomeScreenProps} from '../../../types/navigation/HomeStackNavigationType';
-import PulseIcon from '../../../assets/images/pulse.svg';
+import ProgressPie from 'react-native-progress/Pie';
 
 const coupleGames = [
   // {
@@ -52,6 +53,8 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
   const navigateTo = (route: any, screenName: any) => {
     navigation.navigate(route, {screenName});
   };
+
+  const [progress, setProgress] = useState(0.65);
 
   return (
     <ScrollView style={homeStyle.wrapper}>
@@ -130,15 +133,27 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
           </View>
 
           <View style={homeStyle.avatar}>
-            <AppImage
-              source={Avatar}
+            <ProgressPie
+              key={`${progress}`}
+              progress={progress}
+              color={'#FF8FA2'}
+              unfilledColor={'#FFB3C0'}
+              size={sizeBlock.getWidthSize(55)}
+            />
+            <View
               style={{
                 width: '100%',
                 height: '100%',
-              }}
-              alt="Avatar"
-              resizeMode="cover"
-            />
+                position: 'absolute',
+                ...universalStyle.centering,
+              }}>
+              <AppText
+                color={appColors.white}
+                fontSize={fontSize.small - 1}
+                fontType="medium">
+                {progress * 100}%
+              </AppText>
+            </View>
           </View>
         </View>
 

@@ -43,6 +43,7 @@ const coupleGames: Game[] = [
   {
     title: 'Progress Tracking',
     description: '',
+    screen: 'ProgressTrackingScreen',
   },
 ];
 

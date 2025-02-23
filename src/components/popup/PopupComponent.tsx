@@ -12,6 +12,9 @@ import AppButton from '../button/AppButton';
 import CheckMarkIcon from '../../assets/images/circle-checkmark.svg';
 import * as Animated from 'react-native-animatable';
 import AbsoluteOverlay from '../background/AbsoluteOverlay';
+import LottieView from 'lottie-react-native';
+import {useEffect, useRef, useState} from 'react';
+import {questionRouletteStyle} from '../../styles/questionRouletteStyle';
 
 type Props = {
   title: string;
@@ -20,6 +23,7 @@ type Props = {
   onCancel?: () => void;
   type?: 'single' | 'multi';
   confirmBtnTitle?: string;
+  showConfetti?: boolean;
 };
 
 const PopupComponent = ({
@@ -29,7 +33,24 @@ const PopupComponent = ({
   type = 'single',
   confirmBtnTitle = 'Done',
   onCancel,
+  showConfetti = false,
 }: Props) => {
+  const confettiRef = useRef<LottieView>(null);
+  const [shouldShowConfetti, setShouldShowConfetti] = useState(showConfetti);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    if (showConfetti) {
+      setShouldShowConfetti(true);
+      timeout = setTimeout(() => {
+        setShouldShowConfetti(false);
+      }, 1500);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [showConfetti]);
+
   return (
     <AbsoluteOverlay>
       <>
@@ -48,7 +69,7 @@ const PopupComponent = ({
 
               <AppButton
                 onPress={onDone}
-                title="Done"
+                title={confirmBtnTitle}
                 bgColor={appColors.green}
                 customViewStyle={{
                   width: screenWidth * 0.8,
@@ -71,14 +92,11 @@ const PopupComponent = ({
               </AppText>
               <AppText customStyle={{textAlign: 'center'}}>{content}</AppText>
 
-              <View
-                style={[
-                  {
-                    width: '100%',
-                  },
-                ]}>
+              <View style={{width: '100%'}}>
                 <AppButton
-                  onPress={onCancel!}
+                  onPress={() => {
+                    onCancel?.();
+                  }}
                   title={'Cancel'}
                   bgColor={appColors.green}
                   buttonType="outlined"
@@ -97,6 +115,17 @@ const PopupComponent = ({
               </View>
             </Animated.View>
           </View>
+        )}
+
+        {shouldShowConfetti && (
+          <LottieView
+            ref={confettiRef}
+            source={require('../../animations/confetti.json')}
+            autoPlay={true}
+            loop={false}
+            style={[questionRouletteStyle.lottie, {zIndex: 100}]}
+            resizeMode="cover"
+          />
         )}
       </>
     </AbsoluteOverlay>

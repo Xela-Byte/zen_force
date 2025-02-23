@@ -9,6 +9,10 @@ export type CoupleStackParamList = {
   CoupleChallengeDetailScreen: {
     questionType: string;
   };
+  QuestionRouletteDetailScreen: {
+    stageType: string;
+  };
+  ProgressTrackingScreen: undefined;
 };
 
 export type CoupleScreenProps = {
@@ -37,4 +41,16 @@ export type CoupleChallengeDetailScreenProps = {
     'CoupleChallengeDetailScreen'
   >;
   route: RouteProp<CoupleStackParamList, 'CoupleChallengeDetailScreen'>;
+};
+
+export type QuestionRouletteDetailScreenProps = {
+  navigation: NavigationProp<
+    CoupleStackParamList,
+    'QuestionRouletteDetailScreen'
+  >;
+  route: RouteProp<CoupleStackParamList, 'QuestionRouletteDetailScreen'>;
+};
+
+export type ProgressTrackingScreenProps = {
+  navigation: NavigationProp<CoupleStackParamList, 'ProgressTrackingScreen'>;
 };

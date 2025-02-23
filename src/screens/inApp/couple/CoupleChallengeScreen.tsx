@@ -131,33 +131,38 @@ const CoupleChallengeScreen = ({navigation}: CoupleChallengeScreenProps) => {
           }}
         />
 
-        <View style={coupleChallengeStyle.adButton}>
-          <View
-            style={{
-              rowGap: sizeBlock.getHeightSize(5),
-            }}>
-            <AppText
-              fontType="medium"
-              fontSize={fontSize.small + 5}
-              color={appColors.white}>
-              Try the Date Conscious
-            </AppText>
-            <AppText fontSize={fontSize.small + 5} fontType="medium">
-              AI Counselor
-            </AppText>
+        <AppPressable
+          onPress={() => {
+            navigateTo('AICounselorScreen');
+          }}>
+          <View style={coupleChallengeStyle.adButton}>
+            <View
+              style={{
+                rowGap: sizeBlock.getHeightSize(5),
+              }}>
+              <AppText
+                fontType="medium"
+                fontSize={fontSize.small + 5}
+                color={appColors.white}>
+                Try the Date Conscious
+              </AppText>
+              <AppText fontSize={fontSize.small + 5} fontType="medium">
+                AI Counselor
+              </AppText>
+            </View>
+            <View
+              style={{
+                ...universalStyle.centering,
+                backgroundColor: appColors.white,
+                padding: sizeBlock.getWidthSize(20),
+                borderRadius: borderRadius.full,
+                width: sizeBlock.getWidthSize(30),
+                height: sizeBlock.getWidthSize(30),
+              }}>
+              <ArrowLeft style={{transform: [{rotate: '180deg'}]}} />
+            </View>
           </View>
-          <View
-            style={{
-              ...universalStyle.centering,
-              backgroundColor: appColors.white,
-              padding: sizeBlock.getWidthSize(20),
-              borderRadius: borderRadius.full,
-              width: sizeBlock.getWidthSize(30),
-              height: sizeBlock.getWidthSize(30),
-            }}>
-            <ArrowLeft style={{transform: [{rotate: '180deg'}]}} />
-          </View>
-        </View>
+        </AppPressable>
       </ScrollView>
     </View>
   );

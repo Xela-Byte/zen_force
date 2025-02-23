@@ -51,4 +51,20 @@ export const questionRouletteStyle = StyleSheet.create({
     bottom: 0,
     right: 0,
   },
+  questionCard: {
+    width: '100%',
+    backgroundColor: appColors.limeGreen,
+    height: sizeBlock.getHeightSize(175),
+    marginVertical: sizeBlock.getHeightSize(25),
+    borderRadius: borderRadius.medium * 2,
+    position: 'relative',
+  },
+  lottie: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    pointerEvents: 'none',
+  },
 });

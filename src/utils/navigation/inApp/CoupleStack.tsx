@@ -8,6 +8,8 @@ import QuestionRouletteScreen from '../../../screens/inApp/couple/QuestionRoulet
 import CoupleChallengeScreen from '../../../screens/inApp/couple/CoupleChallengeScreen';
 import MemoryLaneScreen from '../../../screens/inApp/couple/MemoryLaneScreen';
 import CoupleChallengeDetailScreen from '../../../screens/inApp/couple/CoupleChallengeDetailScreen';
+import QuestionRouletteDetailScreen from '../../../screens/inApp/couple/QuestionRouletteDetailScreen';
+import ProgressTrackingScreen from '../../../screens/inApp/couple/ProgressTrackingScreen';
 
 const CoupleStack = () => {
   const Stack = createStackNavigator<CoupleStackParamList>();
@@ -40,6 +42,10 @@ const CoupleStack = () => {
           component={QuestionRouletteScreen}
         />
         <Stack.Screen
+          name="QuestionRouletteDetailScreen"
+          component={QuestionRouletteDetailScreen}
+        />
+        <Stack.Screen
           name="CoupleChallengeScreen"
           component={CoupleChallengeScreen}
         />
@@ -47,7 +53,12 @@ const CoupleStack = () => {
           name="CoupleChallengeDetailScreen"
           component={CoupleChallengeDetailScreen}
         />
+
         <Stack.Screen name="MemoryLaneScreen" component={MemoryLaneScreen} />
+        <Stack.Screen
+          name="ProgressTrackingScreen"
+          component={ProgressTrackingScreen}
+        />
       </Stack.Navigator>
     </>
   );

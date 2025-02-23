@@ -19,6 +19,7 @@ export const homeStyle = StyleSheet.create({
     width: sizeBlock.getWidthSize(55),
     height: sizeBlock.getWidthSize(55),
     borderRadius: borderRadius.full,
+    position: 'relative',
   },
   gameContainer: {
     width: '100%',
