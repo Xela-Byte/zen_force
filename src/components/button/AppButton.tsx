@@ -91,7 +91,7 @@ const AppButton = ({
         ]}>
         {loading ? (
           <ActivityIndicator
-            color={textColor ?? appColors.text}
+            color={textColor ?? appColors.white}
             size={textSize ?? fontSize.small}
           />
         ) : (

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, StatusBar, View} from 'react-native';
 import Avatar from '../../../assets/images/avatar.png';
 import FemaleIcon from '../../../assets/images/female.svg';
@@ -15,6 +15,7 @@ import AppImage from '../../../components/image/AppImage';
 import AppText from '../../../components/text/AppText';
 import useHexToRGBA from '../../../hooks/useHexToRGBA';
 import {homeStyle} from '../../../styles/homeStyle';
+import {Buffer} from 'buffer';
 import {
   appColors,
   borderRadius,
@@ -24,6 +25,9 @@ import {
 } from '../../../styles/universalStyle';
 import {HomeScreenProps} from '../../../types/navigation/HomeStackNavigationType';
 import ProgressPie from 'react-native-progress/Pie';
+import {useAppDispatch, useAppSelector} from '../../../hooks/useRedux';
+import {logout} from '../../../store/slices/appSlice';
+import useToast from '../../../hooks/useToast';
 
 const coupleGames = [
   // {
@@ -50,11 +54,56 @@ const coupleGames = [
 ];
 
 const HomeScreen = ({navigation}: HomeScreenProps) => {
+  // const dispatch = useAppDispatch();
+  // const authToken = useAppSelector(state => state.app.user?.accessToken);
+
+  // const isTokenValid = (token: string): boolean => {
+  //   try {
+  //     if (!token) return false;
+
+  //     const parts = token.split('.');
+  //     if (parts.length !== 3) return false; // Ensure token has 3 parts (header, payload, signature)
+
+  //     const payload = JSON.parse(
+  //       Buffer.from(
+  //         parts[1].replace(/-/g, '+').replace(/_/g, '/'),
+  //         'base64',
+  //       ).toString(),
+  //     );
+
+  //     if (!payload.iat) return false; // Ensure iat exists
+
+  //     const currentTime = Math.floor(Date.now() / 1000);
+  //     console.log(payload.iat, currentTime);
+
+  //     return payload.iat > currentTime; // Return true if token is still valid
+  //   } catch (error) {
+  //     return false; // Return false if any error occurs (invalid token)
+  //   }
+  // };
+
+  // const validToken = isTokenValid(authToken ?? '');
+  // const {showToast} = useToast();
+
+  // useEffect(() => {
+  //   if (!validToken) {
+  //     showToast({
+  //       text1: 'Session expired',
+  //       type: 'info',
+  //       text2: 'Please log in to continue using the app',
+  //     });
+
+  //     dispatch(logout());
+  //   }
+  // }, [authToken]);
+
   const navigateTo = (route: any, screenName: any) => {
     navigation.navigate(route, {screenName});
   };
 
   const [progress, setProgress] = useState(0.65);
+
+  const user = useAppSelector(state => state.app.user);
 
   return (
     <ScrollView style={homeStyle.wrapper}>

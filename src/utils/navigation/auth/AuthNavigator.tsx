@@ -1,18 +1,35 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {useSelector} from 'react-redux';
 import AccountSetupScreen from '../../../screens/auth/AccountSetupScreen';
+import CreateNewPasswordScreen from '../../../screens/auth/CreateNewPasswordScreen';
+import DetailsScreen from '../../../screens/auth/DetailsScreen';
+import ForgotPasswordScreen from '../../../screens/auth/ForgotPasswordScreen';
 import LoginScreen from '../../../screens/auth/LoginScreen';
 import OnboardingScreen from '../../../screens/auth/OnboardingScreen';
-import RegisterScreen from '../../../screens/auth/RegisterScreen';
-import {AuthStackParamList} from '../../../types/navigation/AuthNavigationType';
-import DetailsScreen from '../../../screens/auth/DetailsScreen';
 import ProfileSummaryScreen from '../../../screens/auth/ProfileSummaryScreen';
-import ForgotPasswordScreen from '../../../screens/auth/ForgotPasswordScreen';
-import CreateNewPasswordScreen from '../../../screens/auth/CreateNewPasswordScreen';
+import RegisterScreen from '../../../screens/auth/RegisterScreen';
+import {RootState} from '../../../store';
+import {AuthStackParamList} from '../../../types/navigation/AuthNavigationType';
 
 const AuthNavigator = () => {
   const Stack = createNativeStackNavigator<AuthStackParamList>();
+  const isNewInstall = useSelector(
+    (state: RootState) => state.app.isNewInstall,
+  );
+  const isLoggedIn = useSelector((state: RootState) => state.app.isLoggedIn);
+  const user = useSelector((state: RootState) => state.app.user);
 
   const entitledRoute = (): keyof AuthStackParamList => {
+    if (isNewInstall) {
+      return 'OnboardingScreen'; // First-time users go to onboarding
+    }
+    if (!isLoggedIn) {
+      return 'LoginScreen'; // If not logged in, send to login
+    }
+    if (!user) {
+      return 'RegisterScreen';
+    }
+
     return 'OnboardingScreen';
   };
 

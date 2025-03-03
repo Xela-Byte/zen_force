@@ -1,109 +1,135 @@
-import {View, Text, TextInput, ScrollView} from 'react-native';
-import React from 'react';
-import {aiCounselorStyle} from '../../../styles/aiCounselorStyle';
-import HeaderComponent from '../../../components/button/HeaderComponent';
-import {AICounselorScreenProps} from '../../../types/navigation/CoupleNavigationType';
+import {useMutation} from '@tanstack/react-query';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {
-  appColors,
-  screenHeight,
-  sizeBlock,
-} from '../../../styles/universalStyle';
-import SendIcon from '../../../assets/images/send.svg';
+import {Keyboard, TextInput, View} from 'react-native';
+import {sendMessageFn} from '../../../api/chat';
 import MicIcon from '../../../assets/images/Mic.svg';
-import ChatBubbleComponent from '../../../components/chat/ChatBubbleComponent';
+import SendIcon from '../../../assets/images/send.svg';
+import HeaderComponent from '../../../components/button/HeaderComponent';
+import ChatList from '../../../components/chat/ChatList';
+import {aiCounselorStyle} from '../../../styles/aiCounselorStyle';
+import {appColors} from '../../../styles/universalStyle';
+import {AICounselorScreenProps} from '../../../types/navigation/CoupleNavigationType';
+import useInvalidateQuery from '../../../hooks/useInvalidateQueries';
 
 interface Inputs {
   messageBody: string;
 }
 
-const chatMessages = [
-  {
-    isOwn: true,
-    message: "Hey! How's it going?",
-    time: '10:30 AM',
-  },
-  {
-    isOwn: false,
-    message: "Hey! I'm doing great, how about you?",
-    time: '10:31 AM',
-  },
-  {
-    isOwn: true,
-    message: "I'm good too! Just working on a project.",
-    time: '10:32 AM',
-  },
-  {
-    isOwn: false,
-    message: 'Nice! What kind of project?',
-    time: '10:33 AM',
-  },
-  {
-    isOwn: true,
-    message: 'A chat app with cool bubble styles!',
-    time: '10:34 AM',
-  },
-];
-
 const AICounselorScreen = ({navigation}: AICounselorScreenProps) => {
-  const {control, watch} = useForm<Inputs>();
+  const {control, watch, setValue} = useForm<Inputs>();
   const messageBody = watch('messageBody');
+  const [pendingMessage, setPendingMessage] = useState('');
+  const [inputInFocus, setInputInFocus] = useState(false);
+  const invalidateQuery = useInvalidateQuery();
+
+  const sendMessageMutation = useMutation({
+    mutationFn: sendMessageFn,
+    onSuccess: result => {
+      console.log(result);
+
+      setPendingMessage('');
+      invalidateQuery('chats');
+    },
+    onError: (error: any) => {
+      console.error('login error:', error);
+    },
+  });
+
+  const isInputValid = useMemo(() => {
+    return messageBody && messageBody.length > 0;
+  }, [messageBody]);
+
+  const sendMessage = useCallback(async () => {
+    const messageToSend = messageBody.trim();
+    setPendingMessage(messageToSend);
+    setValue('messageBody', '');
+    Keyboard.dismiss();
+    await sendMessageMutation.mutateAsync({
+      prompt: messageToSend,
+    });
+  }, [messageBody]);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setInputInFocus(true);
+      },
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setInputInFocus(false);
+      },
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   return (
-    <View style={aiCounselorStyle.wrapper}>
-      <View style={aiCounselorStyle.header}>
-        <HeaderComponent
-          theme="light"
-          navigation={navigation}
-          title="AI Counselor"
+    <>
+      <View style={aiCounselorStyle.wrapper}>
+        {/* Header */}
+        <View style={aiCounselorStyle.header}>
+          <HeaderComponent
+            theme="light"
+            navigation={navigation}
+            title="AI Counselor"
+          />
+        </View>
+
+        {/* Chat List */}
+        <ChatList
+          inputInFocus={inputInFocus}
+          isMessageError={sendMessageMutation.isError}
+          isMessagePending={sendMessageMutation.isPending}
+          isMessageSuccess={sendMessageMutation.isSuccess}
+          message={pendingMessage}
         />
-      </View>
 
-      <ScrollView
-        style={{
-          height: screenHeight * 0.7,
-          paddingHorizontal: sizeBlock.getWidthSize(15),
-        }}>
-        {chatMessages.map((msg, index) => {
-          return (
-            <ChatBubbleComponent
-              key={index}
-              isOwn={msg.isOwn}
-              message={msg.message}
-              time={msg.time}
-            />
-          );
-        })}
-      </ScrollView>
-
-      <View style={aiCounselorStyle.messageInputWrapper}>
-        <View style={aiCounselorStyle.messageInputContainer}>
-          <Controller
-            control={control}
-            name={'messageBody'}
-            render={({field: {value, onChange}}) => (
-              <>
+        {/* Message Input */}
+        <View style={aiCounselorStyle.messageInputWrapper}>
+          <View style={aiCounselorStyle.messageInputContainer}>
+            <Controller
+              control={control}
+              name="messageBody"
+              render={({field: {value, onChange}}) => (
                 <View style={aiCounselorStyle.inputContainer}>
                   <TextInput
                     style={aiCounselorStyle.input}
-                    placeholderTextColor={appColors.black}
                     placeholder="Write your message"
+                    placeholderTextColor={appColors.black}
                     value={value}
                     onChangeText={onChange}
                     returnKeyType={messageBody ? 'send' : 'default'}
                     multiline
+                    cursorColor={appColors.text}
+                    onBlur={() => {
+                      setInputInFocus(false);
+                    }}
+                    onFocus={() => {
+                      setInputInFocus(true);
+                    }}
                   />
-
-                  <SendIcon />
+                  <SendIcon
+                    opacity={isInputValid ? 1 : 0.5}
+                    disabled={!isInputValid}
+                    onPress={sendMessage}
+                  />
                 </View>
-              </>
-            )}
-          />
-        </View>
+              )}
+            />
+          </View>
 
-        <MicIcon />
+          <MicIcon opacity={0.4} />
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
