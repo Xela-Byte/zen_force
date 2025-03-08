@@ -13,7 +13,7 @@ import AppButton from '../../../components/button/AppButton';
 import AppPressable from '../../../components/button/AppPressable';
 import AppImage from '../../../components/image/AppImage';
 import AppText from '../../../components/text/AppText';
-import useHexToRGBA from '../../../hooks/useHexToRGBA';
+import useHexToRGBA from '../../../hooks/helpers/useHexToRGBA';
 import {homeStyle} from '../../../styles/homeStyle';
 import {Buffer} from 'buffer';
 import {
@@ -25,9 +25,9 @@ import {
 } from '../../../styles/universalStyle';
 import {HomeScreenProps} from '../../../types/navigation/HomeStackNavigationType';
 import ProgressPie from 'react-native-progress/Pie';
-import {useAppDispatch, useAppSelector} from '../../../hooks/useRedux';
+import {useAppDispatch, useAppSelector} from '../../../hooks/helpers/useRedux';
 import {logout} from '../../../store/slices/appSlice';
-import useToast from '../../../hooks/useToast';
+import useToast from '../../../hooks/helpers/useToast';
 
 const coupleGames = [
   // {

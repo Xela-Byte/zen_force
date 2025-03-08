@@ -6,9 +6,15 @@ type Props = {
   onPress: () => void;
   children?: React.ReactNode;
   customViewStyle?: ViewStyle;
+  disabled?: boolean;
 };
 
-const AppPressable = ({customViewStyle, onPress, children}: Props) => {
+const AppPressable = ({
+  customViewStyle,
+  onPress,
+  children,
+  disabled = false,
+}: Props) => {
   const [animate, setAnimate] = useState(false);
 
   const handlePress = () => {
@@ -37,7 +43,14 @@ const AppPressable = ({customViewStyle, onPress, children}: Props) => {
   return (
     <Pressable
       onPress={handlePress}
-      style={[styles.container, customViewStyle]}>
+      disabled={disabled}
+      style={[
+        styles.container,
+        customViewStyle,
+        {
+          opacity: disabled ? 0.5 : 1,
+        },
+      ]}>
       <Animatable.View duration={300} animation={animate ? bounce : ''}>
         {children}
       </Animatable.View>

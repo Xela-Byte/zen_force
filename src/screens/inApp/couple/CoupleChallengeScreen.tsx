@@ -1,12 +1,16 @@
-import {
-  View,
-  Text,
-  StatusBar,
-  ScrollView,
-  FlatList,
-  Pressable,
-} from 'react-native';
 import React from 'react';
+import {FlatList, Pressable, ScrollView, StatusBar, View} from 'react-native';
+import {SvgProps} from 'react-native-svg';
+import {ChallengeType} from '../../../api/games';
+import CardIcon from '../../../assets/images/card.svg';
+import MeshIcon from '../../../assets/images/mesh.svg';
+import StarIcon from '../../../assets/images/star.svg';
+import WhirlIcon from '../../../assets/images/whirl.svg';
+import ZigzagIcon from '../../../assets/images/zigzag.svg';
+import ArrowLeft from '../../../assets/svgsComponents/ArrowLeft';
+import AppPressable from '../../../components/button/AppPressable';
+import HeaderComponent from '../../../components/button/HeaderComponent';
+import AppText from '../../../components/text/AppText';
 import {coupleChallengeStyle} from '../../../styles/coupleChallengeStyle';
 import {
   appColors,
@@ -19,21 +23,12 @@ import {
   CoupleChallengeScreenProps,
   CoupleStackParamList,
 } from '../../../types/navigation/CoupleNavigationType';
-import HeaderComponent from '../../../components/button/HeaderComponent';
-import MeshIcon from '../../../assets/images/mesh.svg';
-import WhirlIcon from '../../../assets/images/whirl.svg';
-import StarIcon from '../../../assets/images/star.svg';
-import ZigzagIcon from '../../../assets/images/zigzag.svg';
-import AppText from '../../../components/text/AppText';
-import CardIcon from '../../../assets/images/card.svg';
-import {SvgProps} from 'react-native-svg';
-import ArrowLeft from '../../../assets/svgsComponents/ArrowLeft';
-import AppPressable from '../../../components/button/AppPressable';
 
 interface Challenge {
   title: string;
   icon: React.FC<SvgProps>;
   bgColor: string;
+  challengeType: ChallengeType;
 }
 
 const challenges: Challenge[] = [
@@ -41,21 +36,25 @@ const challenges: Challenge[] = [
     title: 'Conversation Starters',
     icon: MeshIcon,
     bgColor: '#368C76',
+    challengeType: 'conversation-starters',
   },
   {
     title: 'Who Knows Who Best?',
     icon: WhirlIcon,
     bgColor: '#D28134',
+    challengeType: 'who-knows-who-best',
   },
   {
     title: 'Roleplay Scenarios',
     icon: StarIcon,
     bgColor: '#D46FAA',
+    challengeType: 'roleplay-scenarios',
   },
   {
     title: 'Intimacy Tips & Tricks',
     icon: ZigzagIcon,
     bgColor: '#5A79D5',
+    challengeType: 'intimacy-tips-tricks',
   },
 ];
 
@@ -93,6 +92,7 @@ const CoupleChallengeScreen = ({navigation}: CoupleChallengeScreenProps) => {
                 onPress={() => {
                   navigateTo('CoupleChallengeDetailScreen', {
                     questionType: item.title,
+                    challengeType: item.challengeType,
                   });
                 }}
                 style={[

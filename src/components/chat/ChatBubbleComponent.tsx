@@ -1,5 +1,7 @@
 import {StyleSheet, View} from 'react-native';
-import AppText from '../text/AppText';
+import Markdown from 'react-native-markdown-display';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import AiChatIcon from '../../assets/images/ai_chat_icon.png';
 import {
   appColors,
   borderRadius,
@@ -8,10 +10,7 @@ import {
   sizeBlock,
   universalStyle,
 } from '../../styles/universalStyle';
-import AiChatIcon from '../../assets/images/ai_chat_icon.png';
 import AppImage from '../image/AppImage';
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import Markdown from 'react-native-markdown-display';
 
 type Props = {
   isOwn: boolean;

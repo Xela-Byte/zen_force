@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {memo, useCallback, useEffect, useRef} from 'react';
 import {FlatList, View} from 'react-native';
 import {fetchUserChats} from '../../api/chat';
 import {screenHeight, sizeBlock} from '../../styles/universalStyle';
@@ -57,25 +57,22 @@ const ChatList = ({
   if (isLoading) return <LoadingComponent />;
   if (isError) return <AppText>Failed to load chats</AppText>;
 
-  const ChatBodyComponent = useCallback(
-    ({item}: {item: Chat}) => {
-      return (
-        <View style={{paddingHorizontal: sizeBlock.getWidthSize(15)}}>
-          <ChatBubbleComponent
-            isOwn
-            message={item.userMessage}
-            isLoading={false}
-          />
-          <ChatBubbleComponent
-            isOwn={false}
-            message={item.aiResponse}
-            isLoading={false}
-          />
-        </View>
-      );
-    },
-    [chats],
-  );
+  const ChatBodyComponent = memo(({item}: {item: Chat}) => {
+    return (
+      <View style={{paddingHorizontal: sizeBlock.getWidthSize(15)}}>
+        <ChatBubbleComponent
+          isOwn
+          message={item.userMessage}
+          isLoading={false}
+        />
+        <ChatBubbleComponent
+          isOwn={false}
+          message={item.aiResponse}
+          isLoading={false}
+        />
+      </View>
+    );
+  });
 
   return (
     <View

@@ -1,16 +1,22 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {ScrollView, View} from 'react-native';
 import AppPressable from '../../components/button/AppPressable';
 import HeaderComponent from '../../components/button/HeaderComponent';
-import StepOne from '../../components/details/StepOne';
-import StepTwo from '../../components/details/StepTwo';
-import {detailsStyle} from '../../styles/detailsStyle';
-import {DetailsScreenProps} from '../../types/navigation/AuthNavigationType';
-import StepThree from '../../components/details/StepThree';
-import StepFour from '../../components/details/StepFour';
 import StepFive from '../../components/details/StepFive';
+import StepFour from '../../components/details/StepFour';
+import StepOne from '../../components/details/StepOne';
+import StepThree from '../../components/details/StepThree';
+import StepTwo from '../../components/details/StepTwo';
 import AppText from '../../components/text/AppText';
+import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
+import {
+  setCurrentVettingStep,
+  setVettingData,
+  VettingData,
+} from '../../store/slices/appSlice';
+import {detailsStyle} from '../../styles/detailsStyle';
 import {appColors} from '../../styles/universalStyle';
+import {DetailsScreenProps} from '../../types/navigation/AuthNavigationType';
 
 interface Step {
   stepName: string;
@@ -18,33 +24,56 @@ interface Step {
   stepComponent: React.JSX.Element;
 }
 
-const DetailsScreen = ({navigation, route}: DetailsScreenProps) => {
-  const [currentStep, setCurrentStep] = useState(0);
+const DetailsScreen = ({navigation}: DetailsScreenProps) => {
+  const currentStep =
+    useAppSelector(state => state.app.currentVettingStep) ?? 0;
+
+  const dispatch = useAppDispatch();
+
+  const setCurrentStep = (step: number) => {
+    dispatch(setCurrentVettingStep(step));
+  };
 
   const handleStep = (value: number) => {
     setCurrentStep(value);
+  };
+
+  // Function to update Redux store with form values
+  const storeVettingData = (payload: Partial<VettingData>) => {
+    dispatch(setVettingData(payload));
   };
 
   const allSteps: Step[] = [
     {
       stepName: '1',
       headerText: 'Your details',
-      stepComponent: <StepOne handleStep={handleStep} />,
+      stepComponent: (
+        <StepOne handleStep={handleStep} storeVettingData={storeVettingData} />
+      ),
     },
     {
       stepName: '2',
       headerText: 'Interests',
-      stepComponent: <StepTwo handleStep={handleStep} />,
+      stepComponent: (
+        <StepTwo handleStep={handleStep} storeVettingData={storeVettingData} />
+      ),
     },
     {
       stepName: '3',
       headerText: 'Relationship details',
-      stepComponent: <StepThree handleStep={handleStep} />,
+      stepComponent: (
+        <StepThree
+          handleStep={handleStep}
+          storeVettingData={storeVettingData}
+        />
+      ),
     },
     {
       stepName: '4',
       headerText: 'Relationship goals',
-      stepComponent: <StepFour handleStep={handleStep} />,
+      stepComponent: (
+        <StepFour handleStep={handleStep} storeVettingData={storeVettingData} />
+      ),
     },
     {
       stepName: '5',
@@ -76,6 +105,11 @@ const DetailsScreen = ({navigation, route}: DetailsScreenProps) => {
           title={allSteps[currentStep]?.headerText || ''}
           navigation={navigation}
           extraComponent={currentStep === 4 && <SkipButton />}
+          onPress={() => {
+            currentStep !== 0
+              ? setCurrentStep(currentStep - 1)
+              : navigation.goBack();
+          }}
         />
         <View style={detailsStyle.container}>
           <View style={detailsStyle.slideWrapper}>

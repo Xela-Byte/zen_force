@@ -5,7 +5,9 @@ export const API_URL = process.env.API_URL;
 
 const getToken = async () => {
   const state = store.getState();
-  const token = state.app.user?.accessToken ?? '';
+
+  const token =
+    state.app.tempUser?.accessToken || state.app.user?.accessToken || '';
   return token;
 };
 

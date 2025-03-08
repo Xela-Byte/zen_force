@@ -8,18 +8,16 @@ import AppPressable from '../../components/button/AppPressable';
 import BackButton from '../../components/button/BackButton';
 import AppInput from '../../components/input/AppInput';
 import AppText from '../../components/text/AppText';
-import {EMAIL_REGEX, PASSWORD_REGEX} from '../../hooks/Regex';
+import {EMAIL_REGEX, PASSWORD_REGEX} from '../../hooks/helpers/Regex';
+import {useAppDispatch} from '../../hooks/helpers/useRedux';
+import useToast from '../../hooks/helpers/useToast';
+import {AppUser, setTempUser} from '../../store/slices/appSlice';
 import {loginStyle} from '../../styles/loginStyle';
 import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
 import {
   AuthStackParamList,
   RegisterScreenProps,
 } from '../../types/navigation/AuthNavigationType';
-import {API_URL} from '../../api';
-import useToast from '../../hooks/useToast';
-import {useAppDispatch} from '../../hooks/useRedux';
-import {AppDispatch} from '../../store';
-import {AppUser, setUser} from '../../store/slices/appSlice';
 
 interface Inputs {
   email: string;
@@ -39,10 +37,12 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
 
   const {showToast} = useToast();
 
+  const canGoBack = navigation.canGoBack();
+
   const dispatch = useAppDispatch();
 
-  const storeUser = (user: AppUser) => {
-    dispatch(setUser(user));
+  const storeTempUser = (user: AppUser) => {
+    dispatch(setTempUser(user));
   };
 
   const registerMutation = useMutation({
@@ -53,12 +53,13 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
         text2: `Let's go 🚀`,
         type: 'success',
       });
-      storeUser(result.data);
+      storeTempUser(result.data);
+      navigateTo('AccountSetupScreen');
     },
     onError: (error: any) => {
       console.error('Registration error:', error);
       showToast({
-        text1: `Error siging up`,
+        text1: `Error signing up`,
         text2: error.message || 'Signup failed',
         type: 'error',
       });
@@ -80,7 +81,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
       return;
     }
 
-    registerMutation.mutateAsync({
+    await registerMutation.mutateAsync({
       email: cleanValue(data.email),
       password: data.password.trim(),
     });
@@ -89,7 +90,15 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
   return (
     <ScrollView style={loginStyle.wrapper}>
       <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
-      <BackButton navigation={navigation} />
+      {canGoBack ? (
+        <BackButton navigation={navigation} />
+      ) : (
+        <View
+          style={{
+            height: sizeBlock.getWidthSize(45),
+          }}
+        />
+      )}
       <View style={loginStyle.container}>
         <AppText fontSize={fontSize.medium} fontType="medium">
           Create Account
@@ -107,10 +116,16 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
           placeholder="Enter your email"
           animatedPlaceholder="Email"
           rules={{
+            setValueAs: (value: any) => value.trim().toLowerCase(),
             required: 'Please enter an email',
             pattern: {value: EMAIL_REGEX, message: 'Invalid email format'},
           }}
           customStyle={{marginTop: sizeBlock.getHeightSize(50)}}
+          inputProps={{
+            autoComplete: 'email',
+            keyboardType: 'email-address',
+            textContentType: 'emailAddress',
+          }}
         />
 
         {/* Password Input */}
@@ -129,6 +144,9 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
             },
           }}
           customStyle={{marginTop: sizeBlock.getHeightSize(10)}}
+          inputProps={{
+            autoComplete: 'new-password',
+          }}
         />
 
         {/* Confirm Password Input */}
@@ -144,6 +162,9 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
               value === watch('password') || 'Passwords do not match',
           }}
           customStyle={{marginTop: sizeBlock.getHeightSize(10)}}
+          inputProps={{
+            autoComplete: 'new-password',
+          }}
         />
 
         <View style={{marginVertical: sizeBlock.getHeightSize(10)}} />
@@ -153,7 +174,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
           title="Sign up"
           bgColor={appColors.green}
           onPress={handleSubmit(onSubmit)}
-          loading={registerMutation.isPending}
+          loading={registerMutation.isPending && !registerMutation.isError}
         />
 
         {/* Other Sign-up Methods */}
@@ -171,7 +192,9 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
           title="Sign up with Google"
           iconName="google"
           bgColor={appColors.green}
-          onPress={() => {}}
+          onPress={() => {
+            navigateTo('GoogleAuthScreen');
+          }}
           textColor={appColors.text}
           customViewStyle={{marginBottom: sizeBlock.getHeightSize(10)}}
         />
@@ -182,6 +205,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
           textColor={appColors.text}
           title="Sign up with Apple"
           bgColor={appColors.green}
+          disabled
           onPress={() => {}}
         />
 

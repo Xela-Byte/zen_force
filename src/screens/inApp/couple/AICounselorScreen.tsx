@@ -10,7 +10,7 @@ import ChatList from '../../../components/chat/ChatList';
 import {aiCounselorStyle} from '../../../styles/aiCounselorStyle';
 import {appColors} from '../../../styles/universalStyle';
 import {AICounselorScreenProps} from '../../../types/navigation/CoupleNavigationType';
-import useInvalidateQuery from '../../../hooks/useInvalidateQueries';
+import useInvalidateQuery from '../../../hooks/queries/useInvalidateQueries';
 
 interface Inputs {
   messageBody: string;

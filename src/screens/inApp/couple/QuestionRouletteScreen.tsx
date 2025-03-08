@@ -26,11 +26,13 @@ import CoupleImage from '../../../assets/images/couple.jpg';
 import AppImage from '../../../components/image/AppImage';
 import LinearGradient from 'react-native-linear-gradient';
 import AppPressable from '../../../components/button/AppPressable';
+import {QuestionType} from '../../../api/games';
 
 interface Stage {
   title: string;
   questions: number;
   status: string;
+  questionType: QuestionType;
 }
 
 const stages: Stage[] = [
@@ -38,26 +40,31 @@ const stages: Stage[] = [
     title: 'Single & Dating',
     questions: 12,
     status: 'Free',
+    questionType: 'single-dating',
   },
   {
     title: 'Couple (Non married)',
     questions: 12,
     status: 'Free',
+    questionType: 'couple-unmarried',
   },
   {
     title: 'Married Couples',
     questions: 12,
     status: 'Free',
+    questionType: 'married-couples',
   },
   {
     title: 'Newly wed',
     questions: 12,
     status: 'Free',
+    questionType: 'newly-wed',
   },
   {
     title: 'Advance (Romance & Erotica)',
     questions: 12,
     status: 'Premium',
+    questionType: 'advance-romance-erotica',
   },
 ];
 
@@ -72,7 +79,10 @@ const QuestionRouletteScreen = ({navigation}: QuestionRouletteScreenProps) => {
 
   const StageButton = memo(({stg}: {stg: Stage}) => {
     const handlePress = useCallback(() => {
-      navigateTo('QuestionRouletteDetailScreen', {stageType: stg.title});
+      navigateTo('QuestionRouletteDetailScreen', {
+        stageType: stg.title,
+        questionType: stg.questionType,
+      });
     }, [stg.title]);
 
     return (

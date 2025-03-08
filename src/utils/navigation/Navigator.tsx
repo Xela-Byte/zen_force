@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
-import {useAppSelector} from '../../hooks/useRedux';
+import {useAppSelector} from '../../hooks/helpers/useRedux';
 import AuthNavigator from './auth/AuthNavigator';
 import BottomTabNavigator from './bottomTab/BottomTabNavigator';
 
@@ -11,7 +11,8 @@ const Navigator = (props: Props) => {
   return (
     <NavigationContainer>
       <StatusBar />
-      {!user ? <AuthNavigator /> : <BottomTabNavigator />}
+      <AuthNavigator />
+      {/* {!user ? <AuthNavigator /> : <BottomTabNavigator />} */}
     </NavigationContainer>
   );
 };

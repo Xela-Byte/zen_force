@@ -6,7 +6,7 @@ import {
   sizeBlock,
   universalStyle,
 } from './universalStyle';
-import useHexToRGBA from '../hooks/useHexToRGBA';
+import useHexToRGBA from '../hooks/helpers/useHexToRGBA';
 
 export const aiCounselorStyle = StyleSheet.create({
   wrapper: {

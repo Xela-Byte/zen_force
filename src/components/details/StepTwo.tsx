@@ -1,13 +1,8 @@
+import {useMutation} from '@tanstack/react-query';
 import React, {useState} from 'react';
-import {
-  appColors,
-  borderRadius,
-  fontSize,
-  sizeBlock,
-  universalStyle,
-} from '../../styles/universalStyle';
-import AppText from '../text/AppText';
-import AppButton from '../button/AppButton';
+import {View} from 'react-native';
+import {SvgProps} from 'react-native-svg';
+import {profileInterestUpdateFn} from '../../api/profile';
 import {
   ArtIcon,
   CookingIcon,
@@ -16,20 +11,30 @@ import {
   GameIcon,
   MicIcon,
   MusicIcon,
+  PaintIcon,
   PhotographyIcon,
   RunningIcon,
   ShoppingIcon,
+  SightIcon,
   SwimmingIcon,
   TravelIcon,
-  PaintIcon,
-  SightIcon,
 } from '../../assets/interestIcons';
-import {View} from 'react-native';
+import useToast from '../../hooks/helpers/useToast';
+import {VettingData} from '../../store/slices/appSlice';
+import {
+  appColors,
+  borderRadius,
+  fontSize,
+  sizeBlock,
+  universalStyle,
+} from '../../styles/universalStyle';
+import AppButton from '../button/AppButton';
 import AppPressable from '../button/AppPressable';
-import {SvgProps} from 'react-native-svg';
+import AppText from '../text/AppText';
 
 interface Props {
   handleStep: (value: number) => void;
+  storeVettingData: (payload: Partial<VettingData>) => void;
 }
 
 interface Option {
@@ -55,7 +60,7 @@ export const personalityInterests: Option[] = [
   {label: 'Astrology', value: 'astrology', icon: SightIcon},
 ];
 
-const StepTwo = ({handleStep}: Props) => {
+const StepTwo = ({handleStep, storeVettingData}: Props) => {
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
 
   const isSelected = (item: Option) => {
@@ -72,12 +77,32 @@ const StepTwo = ({handleStep}: Props) => {
     });
   };
 
-  const getIconProps = (icon: any, color: string) => {
-    return {
-      ...(icon?.defaultProps?.stroke !== undefined && {stroke: color}),
-      ...(icon?.defaultProps?.fill !== undefined && {fill: color}),
-      ...(icon?.defaultProps?.color !== undefined && {color}),
-    };
+  const {showToast} = useToast();
+
+  const labels = selectedOptions.map(option => option.label);
+
+  const profileInterestUpdateMutation = useMutation({
+    mutationFn: profileInterestUpdateFn,
+    onSuccess: result => {
+      showToast({
+        text1: `Profile updated!`,
+        text2: `Let's go 🚀`,
+        type: 'success',
+      });
+      storeVettingData({interest: labels});
+      handleStep(2);
+    },
+    onError: (error: any) => {
+      showToast({
+        text1: 'Error updating profile.',
+        type: 'error',
+        text2: 'Profile update failed',
+      });
+    },
+  });
+
+  const handleNext = () => {
+    profileInterestUpdateMutation.mutate({interest: labels});
   };
 
   return (
@@ -131,8 +156,10 @@ const StepTwo = ({handleStep}: Props) => {
         }}
         title="Next"
         bgColor={appColors.green}
+        disabled={selectedOptions.length === 0}
+        loading={profileInterestUpdateMutation.isPending}
         onPress={() => {
-          handleStep(2);
+          handleNext();
         }}
       />
     </>

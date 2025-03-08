@@ -9,8 +9,8 @@ import AppPressable from '../../components/button/AppPressable';
 import BackButton from '../../components/button/BackButton';
 import AppInput from '../../components/input/AppInput';
 import AppText from '../../components/text/AppText';
-import {EMAIL_REGEX} from '../../hooks/Regex';
-import useToast from '../../hooks/useToast';
+import {EMAIL_REGEX} from '../../hooks/helpers/Regex';
+import useToast from '../../hooks/helpers/useToast';
 import {AppDispatch} from '../../store';
 import {AppUser, setUser} from '../../store/slices/appSlice';
 import {loginStyle} from '../../styles/loginStyle';
@@ -19,7 +19,7 @@ import {
   AuthStackParamList,
   LoginScreenProps,
 } from '../../types/navigation/AuthNavigationType';
-import {useAppSelector} from '../../hooks/useRedux';
+import {useAppSelector} from '../../hooks/helpers/useRedux';
 
 type Props = {};
 
@@ -32,6 +32,8 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
   const {control, handleSubmit} = useForm<Inputs>();
   const {showToast} = useToast();
   const dispatch = useDispatch<AppDispatch>();
+
+  const canGoBack = navigation.canGoBack();
 
   const storeUser = (user: AppUser) => {
     dispatch(setUser(user));
@@ -80,7 +82,15 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
   return (
     <ScrollView style={loginStyle.wrapper}>
       <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
-      <BackButton navigation={navigation} />
+      {canGoBack ? (
+        <BackButton navigation={navigation} />
+      ) : (
+        <View
+          style={{
+            height: sizeBlock.getWidthSize(45),
+          }}
+        />
+      )}
       <View style={loginStyle.container}>
         <AppText fontSize={fontSize.medium} fontType="medium">
           Welcome Back!
@@ -104,6 +114,10 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           rules={{
             required: 'Please enter an email',
             pattern: {value: EMAIL_REGEX, message: 'Invalid email format'},
+          }}
+          inputProps={{
+            autoFocus: true,
+            keyboardType: 'email-address',
           }}
         />
 

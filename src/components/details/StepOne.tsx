@@ -1,19 +1,16 @@
-import {View, Text} from 'react-native';
-import React from 'react';
-import {detailsStyle} from '../../styles/detailsStyle';
-import AppPressable from '../button/AppPressable';
-import PfpIcon from '../../assets/svgsComponents/PfpIcon';
-import {
-  appColors,
-  borderRadius,
-  fontSize,
-  sizeBlock,
-} from '../../styles/universalStyle';
-import AppText from '../text/AppText';
-import AppInput from '../input/AppInput';
+import {useMutation} from '@tanstack/react-query';
+import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import DropdownComponent from '../dropdown/DropdownComponent';
+import {View} from 'react-native';
+import {profileInfoUpdateFn} from '../../api/profile';
+import {useAppSelector} from '../../hooks/helpers/useRedux';
+import useToast from '../../hooks/helpers/useToast';
+import {VettingData} from '../../store/slices/appSlice';
+import {appColors, sizeBlock} from '../../styles/universalStyle';
 import AppButton from '../button/AppButton';
+import DropdownComponent from '../dropdown/DropdownComponent';
+import AppInput from '../input/AppInput';
+import UploadPPButton from './UploadPPButton';
 
 interface Inputs {
   fullName: string;
@@ -24,94 +21,112 @@ interface Inputs {
 
 interface Props {
   handleStep: (value: number) => void;
+  storeVettingData: (payload: Partial<VettingData>) => void;
 }
 
 const genderOptions = [
-  {
-    key: 'male',
-    value: 'male',
-  },
-  {
-    key: 'female',
-    value: 'female',
-  },
+  {key: 'Male', value: 'Male'},
+  {key: 'Female', value: 'Female'},
 ];
 
 const personalityOptions = [
-  {
-    key: 'introverted',
-    value: 'Introverted',
-  },
-  {
-    key: 'extroverted',
-    value: 'Extroverted',
-  },
-  {
-    key: 'ambivert',
-    value: 'Ambivert', // A mix of introverted and extroverted
-  },
-  {
-    key: 'analytical',
-    value: 'Analytical', // Logical and detail-oriented
-  },
-  {
-    key: 'creative',
-    value: 'Creative', // Innovative and imaginative
-  },
-  {
-    key: 'empathetic',
-    value: 'Empathetic', // Sensitive to others' feelings
-  },
-  {
-    key: 'optimistic',
-    value: 'Optimistic', // Positive and hopeful
-  },
-  {
-    key: 'realistic',
-    value: 'Realistic', // Practical and grounded
-  },
-  {
-    key: 'adventurous',
-    value: 'Adventurous', // Love to explore new things
-  },
-  {
-    key: 'methodical',
-    value: 'Methodical', // Organized and systematic
-  },
+  {key: 'introverted', value: 'Introverted'},
+  {key: 'extroverted', value: 'Extroverted'},
+  {key: 'ambivert', value: 'Ambivert'},
+  {key: 'analytical', value: 'Analytical'},
+  {key: 'creative', value: 'Creative'},
+  {key: 'empathetic', value: 'Empathetic'},
+  {key: 'optimistic', value: 'Optimistic'},
+  {key: 'realistic', value: 'Realistic'},
+  {key: 'adventurous', value: 'Adventurous'},
+  {key: 'methodical', value: 'Methodical'},
 ];
 
-const StepOne = ({handleStep}: Props) => {
-  const {control, setValue} = useForm<Inputs>();
+const StepOne = ({handleStep, storeVettingData}: Props) => {
+  const {control, setValue, watch} = useForm<Inputs>();
 
+  const vettingData = useAppSelector(state => state.app.vettingData);
+
+  useEffect(() => {
+    setValue('age', vettingData?.age?.toString() ?? '');
+    setValue('fullName', vettingData?.fullName ?? '');
+    setValue('gender', vettingData?.gender ?? '');
+    setValue('personalityInsight', vettingData?.personalityInsight ?? '');
+  }, []);
+
+  // Local state to track if the button should be disabled
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  // Watches for form field values
+  const fullName = watch('fullName');
+  const age = watch('age');
+  const gender = watch('gender');
+  const personalityInsight = watch('personalityInsight');
+
+  const updateVettingData = () => {
+    storeVettingData({
+      fullName,
+      age: Number(age),
+      gender: gender.toLowerCase(),
+      personalityInsight,
+    });
+  };
+
+  useEffect(() => {
+    // Check if all fields are filled
+    const isFormValid = fullName && age && gender && personalityInsight;
+    setIsDisabled(!isFormValid);
+  }, [fullName, age, gender, personalityInsight]);
+
+  // Handles dropdown selection
   const handleValues = (key: keyof Inputs, value: string) => {
     setValue(key, value);
   };
 
+  const {showToast} = useToast();
+
+  const profileInfoUpdateMutation = useMutation({
+    mutationFn: profileInfoUpdateFn,
+    onSuccess: result => {
+      showToast({
+        text1: `Profile updated!`,
+        text2: `Let's go 🚀`,
+        type: 'success',
+      });
+      updateVettingData();
+      handleStep(1);
+    },
+    onError: (error: any) => {
+      showToast({
+        text1: 'Error updating profile.',
+        type: 'error',
+        text2: 'Profile update failed',
+      });
+    },
+  });
+
+  // Handles next step
+  const handleNext = () => {
+    if (!isDisabled) {
+      profileInfoUpdateMutation.mutate({
+        age: Number(age),
+        fullName,
+        gender,
+        personalityInsight,
+      });
+    }
+  };
+
   return (
     <>
-      <View style={detailsStyle.uploadBtnWrapper}>
-        <PfpIcon />
-        <AppPressable
-          customViewStyle={{
-            borderColor: appColors.text,
-            borderWidth: 2,
-            paddingVertical: sizeBlock.getHeightSize(10),
-            paddingHorizontal: sizeBlock.getWidthSize(20),
-            borderRadius: borderRadius.medium,
-          }}
-          onPress={() => {}}>
-          <AppText fontSize={fontSize.small - 1}>Upload</AppText>
-        </AppPressable>
-      </View>
+      <UploadPPButton storeVettingData={storeVettingData} />
 
       <AppInput<Inputs>
         control={control}
         name="fullName"
         placeholder="Enter your name"
         animatedPlaceholder="Full name"
-        customStyle={{
-          marginTop: sizeBlock.getHeightSize(20),
-        }}
+        customStyle={{marginTop: sizeBlock.getHeightSize(20)}}
       />
 
       <AppInput<Inputs>
@@ -119,8 +134,9 @@ const StepOne = ({handleStep}: Props) => {
         name="age"
         placeholder="Enter your age"
         animatedPlaceholder="Age"
-        customStyle={{
-          marginTop: sizeBlock.getHeightSize(10),
+        customStyle={{marginTop: sizeBlock.getHeightSize(10)}}
+        inputProps={{
+          keyboardType: 'number-pad',
         }}
       />
 
@@ -128,29 +144,23 @@ const StepOne = ({handleStep}: Props) => {
       <DropdownComponent
         options={genderOptions}
         placeholder="Select a gender"
-        onSelect={(value: string) => {
-          handleValues('gender', value);
-        }}
+        onSelect={(value: string) => handleValues('gender', value)}
       />
 
       <View style={{height: sizeBlock.getHeightSize(20)}} />
       <DropdownComponent
         options={personalityOptions}
         placeholder="Select a personality insight"
-        onSelect={(value: string) => {
-          handleValues('personalityInsight', value);
-        }}
+        onSelect={(value: string) => handleValues('personalityInsight', value)}
       />
 
       <AppButton
-        customViewStyle={{
-          marginTop: '70%',
-        }}
+        customViewStyle={{marginTop: '60%'}}
         title="Next"
         bgColor={appColors.green}
-        onPress={() => {
-          handleStep(1);
-        }}
+        onPress={handleNext}
+        loading={profileInfoUpdateMutation.isPending}
+        disabled={isDisabled} // Disable button if form is not valid
       />
     </>
   );

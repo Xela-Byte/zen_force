@@ -11,8 +11,18 @@ import SelectComponent from '../../components/auth/SelectComponent';
 import {useEffect, useState} from 'react';
 import PersonIcon from '../../assets/svgsComponents/PersonIcon';
 import PartnerIcon from '../../assets/svgsComponents/PartnerIcon';
+import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
+import {setVettingData, VettingData} from '../../store/slices/appSlice';
 
 const AccountSetupScreen = ({navigation}: AccountSetupScreenProps) => {
+  const dispatch = useAppDispatch();
+
+  const storeVettingData = (payload: Partial<VettingData>) => {
+    dispatch(setVettingData(payload));
+  };
+
+  const vettingData = useAppSelector(state => state.app.vettingData);
+
   const navigateTo = <T extends keyof AuthStackParamList>(
     route: T,
     params?: AuthStackParamList[T],
@@ -23,7 +33,7 @@ const AccountSetupScreen = ({navigation}: AccountSetupScreenProps) => {
 
   const [selectedOption, setSelectedOption] = useState<
     'with-partner' | 'by-myself' | string
-  >('');
+  >(vettingData?.hereWith ?? '');
 
   const options = [
     {
@@ -50,11 +60,15 @@ const AccountSetupScreen = ({navigation}: AccountSetupScreenProps) => {
     },
   ];
 
+  const handleNext = () => {
+    if (selectedOption) {
+      storeVettingData({hereWith: selectedOption});
+      navigateTo('DetailsScreen');
+    }
+  };
+
   useEffect(() => {
-    selectedOption &&
-      navigateTo('DetailsScreen', {
-        companionPreference: selectedOption,
-      });
+    handleNext();
   }, [selectedOption]);
 
   return (

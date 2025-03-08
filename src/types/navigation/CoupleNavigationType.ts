@@ -1,4 +1,5 @@
 import {NavigationProp, RouteProp} from '@react-navigation/native';
+import {ChallengeType, QuestionType} from '../../api/games';
 
 export type CoupleStackParamList = {
   CoupleScreen: undefined;
@@ -8,9 +9,11 @@ export type CoupleStackParamList = {
   MemoryLaneScreen: undefined;
   CoupleChallengeDetailScreen: {
     questionType: string;
+    challengeType: ChallengeType;
   };
   QuestionRouletteDetailScreen: {
     stageType: string;
+    questionType: QuestionType;
   };
   ProgressTrackingScreen: undefined;
 };

@@ -32,12 +32,12 @@ const coupleGames: Game[] = [
   },
   {
     title: 'Couple Challenge',
-    description: 'Couple’s Game • 12 Questions',
+    description: 'Couple’s Game',
     screen: 'CoupleChallengeScreen',
   },
   {
     title: 'Memory Lane',
-    description: 'Couple’s Game • 12 Questions',
+    description: 'Couple’s Game',
     screen: 'MemoryLaneScreen',
   },
   {

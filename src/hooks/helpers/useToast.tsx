@@ -1,5 +1,5 @@
 import Toast from 'react-native-toast-message';
-import {fontFamily, fontSize} from '../styles/universalStyle';
+import {fontFamily, fontSize} from '../../styles/universalStyle';
 
 type ToastOptions = {
   type: 'success' | 'error' | 'info';

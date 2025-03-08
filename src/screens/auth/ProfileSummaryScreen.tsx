@@ -1,64 +1,133 @@
-import {View, Text, ScrollView, StatusBar} from 'react-native';
-import React from 'react';
-import {profileSummaryStyle} from '../../styles/profileSummaryStyle';
+import React, {useMemo} from 'react';
+import {ScrollView, StatusBar, View} from 'react-native';
+import AppButton from '../../components/button/AppButton';
+import AppPressable from '../../components/button/AppPressable';
 import HeaderComponent from '../../components/button/HeaderComponent';
-import {ProfileSummaryScreenProps} from '../../types/navigation/AuthNavigationType';
+import {personalityInterests} from '../../components/details/StepTwo';
+import AppText from '../../components/text/AppText';
+import {profileSummaryStyle} from '../../styles/profileSummaryStyle';
 import {
   appColors,
   borderRadius,
   sizeBlock,
   universalStyle,
 } from '../../styles/universalStyle';
-import AppText from '../../components/text/AppText';
-import AppPressable from '../../components/button/AppPressable';
-import {personalityInterests} from '../../components/details/StepTwo';
-import AppButton from '../../components/button/AppButton';
-
-type Props = {};
+import {ProfileSummaryScreenProps} from '../../types/navigation/AuthNavigationType';
+import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
+import {setCurrentVettingStep} from '../../store/slices/appSlice';
 
 const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
+  const dispatch = useAppDispatch();
+  const vettingData = useAppSelector(state => state.app.vettingData);
+
+  const selectedInterests = useMemo(() => {
+    if (!vettingData?.interest) return [];
+    if (vettingData?.interest.length === 0) return [];
+
+    let filteredInterests = personalityInterests.filter(({label}) =>
+      vettingData?.interest?.some(term =>
+        label.toLowerCase().includes(term.toLowerCase()),
+      ),
+    );
+
+    return filteredInterests || [];
+  }, [vettingData?.interest]);
+
+  const handleEdit = (step: number) => {
+    dispatch(setCurrentVettingStep(step));
+    navigation.goBack();
+  };
+
   return (
     <>
       <ScrollView style={profileSummaryStyle.wrapper}>
         <StatusBar backgroundColor={appColors.gray} />
-        <HeaderComponent navigation={navigation} title="Profile summary" />
+        <HeaderComponent
+          navigation={navigation}
+          title="Profile summary"
+          onPress={() => {
+            handleEdit(4);
+          }}
+        />
 
         <View style={profileSummaryStyle.container}>
           <View style={profileSummaryStyle.aboutContainer}>
             <View style={universalStyle.flexBetween}>
               <AppText fontType="medium">About</AppText>
-              <AppPressable onPress={() => {}}>
+              <AppPressable
+                onPress={() => {
+                  handleEdit(0);
+                }}>
                 <AppText color={appColors.border}>Edit</AppText>
               </AppPressable>
             </View>
             <View style={universalStyle.flexBetween}>
-              <AppText>Name</AppText>
-              <AppText>Xela Oladipupo</AppText>
+              <AppText numLine={1}>Name</AppText>
+              <View
+                style={{
+                  width: '50%',
+                  alignItems: 'flex-end',
+                }}>
+                <AppText numLine={1} ellipsizeMode="tail">
+                  {vettingData?.fullName ?? 'Zen User'}
+                </AppText>
+              </View>
             </View>
             <View style={universalStyle.flexBetween}>
               <AppText>Age</AppText>
-              <AppText>20</AppText>
+              <AppText numLine={1} ellipsizeMode="tail">
+                {vettingData?.age ?? '18'}
+              </AppText>
             </View>
             <View style={universalStyle.flexBetween}>
               <AppText>Gender</AppText>
-              <AppText>Male</AppText>
+              <AppText
+                customStyle={{
+                  textTransform: 'capitalize',
+                }}>
+                {vettingData?.gender ?? 'Zen'}
+              </AppText>
             </View>
             <View style={universalStyle.flexBetween}>
               <AppText>Personality</AppText>
-              <AppText>Big Five</AppText>
+              <AppText>{vettingData?.personalityInsight}</AppText>
             </View>
             <View style={universalStyle.flexBetween}>
               <AppText>Love language</AppText>
-              <AppText>Quality time</AppText>
+              <View
+                style={{
+                  width: '50%',
+                  alignItems: 'flex-end',
+                }}>
+                <AppText numLine={1} ellipsizeMode="tail">
+                  {vettingData?.loveLanguage}
+                </AppText>
+              </View>
             </View>
-            <View style={universalStyle.flexBetween}>
+            {/* <View style={universalStyle.flexBetween}>
               <AppText>Communication preference</AppText>
-              <AppText>Quality time</AppText>
+              <View
+                style={{
+                  width: '30%',
+                  alignItems: 'flex-end',
+                }}>
+                <AppText numLine={1} ellipsizeMode="tail">
+                  Quality time
+                </AppText>
+              </View>
             </View>
             <View style={universalStyle.flexBetween}>
               <AppText>Attachment style</AppText>
-              <AppText>Quality time</AppText>
-            </View>
+              <View
+                style={{
+                  width: '50%',
+                  alignItems: 'flex-end',
+                }}>
+                <AppText numLine={1} ellipsizeMode="tail">
+                  Quality time
+                </AppText>
+              </View>
+            </View> */}
           </View>
           <View style={profileSummaryStyle.aboutContainer}>
             <View style={universalStyle.flexBetween}>
@@ -74,7 +143,7 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
                 paddingVertical: sizeBlock.getHeightSize(10),
                 gap: sizeBlock.getWidthSize(10),
               }}>
-              {personalityInterests.slice(0, 4).map(interest => {
+              {selectedInterests.map(interest => {
                 return (
                   <View key={interest.value}>
                     <View
@@ -103,12 +172,30 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
               </AppPressable>
             </View>
             <View style={universalStyle.flexBetween}>
-              <AppText>Relationship stage</AppText>
-              <AppText>Newly weds</AppText>
+              <AppText>Relationship Stage</AppText>
+              <AppText>{vettingData?.relationshipStage}</AppText>
             </View>
             <View style={universalStyle.flexBetween}>
               <AppText>Relationship Age</AppText>
-              <AppText>2 years</AppText>
+              <AppText customStyle={{textTransform: 'capitalize'}}>
+                {vettingData?.relationshipDuration}
+              </AppText>
+            </View>
+
+            <View style={universalStyle.flexBetween}>
+              <AppText>Relationship Desire</AppText>
+              <View
+                style={{
+                  width: '50%',
+                  alignItems: 'flex-end',
+                }}>
+                <AppText
+                  numLine={1}
+                  ellipsizeMode="tail"
+                  customStyle={{textTransform: 'capitalize'}}>
+                  {vettingData?.relationshipDesire}
+                </AppText>
+              </View>
             </View>
           </View>
           <View style={profileSummaryStyle.aboutContainer}>
@@ -119,12 +206,16 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
               </AppPressable>
             </View>
             <View style={universalStyle.flexBetween}>
-              <AppText>Relationship stage</AppText>
-              <AppText>Newly weds</AppText>
-            </View>
-            <View style={universalStyle.flexBetween}>
-              <AppText>Relationship Age</AppText>
-              <AppText>To build Intimacy</AppText>
+              <AppText>Relationship goal</AppText>
+              <View
+                style={{
+                  width: '50%',
+                  alignItems: 'flex-end',
+                }}>
+                <AppText numLine={1} ellipsizeMode="tail">
+                  {vettingData?.relationshipGoal}
+                </AppText>
+              </View>
             </View>
           </View>
         </View>

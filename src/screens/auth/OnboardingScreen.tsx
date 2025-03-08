@@ -13,7 +13,7 @@ import {
   OnboardingScreenProps,
 } from '../../types/navigation/AuthNavigationType';
 import AppPressable from '../../components/button/AppPressable';
-import {useAppDispatch, useAppSelector} from '../../hooks/useRedux';
+import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
 import {markInstalled} from '../../store/slices/appSlice';
 
 interface Item {
