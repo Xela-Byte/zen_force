@@ -2,7 +2,7 @@ import {useMutation} from '@tanstack/react-query';
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import {ScrollView, StatusBar, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {loginFn} from '../../api/login';
 import AppButton from '../../components/button/AppButton';
 import AppPressable from '../../components/button/AppPressable';
@@ -12,14 +12,13 @@ import AppText from '../../components/text/AppText';
 import {EMAIL_REGEX} from '../../hooks/helpers/Regex';
 import useToast from '../../hooks/helpers/useToast';
 import {AppDispatch} from '../../store';
-import {AppUser, setUser} from '../../store/slices/appSlice';
+import {setUser, UserProfile} from '../../store/slices/appSlice';
 import {loginStyle} from '../../styles/loginStyle';
 import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
 import {
   AuthStackParamList,
   LoginScreenProps,
 } from '../../types/navigation/AuthNavigationType';
-import {useAppSelector} from '../../hooks/helpers/useRedux';
 
 type Props = {};
 
@@ -35,7 +34,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
 
   const canGoBack = navigation.canGoBack();
 
-  const storeUser = (user: AppUser) => {
+  const storeUser = (user: UserProfile) => {
     dispatch(setUser(user));
   };
 
@@ -55,7 +54,8 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
         text2: `Let's go 🚀`,
         type: 'success',
       });
-      storeUser(result.data);
+
+      // storeUser(result.data);
     },
     onError: (error: any) => {
       console.error('login error:', error);

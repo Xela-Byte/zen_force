@@ -11,8 +11,7 @@ const Navigator = (props: Props) => {
   return (
     <NavigationContainer>
       <StatusBar />
-      <AuthNavigator />
-      {/* {!user ? <AuthNavigator /> : <BottomTabNavigator />} */}
+      {!user ? <AuthNavigator /> : <BottomTabNavigator />}
     </NavigationContainer>
   );
 };

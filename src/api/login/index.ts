@@ -1,15 +1,11 @@
 import {AxiosResponse} from 'axios';
 import ApiClient, {API_URL} from '..';
+import {UserProfile} from '../../store/slices/appSlice';
 
 interface LoginResponse {
   success: boolean;
   message: string;
-  data: {
-    email: string;
-    _id: string;
-    __v: number;
-    accessToken: string;
-  };
+  data: UserProfile;
 }
 
 interface LoginPayload {

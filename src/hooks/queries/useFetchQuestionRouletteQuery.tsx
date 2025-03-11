@@ -5,17 +5,22 @@ interface QuestionParams {
   questionType: QuestionType;
 }
 
-interface QuestionResponse {
+interface Question {
   _id: string;
   text: string;
   options: string[];
   questionType: string;
 }
 
+interface QuestionResponse {
+  questionsLength: number;
+  questions: Question[];
+}
+
 export const useFetchQuestionRouletteQuery = ({
   questionType,
-}: QuestionParams): UseQueryResult<QuestionResponse[], Error> =>
-  useQuery<QuestionResponse[], Error>({
+}: QuestionParams): UseQueryResult<QuestionResponse, Error> =>
+  useQuery<QuestionResponse, Error>({
     queryKey: ['questionRoulette', questionType] as QueryKey,
     queryFn: () => fetchQuestionRouletteFn({questionType}),
   });

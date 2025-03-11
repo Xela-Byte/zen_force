@@ -32,16 +32,14 @@ import {useFetchMemoryLaneQuery} from '../../../hooks/queries/useFetchMemoryLane
 
 const MemoryLaneScreen = ({navigation}: MemoryLaneScreenProps) => {
   // Fetching questions from hook
-  const {
-    isLoading,
-    isSuccess,
-    isError,
-    data: questions,
-    error,
-  } = useFetchMemoryLaneQuery();
+  const {isLoading, isSuccess, isError, data, error} =
+    useFetchMemoryLaneQuery();
 
   // Memoize questions to prevent unnecessary re-renders
-  const memoizedQuestions = useMemo(() => questions ?? [], [questions]);
+  const memoizedQuestions = useMemo(
+    () => data?.questions ?? [],
+    [data?.questions],
+  );
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -55,27 +53,13 @@ const MemoryLaneScreen = ({navigation}: MemoryLaneScreenProps) => {
   const LoadingComponent = () => {
     return (
       <>
-        <FlatList
-          data={Array.from({length: 10})}
-          horizontal
-          contentContainerStyle={{
-            gap: sizeBlock.getWidthSize(20),
-          }}
-          renderItem={({item, index}) => {
-            return (
-              <SkeletionPlaceholder key={index}>
-                <SkeletionPlaceholder.Item
-                  width={screenWidth * 0.75}
-                  height={sizeBlock.getHeightSize(375)}
-                  borderRadius={borderRadius.medium * 2}
-                />
-              </SkeletionPlaceholder>
-            );
-          }}
-          keyExtractor={(item, index) => index.toString()}
-          onViewableItemsChanged={onViewableItemsChanged}
-          viewabilityConfig={{viewAreaCoveragePercentThreshold: 75}}
-        />
+        <SkeletionPlaceholder>
+          <SkeletionPlaceholder.Item
+            width={screenWidth * 0.75}
+            height={sizeBlock.getHeightSize(375)}
+            borderRadius={borderRadius.medium * 2}
+          />
+        </SkeletionPlaceholder>
 
         {/* Counter */}
         <View style={memoryLaneStyle.counterCard}>
@@ -165,7 +149,7 @@ const MemoryLaneScreen = ({navigation}: MemoryLaneScreenProps) => {
           </View>
         );
       },
-      [questions],
+      [data?.questions],
     ),
   );
 

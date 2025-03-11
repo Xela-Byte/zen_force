@@ -31,6 +31,7 @@ import {
 import AppButton from '../button/AppButton';
 import AppPressable from '../button/AppPressable';
 import AppText from '../text/AppText';
+import {useAppSelector} from '../../hooks/helpers/useRedux';
 
 interface Props {
   handleStep: (value: number) => void;
@@ -59,6 +60,8 @@ export const personalityInterests: Option[] = [
   {label: 'Art & Crafts', value: 'art_and_crafts', icon: PaintIcon},
   {label: 'Astrology', value: 'astrology', icon: SightIcon},
 ];
+
+// A0-53-4E-F9
 
 const StepTwo = ({handleStep, storeVettingData}: Props) => {
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);

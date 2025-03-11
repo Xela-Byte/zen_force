@@ -199,19 +199,14 @@ const QuestionRouletteDetailScreen = ({
   } = route;
 
   // Fetch questions from hook
-  const {
-    data: questions,
-    isSuccess,
-    isLoading,
-    isError,
-    error,
-  } = useFetchQuestionRouletteQuery({
-    questionType,
-  });
+  const {data, isSuccess, isLoading, isError, error} =
+    useFetchQuestionRouletteQuery({
+      questionType,
+    });
 
   const memoizedQuestions = useMemo(() => {
-    return questions ?? [];
-  }, [questions]);
+    return data?.questions ?? [];
+  }, [data?.questions]);
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -273,7 +268,7 @@ const QuestionRouletteDetailScreen = ({
         {isSuccess && memoizedQuestions.length > 0 && (
           <>
             <AppText fontSize={fontSize.small + 1} fontType="semiBold">
-              Question {currentQuestionIndex + 1}/{questions.length}
+              Question {currentQuestionIndex + 1}/{memoizedQuestions.length}
             </AppText>
 
             <View style={questionRouletteStyle.questionCard}>

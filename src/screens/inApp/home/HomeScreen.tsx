@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {ScrollView, StatusBar, View} from 'react-native';
+import ProgressPie from 'react-native-progress/Pie';
 import Avatar from '../../../assets/images/avatar.png';
 import FemaleIcon from '../../../assets/images/female.svg';
 import GraphIcon from '../../../assets/images/graph_icon.svg';
@@ -14,8 +15,8 @@ import AppPressable from '../../../components/button/AppPressable';
 import AppImage from '../../../components/image/AppImage';
 import AppText from '../../../components/text/AppText';
 import useHexToRGBA from '../../../hooks/helpers/useHexToRGBA';
+import {useAppSelector} from '../../../hooks/helpers/useRedux';
 import {homeStyle} from '../../../styles/homeStyle';
-import {Buffer} from 'buffer';
 import {
   appColors,
   borderRadius,
@@ -24,10 +25,6 @@ import {
   universalStyle,
 } from '../../../styles/universalStyle';
 import {HomeScreenProps} from '../../../types/navigation/HomeStackNavigationType';
-import ProgressPie from 'react-native-progress/Pie';
-import {useAppDispatch, useAppSelector} from '../../../hooks/helpers/useRedux';
-import {logout} from '../../../store/slices/appSlice';
-import useToast from '../../../hooks/helpers/useToast';
 
 const coupleGames = [
   // {
@@ -134,7 +131,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
               color={appColors.white}
               fontSize={fontSize.medium - 1}
               fontType="medium">
-              Xela Oladipupo
+              {user?.userInfo?.fullName}
             </AppText>
           </View>
 

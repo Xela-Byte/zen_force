@@ -85,7 +85,7 @@ const ChatList = ({
         data={chats}
         keyExtractor={item => item._id}
         renderItem={({item}) => <ChatBodyComponent item={item} />}
-        ListEmptyComponent={<AppText>No messages yet.</AppText>}
+        // ListEmptyComponent={<AppText>No messages yet.</AppText>}
         contentContainerStyle={{paddingBottom: 20}}
         initialNumToRender={10}
         maxToRenderPerBatch={10}

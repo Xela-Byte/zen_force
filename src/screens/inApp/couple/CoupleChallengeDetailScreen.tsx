@@ -1,4 +1,11 @@
-import {View, Text, StatusBar, ScrollView, FlatList} from 'react-native';
+import {memo, useCallback, useMemo, useRef, useState} from 'react';
+import {FlatList, ScrollView, StatusBar, View} from 'react-native';
+import SkeletionPlaceholder from 'react-native-skeleton-placeholder';
+import CardIcon from '../../../assets/images/card_grey.svg';
+import PulseIcon from '../../../assets/images/pulse.svg';
+import HeaderComponent from '../../../components/button/HeaderComponent';
+import AppText from '../../../components/text/AppText';
+import {useFetchCoupleChallengeQuery} from '../../../hooks/queries/useFetchCoupleChallengeQuery';
 import {memoryLaneStyle} from '../../../styles/memoryLaneStyle';
 import {
   appColors,
@@ -8,28 +15,7 @@ import {
   sizeBlock,
   universalStyle,
 } from '../../../styles/universalStyle';
-import HeaderComponent from '../../../components/button/HeaderComponent';
 import {CoupleChallengeDetailScreenProps} from '../../../types/navigation/CoupleNavigationType';
-import PulseIcon from '../../../assets/images/pulse.svg';
-import AppText from '../../../components/text/AppText';
-import {memo, useCallback, useMemo, useRef, useState} from 'react';
-import CardIcon from '../../../assets/images/card_grey.svg';
-import SkeletionPlaceholder from 'react-native-skeleton-placeholder';
-import {useFetchMemoryLaneQuery} from '../../../hooks/queries/useFetchMemoryLaneQuery';
-import {useFetchCoupleChallengeQuery} from '../../../hooks/queries/useFetchCoupleChallengeQuery';
-
-// const questions = [
-//   'What was your first thought when you saw me for the first time?',
-//   'What’s one thing about me that always makes you smile?',
-//   'When did you realize you had feelings for me?',
-//   'If we could relive one moment together, which would it be and why?',
-//   'What’s something I do that you find irresistible?',
-//   'What song reminds you of us and why?',
-//   'If you had to describe our relationship in three words, what would they be?',
-//   'What’s a small habit of mine that you secretly love?',
-//   'What’s one thing you want us to do together that we haven’t done yet?',
-//   'If we wrote a book about our love story, what would the title be?',
-// ];
 
 const CoupleChallengeDetailScreen = ({
   navigation,
@@ -39,16 +25,13 @@ const CoupleChallengeDetailScreen = ({
   const {challengeType, questionType} = params;
 
   // Fetching questions from hook
-  const {
-    isLoading,
-    isSuccess,
-    isError,
-    data: questions,
-    error,
-  } = useFetchCoupleChallengeQuery({challengeType});
+  const {isLoading, isSuccess, isError, data, error} =
+    useFetchCoupleChallengeQuery({challengeType});
 
   // Memoize questions to prevent unnecessary re-renders
-  const memoizedQuestions = useMemo(() => questions ?? [], [questions]);
+  const memoizedQuestions = useMemo(() => {
+    return data?.questions ?? [];
+  }, [data?.questions]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -172,7 +155,7 @@ const CoupleChallengeDetailScreen = ({
           </View>
         );
       },
-      [questions],
+      [data?.questions],
     ),
   );
 

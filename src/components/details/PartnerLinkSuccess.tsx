@@ -20,15 +20,20 @@ import AppButton from '../button/AppButton';
 type Props = {
   showBottomTab: boolean;
   setShowBottomTab: (value: boolean) => void;
+  onDone?: () => void;
 };
 
-const PartnerLinkSuccess = ({setShowBottomTab, showBottomTab}: Props) => {
+const PartnerLinkSuccess = ({
+  setShowBottomTab,
+  showBottomTab,
+  onDone,
+}: Props) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const handleDone = () => {
     bottomSheetRef.current?.close();
     setShowBottomTab(false);
-    Alert.alert('done');
+    onDone?.();
   };
 
   useEffect(() => {

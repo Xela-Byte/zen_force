@@ -5,6 +5,42 @@ export interface AppUser {
   _id: string;
   email: string;
   accessToken: string;
+  interests?: string[];
+  profileStatus?: string;
+  userId?: string;
+  age?: number;
+  fullName?: string;
+  gender?: string;
+  personalityInsight?: string;
+  inviteCode?: string;
+}
+
+export interface UserProfile {
+  _id: string;
+  accessToken: string;
+  userId?: string;
+  email: string;
+  userInfo: {
+    _id: string;
+    interests: string[];
+    answeredQuestions: string[];
+    profileStatus: string;
+    userId: string;
+    linkedPartner: string;
+    inviteCode: string;
+    createdAt: string;
+    updatedAt: string;
+    age: number;
+    fullName: string;
+    gender: string;
+    personalityInsight: string;
+    loveLanguage: string;
+    relationshipDesire: string;
+    relationshipDuration: string;
+    relationshipGoal: string;
+    relationshipStage: string;
+    profileImage: string;
+  };
 }
 
 export interface VettingData {
@@ -54,7 +90,7 @@ export const useCurrentStep = (vettingData: VettingData | null): number => {
 };
 
 export interface AppState {
-  user: AppUser | null;
+  user: UserProfile | null;
   tempUser: AppUser | null;
   isNewInstall: boolean;
   isLoggedIn: boolean;
@@ -75,12 +111,16 @@ const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<AppUser>) => {
+    setUser: (state, action: PayloadAction<UserProfile>) => {
       state.user = action.payload;
       state.isLoggedIn = true;
     },
-    setTempUser: (state, action: PayloadAction<AppUser>) => {
-      state.tempUser = action.payload;
+    setTempUser: (state, action: PayloadAction<AppUser | null>) => {
+      if (action.payload) {
+        state.tempUser = {...state.tempUser, ...action.payload};
+      } else {
+        state.tempUser = null;
+      }
     },
     logout: state => {
       state.user = null;
@@ -89,11 +129,18 @@ const appSlice = createSlice({
     markInstalled: state => {
       state.isNewInstall = false;
     },
-    setVettingData: (state, action: PayloadAction<Partial<VettingData>>) => {
+    setVettingData: (
+      state,
+      action: PayloadAction<Partial<VettingData> | null>,
+    ) => {
       state.vettingData = {...state.vettingData, ...action.payload};
     },
     setCurrentVettingStep: (state, action) => {
       state.currentVettingStep = action.payload;
+    },
+    resetVetting: state => {
+      state.currentVettingStep = 0;
+      state.vettingData = null;
     },
   },
 });
@@ -105,6 +152,7 @@ export const {
   markInstalled,
   setVettingData,
   setCurrentVettingStep,
+  resetVetting,
 } = appSlice.actions;
 
 export default appSlice.reducer;

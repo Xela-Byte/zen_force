@@ -7,17 +7,23 @@ interface ChallengeParams {
   challengeType: ChallengeType;
 }
 
-interface ChallengeResponse {
+interface Question {
   _id: string;
   text: string;
   options: string[];
   questionType: string;
 }
 
+interface ChallengeResponse {
+  questionsLength: number;
+  questions: Question[];
+  answeredQuestions: string[];
+}
+
 export const useFetchCoupleChallengeQuery = ({
   challengeType,
-}: ChallengeParams): UseQueryResult<ChallengeResponse[], Error> =>
-  useQuery<ChallengeResponse[], Error>({
+}: ChallengeParams): UseQueryResult<ChallengeResponse, Error> =>
+  useQuery<ChallengeResponse, Error>({
     queryKey: ['challenges', challengeType] as QueryKey,
     queryFn: () => fetchCoupleChallengeFn({challengeType: challengeType}),
   });

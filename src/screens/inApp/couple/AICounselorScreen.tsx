@@ -26,8 +26,6 @@ const AICounselorScreen = ({navigation}: AICounselorScreenProps) => {
   const sendMessageMutation = useMutation({
     mutationFn: sendMessageFn,
     onSuccess: result => {
-      console.log(result);
-
       setPendingMessage('');
       invalidateQuery('chats');
     },

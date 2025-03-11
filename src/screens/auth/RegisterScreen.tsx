@@ -11,7 +11,13 @@ import AppText from '../../components/text/AppText';
 import {EMAIL_REGEX, PASSWORD_REGEX} from '../../hooks/helpers/Regex';
 import {useAppDispatch} from '../../hooks/helpers/useRedux';
 import useToast from '../../hooks/helpers/useToast';
-import {AppUser, setTempUser} from '../../store/slices/appSlice';
+import {
+  AppUser,
+  resetVetting,
+  setCurrentVettingStep,
+  setTempUser,
+  setVettingData,
+} from '../../store/slices/appSlice';
 import {loginStyle} from '../../styles/loginStyle';
 import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
 import {
@@ -43,6 +49,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
 
   const storeTempUser = (user: AppUser) => {
     dispatch(setTempUser(user));
+    dispatch(resetVetting());
   };
 
   const registerMutation = useMutation({
@@ -53,6 +60,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
         text2: `Let's go 🚀`,
         type: 'success',
       });
+
       storeTempUser(result.data);
       navigateTo('AccountSetupScreen');
     },
@@ -77,7 +85,11 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
 
   const onSubmit = async (data: Inputs) => {
     if (data.password !== data.confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match.');
+      showToast({
+        text1: `Error signing up`,
+        text2: 'Passwords do not match.',
+        type: 'error',
+      });
       return;
     }
 
@@ -174,7 +186,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
           title="Sign up"
           bgColor={appColors.green}
           onPress={handleSubmit(onSubmit)}
-          loading={registerMutation.isPending && !registerMutation.isError}
+          loading={registerMutation.isPending}
         />
 
         {/* Other Sign-up Methods */}

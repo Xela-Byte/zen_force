@@ -14,11 +14,19 @@ import {
 } from '../../styles/universalStyle';
 import {ProfileSummaryScreenProps} from '../../types/navigation/AuthNavigationType';
 import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
-import {setCurrentVettingStep} from '../../store/slices/appSlice';
+import {
+  setCurrentVettingStep,
+  setTempUser,
+  setUser,
+  UserProfile,
+} from '../../store/slices/appSlice';
+import useToast from '../../hooks/helpers/useToast';
+import {useFetchUserProfileQuery} from '../../hooks/queries/useFetchUserProfile';
 
 const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
   const dispatch = useAppDispatch();
   const vettingData = useAppSelector(state => state.app.vettingData);
+  const tempUser = useAppSelector(state => state.app.tempUser);
 
   const selectedInterests = useMemo(() => {
     if (!vettingData?.interest) return [];
@@ -36,6 +44,30 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
   const handleEdit = (step: number) => {
     dispatch(setCurrentVettingStep(step));
     navigation.goBack();
+  };
+
+  const {showToast} = useToast();
+
+  const {data, isLoading} = useFetchUserProfileQuery();
+
+  const profileData: UserProfile = tempUser
+    ? {
+        _id: tempUser._id,
+        accessToken: tempUser.accessToken,
+        email: tempUser.email,
+        userId: tempUser.userId,
+        userInfo: data?.data,
+      }
+    : {};
+
+  const handleSubmit = () => {
+    tempUser && dispatch(setUser(profileData));
+    dispatch(setTempUser(null));
+    showToast({
+      text1: `Welcome back to Zen Force!`,
+      text2: `Let's go 🚀`,
+      type: 'success',
+    });
   };
 
   return (
@@ -226,8 +258,12 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
             position: 'relative',
           }}
           title="Submit"
+          loading={isLoading}
+          disabled={isLoading}
           bgColor={appColors.green}
-          onPress={() => {}}
+          onPress={() => {
+            handleSubmit();
+          }}
         />
       </View>
     </>

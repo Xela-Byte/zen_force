@@ -3,9 +3,9 @@ import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {View} from 'react-native';
 import {profileInfoUpdateFn} from '../../api/profile';
-import {useAppSelector} from '../../hooks/helpers/useRedux';
+import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
 import useToast from '../../hooks/helpers/useToast';
-import {VettingData} from '../../store/slices/appSlice';
+import {AppUser, setTempUser, VettingData} from '../../store/slices/appSlice';
 import {appColors, sizeBlock} from '../../styles/universalStyle';
 import AppButton from '../button/AppButton';
 import DropdownComponent from '../dropdown/DropdownComponent';
@@ -85,9 +85,16 @@ const StepOne = ({handleStep, storeVettingData}: Props) => {
 
   const {showToast} = useToast();
 
+  const dispatch = useAppDispatch();
+
+  const storeTempUser = (user: AppUser) => {
+    dispatch(setTempUser(user));
+  };
+
   const profileInfoUpdateMutation = useMutation({
     mutationFn: profileInfoUpdateFn,
     onSuccess: result => {
+      storeTempUser(result);
       showToast({
         text1: `Profile updated!`,
         text2: `Let's go 🚀`,
