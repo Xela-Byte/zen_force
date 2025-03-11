@@ -20,14 +20,20 @@ import AppButton from '../button/AppButton';
 type Props = {
   showBottomTab: boolean;
   setShowBottomTab: (value: boolean) => void;
+  onDone?: () => void;
 };
 
-const PartnerLinkSuccess = ({setShowBottomTab, showBottomTab}: Props) => {
+const PartnerLinkSuccess = ({
+  setShowBottomTab,
+  showBottomTab,
+  onDone,
+}: Props) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const handleDone = () => {
     bottomSheetRef.current?.close();
     setShowBottomTab(false);
+    onDone?.();
   };
 
   useEffect(() => {
@@ -51,7 +57,7 @@ const PartnerLinkSuccess = ({setShowBottomTab, showBottomTab}: Props) => {
     [],
   );
 
-  const snapPoints = useMemo(() => ['55%'], []);
+  const snapPoints = useMemo(() => ['50%'], []);
   return (
     <>
       <View
@@ -66,6 +72,7 @@ const PartnerLinkSuccess = ({setShowBottomTab, showBottomTab}: Props) => {
           snapPoints={snapPoints}
           backdropComponent={renderBackdrop}
           backgroundStyle={styles.sheetBackground}
+          index={1}
           enablePanDownToClose
           onClose={() => {
             setShowBottomTab(false);

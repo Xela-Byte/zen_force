@@ -1,11 +1,18 @@
+import {useMutation} from '@tanstack/react-query';
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import {ScrollView, StatusBar, View} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {loginFn} from '../../api/login';
 import AppButton from '../../components/button/AppButton';
 import AppPressable from '../../components/button/AppPressable';
 import BackButton from '../../components/button/BackButton';
 import AppInput from '../../components/input/AppInput';
 import AppText from '../../components/text/AppText';
+import {EMAIL_REGEX} from '../../hooks/helpers/Regex';
+import useToast from '../../hooks/helpers/useToast';
+import {AppDispatch} from '../../store';
+import {setUser, UserProfile} from '../../store/slices/appSlice';
 import {loginStyle} from '../../styles/loginStyle';
 import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
 import {
@@ -21,7 +28,15 @@ interface Inputs {
 }
 
 const LoginScreen = ({navigation}: LoginScreenProps) => {
-  const {control} = useForm<Inputs>();
+  const {control, handleSubmit} = useForm<Inputs>();
+  const {showToast} = useToast();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const canGoBack = navigation.canGoBack();
+
+  const storeUser = (user: UserProfile) => {
+    dispatch(setUser(user));
+  };
 
   const navigateTo = <T extends keyof AuthStackParamList>(
     route: T,
@@ -31,10 +46,51 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
     navigation.navigate(route, params);
   };
 
+  const loginMutation = useMutation({
+    mutationFn: loginFn,
+    onSuccess: result => {
+      showToast({
+        text1: `Welcome back to Zen Force!`,
+        text2: `Let's go 🚀`,
+        type: 'success',
+      });
+
+      // storeUser(result.data);
+    },
+    onError: (error: any) => {
+      console.error('login error:', error);
+      showToast({
+        text1: 'Error logging in.',
+        type: 'error',
+        text2: error.message || 'Signup failed',
+      });
+    },
+  });
+
+  const cleanValue = (string: string = '') => {
+    return string.toLowerCase().trim();
+  };
+
+  const onSubmit = async (data: Inputs) => {
+    const updatedData = {
+      email: cleanValue(data.email),
+      password: data.password.trim(),
+    };
+    await loginMutation.mutateAsync(updatedData);
+  };
+
   return (
     <ScrollView style={loginStyle.wrapper}>
       <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
-      <BackButton navigation={navigation} />
+      {canGoBack ? (
+        <BackButton navigation={navigation} />
+      ) : (
+        <View
+          style={{
+            height: sizeBlock.getWidthSize(45),
+          }}
+        />
+      )}
       <View style={loginStyle.container}>
         <AppText fontSize={fontSize.medium} fontType="medium">
           Welcome Back!
@@ -55,6 +111,14 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           customStyle={{
             marginTop: sizeBlock.getHeightSize(50),
           }}
+          rules={{
+            required: 'Please enter an email',
+            pattern: {value: EMAIL_REGEX, message: 'Invalid email format'},
+          }}
+          inputProps={{
+            autoFocus: true,
+            keyboardType: 'email-address',
+          }}
         />
 
         <AppInput<Inputs>
@@ -63,6 +127,9 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           placeholder="Enter your password"
           animatedPlaceholder="Password"
           password
+          rules={{
+            required: 'Please enter a password',
+          }}
           customStyle={{
             marginTop: sizeBlock.getHeightSize(10),
           }}
@@ -86,7 +153,8 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
         <AppButton
           title="Sign in"
           bgColor={appColors.green}
-          onPress={() => {}}
+          onPress={handleSubmit(onSubmit)}
+          loading={loginMutation.isPending}
         />
 
         <AppText

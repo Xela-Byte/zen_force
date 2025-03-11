@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Dimensions, StatusBar} from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import AppImage from '../../components/image/AppImage';
@@ -13,6 +13,8 @@ import {
   OnboardingScreenProps,
 } from '../../types/navigation/AuthNavigationType';
 import AppPressable from '../../components/button/AppPressable';
+import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
+import {markInstalled} from '../../store/slices/appSlice';
 
 interface Item {
   key: string;
@@ -69,6 +71,16 @@ const OnboardingScreen = ({navigation}: OnboardingScreenProps) => {
     navigation.navigate(route);
   };
 
+  const dispatch = useAppDispatch();
+  const isNewInstall = useAppSelector(state => state.app.isNewInstall);
+
+  const inviteNewUser = useCallback(() => {
+    if (isNewInstall) {
+      console.log('🚀 First time install detected!');
+      dispatch(markInstalled());
+    }
+  }, [isNewInstall, dispatch]);
+
   return (
     <View style={onboardingStyle.wrapper}>
       <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
@@ -81,7 +93,9 @@ const OnboardingScreen = ({navigation}: OnboardingScreenProps) => {
           dotStyle={onboardingStyle.dotStyle}
           activeDotStyle={onboardingStyle.activeDotStyle}
           renderItem={renderItem}
-          onDone={() => {}}
+          onDone={() => {
+            inviteNewUser();
+          }}
           showSkipButton={false} // Hide the skip button
           showNextButton={false} // Hide the next button
         />
@@ -96,6 +110,7 @@ const OnboardingScreen = ({navigation}: OnboardingScreenProps) => {
         <AppButton
           title="Get started"
           onPress={() => {
+            inviteNewUser();
             navigateTo('RegisterScreen');
           }}
           icon={<ArrowSlantUp />}
@@ -103,6 +118,7 @@ const OnboardingScreen = ({navigation}: OnboardingScreenProps) => {
 
         <AppPressable
           onPress={() => {
+            inviteNewUser();
             navigateTo('LoginScreen');
           }}>
           <AppText

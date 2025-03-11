@@ -54,9 +54,6 @@ const DropdownComponent: React.FC<DropdownProps> = ({
         }}
         save="value"
         placeholder={placeholder}
-
-        // arrowicon={<ArrowDownIcon />}
-        // closeicon={<ArrowDownIcon />}
       />
     </View>
   );

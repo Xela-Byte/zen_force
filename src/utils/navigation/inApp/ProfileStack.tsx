@@ -1,8 +1,9 @@
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {TransitionPresets, createStackNavigator} from '@react-navigation/stack';
-import {useCallback} from 'react';
 import ProfileScreen from '../../../screens/inApp/profile/ProfileScreen';
+import ProfileSummaryScreen from '../../../screens/inApp/profile/ProfileSummaryScreen';
 import {ProfileStackParamList} from '../../../types/navigation/ProfileNavigationType';
+import ChoosePlanScreen from '../../../screens/inApp/profile/ChoosePlanScreen';
 
 const ProfileStack = () => {
   const Stack = createStackNavigator<ProfileStackParamList>();
@@ -29,6 +30,11 @@ const ProfileStack = () => {
         }}
         initialRouteName={'ProfileScreen'}>
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen
+          name="ProfileSummaryScreen"
+          component={ProfileSummaryScreen}
+        />
+        <Stack.Screen name="ChoosePlanScreen" component={ChoosePlanScreen} />
       </Stack.Navigator>
     </>
   );

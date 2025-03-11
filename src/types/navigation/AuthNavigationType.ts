@@ -5,12 +5,11 @@ export type AuthStackParamList = {
   LoginScreen: undefined;
   RegisterScreen: undefined;
   AccountSetupScreen: undefined;
-  DetailsScreen: {
-    companionPreference: 'with-partner' | 'by-myself' | string;
-  };
+  DetailsScreen: undefined;
   ProfileSummaryScreen: undefined;
   ForgotPasswordScreen: undefined;
   CreateNewPasswordScreen: undefined;
+  GoogleAuthScreen: undefined;
 };
 
 export type OnboardingScreenProps = {
@@ -27,6 +26,10 @@ export type RegisterScreenProps = {
 
 export type AccountSetupScreenProps = {
   navigation: NavigationProp<AuthStackParamList, 'AccountSetupScreen'>;
+};
+
+export type GoogleAuthScreenProps = {
+  navigation: NavigationProp<AuthStackParamList, 'GoogleAuthScreen'>;
 };
 
 export type DetailsScreenProps = {

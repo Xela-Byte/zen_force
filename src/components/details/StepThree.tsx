@@ -1,19 +1,12 @@
-import {View, Text} from 'react-native';
-import React from 'react';
-import {detailsStyle} from '../../styles/detailsStyle';
-import AppPressable from '../button/AppPressable';
-import PfpIcon from '../../assets/svgsComponents/PfpIcon';
-import {
-  appColors,
-  borderRadius,
-  fontSize,
-  sizeBlock,
-} from '../../styles/universalStyle';
-import AppText from '../text/AppText';
-import AppInput from '../input/AppInput';
+import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import DropdownComponent from '../dropdown/DropdownComponent';
+import {View} from 'react-native';
+import {VettingData} from '../../store/slices/appSlice';
+import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
 import AppButton from '../button/AppButton';
+import DropdownComponent from '../dropdown/DropdownComponent';
+import AppInput from '../input/AppInput';
+import AppText from '../text/AppText';
 
 interface Inputs {
   relationshipStage: string;
@@ -24,6 +17,7 @@ interface Inputs {
 
 interface Props {
   handleStep: (value: number) => void;
+  storeVettingData: (payload: Partial<VettingData>) => void;
 }
 
 const relationshipStages = [
@@ -37,13 +31,82 @@ const relationshipStages = [
   {key: 'separated', value: 'Separated'},
   {key: 'divorced', value: 'Divorced'},
   {key: 'widowed', value: 'Widowed'},
+  {key: 'domestic_partnership', value: 'Domestic Partnership'}, // Legal but not married
+  {key: 'civil_union', value: 'Civil Union'}, // Similar to marriage in some places
+  {key: 'situationship', value: 'Situationship'}, // Modern undefined relationship
 ];
 
-const StepThree = ({handleStep}: Props) => {
-  const {control, setValue} = useForm<Inputs>();
+const loveLanguages = [
+  {key: 'words_of_affirmation', value: 'Words of Affirmation'}, // Expressing love through verbal appreciation
+  {key: 'acts_of_service', value: 'Acts of Service'}, // Showing love by doing helpful things
+  {key: 'receiving_gifts', value: 'Receiving Gifts'}, // Feeling loved through thoughtful presents
+  {key: 'quality_time', value: 'Quality Time'}, // Love is felt through undivided attention
+  {key: 'physical_touch', value: 'Physical Touch'}, // Hugs, kisses, and other forms of touch
+  {key: 'digital_affection', value: 'Digital Affection'}, // Expressing love via texts, calls, social media
+  {key: 'deep_conversations', value: 'Deep Conversations'}, // Connecting emotionally through meaningful talks
+  {key: 'shared_experiences', value: 'Shared Experiences'}, // Bonding through adventures and activities
+];
+
+const relationshipDesires = [
+  {key: 'single', value: 'Not Looking for a Relationship'},
+  {key: 'casual_dating', value: 'Casual Dating'},
+  {key: 'serious_relationship', value: 'Looking for a Serious Relationship'},
+  {key: 'friendship', value: 'Looking for Friendship'},
+  {key: 'open_relationship', value: 'Open to an Open Relationship'},
+  {key: 'long_distance', value: 'Open to Long-Distance'},
+  {key: 'marriage', value: 'Seeking Marriage'},
+  {key: 'situationship', value: 'Open to a Situationship'},
+  {key: 'polyamory', value: 'Interested in Polyamory'},
+  {key: 'companionship', value: 'Looking for Companionship'},
+  {key: 'exploring', value: 'Exploring My Options'},
+];
+
+const StepThree = ({handleStep, storeVettingData}: Props) => {
+  const {control, setValue, watch} = useForm<Inputs>();
+
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  const relationshipStage = watch('relationshipStage');
+  const relationshipAge = watch('relationshipAge');
+  const relationshipDesire = watch('relationshipDesire');
+  const relationshipLoveLanguage = watch('relationshipLoveLanguage');
+
+  const updateVettingData = () => {
+    storeVettingData({
+      relationshipStage,
+      relationshipDesire,
+      relationshipDuration: relationshipAge,
+      loveLanguage: relationshipLoveLanguage,
+    });
+  };
+
+  useEffect(() => {
+    // Check if all fields are filled
+    const isFormValid =
+      relationshipStage &&
+      relationshipAge &&
+      relationshipDesire &&
+      relationshipLoveLanguage;
+
+    setIsDisabled(!isFormValid);
+  }, [
+    relationshipStage,
+    relationshipAge,
+    relationshipDesire,
+    relationshipLoveLanguage,
+  ]);
 
   const handleValues = (key: keyof Inputs, value: string) => {
     setValue(key, value);
+  };
+
+  // Handles next step
+  const handleNext = () => {
+    if (!isDisabled) {
+      // Updates Redux store
+      updateVettingData();
+      handleStep(3);
+    }
   };
 
   return (
@@ -73,7 +136,7 @@ const StepThree = ({handleStep}: Props) => {
 
       <View style={{height: sizeBlock.getHeightSize(10)}} />
       <DropdownComponent
-        options={relationshipStages}
+        options={relationshipDesires}
         placeholder={'Relationship desire'}
         onSelect={(value: string) => {
           handleValues('relationshipDesire', value);
@@ -82,7 +145,7 @@ const StepThree = ({handleStep}: Props) => {
 
       <View style={{height: sizeBlock.getHeightSize(20)}} />
       <DropdownComponent
-        options={relationshipStages}
+        options={loveLanguages}
         placeholder={'Your love language'}
         onSelect={(value: string) => {
           handleValues('relationshipLoveLanguage', value);
@@ -95,8 +158,9 @@ const StepThree = ({handleStep}: Props) => {
         }}
         title="Next"
         bgColor={appColors.green}
+        disabled={isDisabled}
         onPress={() => {
-          handleStep(1);
+          handleNext();
         }}
       />
     </>

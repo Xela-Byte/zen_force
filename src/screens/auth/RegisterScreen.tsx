@@ -1,19 +1,29 @@
+import {useMutation} from '@tanstack/react-query';
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {Alert, ScrollView, StatusBar, View} from 'react-native';
+import {registerFn} from '../../api/register';
 import AppButton from '../../components/button/AppButton';
 import AppPressable from '../../components/button/AppPressable';
 import BackButton from '../../components/button/BackButton';
 import AppInput from '../../components/input/AppInput';
 import AppText from '../../components/text/AppText';
+import {EMAIL_REGEX, PASSWORD_REGEX} from '../../hooks/helpers/Regex';
+import {useAppDispatch} from '../../hooks/helpers/useRedux';
+import useToast from '../../hooks/helpers/useToast';
+import {
+  AppUser,
+  resetVetting,
+  setCurrentVettingStep,
+  setTempUser,
+  setVettingData,
+} from '../../store/slices/appSlice';
 import {loginStyle} from '../../styles/loginStyle';
 import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
 import {
   AuthStackParamList,
   RegisterScreenProps,
 } from '../../types/navigation/AuthNavigationType';
-
-type Props = {};
 
 interface Inputs {
   email: string;
@@ -22,74 +32,164 @@ interface Inputs {
 }
 
 const RegisterScreen = ({navigation}: RegisterScreenProps) => {
-  const {control} = useForm<Inputs>();
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: {errors},
+  } = useForm<Inputs>({
+    mode: 'onSubmit',
+  });
+
+  const {showToast} = useToast();
+
+  const canGoBack = navigation.canGoBack();
+
+  const dispatch = useAppDispatch();
+
+  const storeTempUser = (user: AppUser) => {
+    dispatch(setTempUser(user));
+    dispatch(resetVetting());
+  };
+
+  const registerMutation = useMutation({
+    mutationFn: registerFn,
+    onSuccess: result => {
+      showToast({
+        text1: `Welcome to Zen Force!`,
+        text2: `Let's go 🚀`,
+        type: 'success',
+      });
+
+      storeTempUser(result.data);
+      navigateTo('AccountSetupScreen');
+    },
+    onError: (error: any) => {
+      console.error('Registration error:', error);
+      showToast({
+        text1: `Error signing up`,
+        text2: error.message || 'Signup failed',
+        type: 'error',
+      });
+    },
+  });
 
   const navigateTo = (route: keyof AuthStackParamList) => {
     // @ts-ignore
     navigation.navigate(route);
   };
+
+  const cleanValue = (string: string = '') => {
+    return string.toLowerCase().trim();
+  };
+
+  const onSubmit = async (data: Inputs) => {
+    if (data.password !== data.confirmPassword) {
+      showToast({
+        text1: `Error signing up`,
+        text2: 'Passwords do not match.',
+        type: 'error',
+      });
+      return;
+    }
+
+    await registerMutation.mutateAsync({
+      email: cleanValue(data.email),
+      password: data.password.trim(),
+    });
+  };
+
   return (
     <ScrollView style={loginStyle.wrapper}>
       <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
-      <BackButton navigation={navigation} />
+      {canGoBack ? (
+        <BackButton navigation={navigation} />
+      ) : (
+        <View
+          style={{
+            height: sizeBlock.getWidthSize(45),
+          }}
+        />
+      )}
       <View style={loginStyle.container}>
         <AppText fontSize={fontSize.medium} fontType="medium">
           Create Account
         </AppText>
         <AppText
           color={appColors.textGrey}
-          customStyle={{
-            marginTop: sizeBlock.getHeightSize(10),
-          }}>
+          customStyle={{marginTop: sizeBlock.getHeightSize(10)}}>
           Sign up to get started
         </AppText>
 
+        {/* Email Input */}
         <AppInput<Inputs>
           control={control}
           name="email"
           placeholder="Enter your email"
           animatedPlaceholder="Email"
-          customStyle={{
-            marginTop: sizeBlock.getHeightSize(50),
+          rules={{
+            setValueAs: (value: any) => value.trim().toLowerCase(),
+            required: 'Please enter an email',
+            pattern: {value: EMAIL_REGEX, message: 'Invalid email format'},
+          }}
+          customStyle={{marginTop: sizeBlock.getHeightSize(50)}}
+          inputProps={{
+            autoComplete: 'email',
+            keyboardType: 'email-address',
+            textContentType: 'emailAddress',
           }}
         />
 
+        {/* Password Input */}
         <AppInput<Inputs>
           control={control}
           name="password"
           placeholder="Enter your password"
           animatedPlaceholder="Password"
           password
-          customStyle={{
-            marginTop: sizeBlock.getHeightSize(10),
+          rules={{
+            required: 'Please enter a password',
+            pattern: {
+              value: PASSWORD_REGEX,
+              message:
+                'Password must contain at least one uppercase, one lowercase, one numeric, and one special character.',
+            },
+          }}
+          customStyle={{marginTop: sizeBlock.getHeightSize(10)}}
+          inputProps={{
+            autoComplete: 'new-password',
           }}
         />
 
+        {/* Confirm Password Input */}
         <AppInput<Inputs>
           control={control}
           name="confirmPassword"
           placeholder="Confirm your password"
           animatedPlaceholder="Confirm Password"
           password
-          customStyle={{
-            marginTop: sizeBlock.getHeightSize(10),
+          rules={{
+            required: 'Please confirm your password',
+            validate: (value: string) =>
+              value === watch('password') || 'Passwords do not match',
+          }}
+          customStyle={{marginTop: sizeBlock.getHeightSize(10)}}
+          inputProps={{
+            autoComplete: 'new-password',
           }}
         />
 
-        <View
-          style={{
-            marginVertical: sizeBlock.getHeightSize(10),
-          }}
-        />
+        <View style={{marginVertical: sizeBlock.getHeightSize(10)}} />
 
+        {/* Signup Button */}
         <AppButton
           title="Sign up"
           bgColor={appColors.green}
-          onPress={() => {
-            navigateTo('AccountSetupScreen');
-          }}
+          onPress={handleSubmit(onSubmit)}
+          loading={registerMutation.isPending}
         />
 
+        {/* Other Sign-up Methods */}
         <AppText
           color={appColors.textGrey}
           customStyle={{
@@ -104,11 +204,11 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
           title="Sign up with Google"
           iconName="google"
           bgColor={appColors.green}
-          onPress={() => {}}
-          textColor={appColors.text}
-          customViewStyle={{
-            marginBottom: sizeBlock.getHeightSize(10),
+          onPress={() => {
+            navigateTo('GoogleAuthScreen');
           }}
+          textColor={appColors.text}
+          customViewStyle={{marginBottom: sizeBlock.getHeightSize(10)}}
         />
 
         <AppButton
@@ -117,20 +217,19 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
           textColor={appColors.text}
           title="Sign up with Apple"
           bgColor={appColors.green}
+          disabled
           onPress={() => {}}
         />
 
-        <AppPressable
-          onPress={() => {
-            navigateTo('LoginScreen');
-          }}>
+        {/* Already Have an Account? */}
+        <AppPressable onPress={() => navigateTo('LoginScreen')}>
           <AppText
             fontType="medium"
             customStyle={{
               textAlign: 'center',
               marginTop: sizeBlock.getHeightSize(20),
             }}>
-            Don't have an account?{'  '}
+            Already have an account?{'  '}
             <AppText fontType="medium" color={appColors.green}>
               Login
             </AppText>

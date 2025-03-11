@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Alert, View} from 'react-native';
+import React, {useMemo, useState} from 'react';
+import {Alert, Share, ToastAndroid, View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import ClipboardIcon from '../../assets/images/clipboard_icon.svg';
 import {
@@ -14,13 +14,99 @@ import AppPressable from '../button/AppPressable';
 import AppText from '../text/AppText';
 import PartnerLinkSuccess from './PartnerLinkSuccess';
 import CodeInputComponent from './CodeInputComponent';
+import AbsoluteOverlay from '../background/AbsoluteOverlay';
+import useToast from '../../hooks/helpers/useToast';
+import {useMutation} from '@tanstack/react-query';
+import {linkPartnerFn} from '../../api/profile';
+import {useAppSelector} from '../../hooks/helpers/useRedux';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 interface Props {
   handleStep: (value: number) => void;
 }
 
-const StepFive = (props: Props) => {
+const StepFive = ({handleStep}: Props) => {
+  const tempUser = useAppSelector(state => state.app.tempUser);
   const [showBottomTab, setShowBottomTab] = useState(false);
+  const [code, setCode] = useState('');
+
+  const CELL_COUNT = 8;
+
+  const userInviteCode = useMemo(() => {
+    return tempUser?.inviteCode || '';
+  }, [tempUser?.inviteCode]);
+
+  const isValidCode = useMemo(() => {
+    return code.length === CELL_COUNT;
+  }, [code]);
+
+  const handleCodeInput = (value: string) => {
+    setCode(value);
+  };
+
+  const formattedCode = useMemo(() => {
+    return (
+      code
+        .match(/.{1,2}/g)
+        ?.join('-')
+        .toUpperCase() || ''
+    );
+  }, [code]);
+
+  const {showToast} = useToast();
+
+  const linkPartnerMutation = useMutation({
+    mutationFn: linkPartnerFn,
+    onSuccess: result => {
+      showToast({
+        text1: `Partner linked!`,
+        text2: `Let's go 🚀`,
+        type: 'success',
+      });
+      setShowBottomTab(true);
+    },
+    onError: (error: any) => {
+      showToast({
+        text1: 'Oops, Error linking partner!',
+        type: 'error',
+        text2: error?.message || 'Linking partner failed',
+      });
+    },
+  });
+
+  const handleLinkPartner = () => {
+    if (isValidCode) {
+      linkPartnerMutation.mutate({partnerInviteCode: formattedCode});
+    }
+  };
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `Share your invite code: ${userInviteCode}`,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          console.log(result.activityType);
+        } else {
+          return;
+        }
+      } else if (result.action === Share.dismissedAction) {
+        return;
+      }
+    } catch (error: any) {
+      ToastAndroid.showWithGravity(error.message, 1000, ToastAndroid.BOTTOM);
+    }
+  };
+
+  const copyInviteCode = () => {
+    Clipboard.setString(userInviteCode);
+    showToast({
+      text1: `Invite code copied!`,
+      text2: `Let's go 🚀`,
+      type: 'success',
+    });
+  };
 
   return (
     <>
@@ -30,7 +116,9 @@ const StepFive = (props: Props) => {
 
       <AppButton
         title="Invite partner to download"
-        onPress={() => {}}
+        onPress={() => {
+          onShare();
+        }}
         textColor={appColors.green}
         bgColor={appColors.lightGreen}
         customViewStyle={{
@@ -41,7 +129,9 @@ const StepFive = (props: Props) => {
       <AppText fontSize={fontSize.small + 1}>Your invite code is:</AppText>
 
       <AppPressable
-        onPress={() => {}}
+        onPress={() => {
+          copyInviteCode();
+        }}
         customViewStyle={{
           marginVertical: sizeBlock.getHeightSize(20),
           marginHorizontal: 'auto',
@@ -55,7 +145,7 @@ const StepFive = (props: Props) => {
             fontSize={sizeBlock.fontSize(32)}
             fontType="medium"
             color={appColors.green}>
-            19-F2-30-78
+            {userInviteCode}
           </AppText>
 
           <ClipboardIcon />
@@ -67,7 +157,7 @@ const StepFive = (props: Props) => {
           marginHorizontal: 'auto',
           marginBottom: sizeBlock.getHeightSize(30),
         }}>
-        <QRCode value="19-F2-30-78" />
+        <QRCode value={userInviteCode} />
       </View>
 
       <AppText
@@ -86,13 +176,25 @@ const StepFive = (props: Props) => {
           padding: sizeBlock.getWidthSize(10),
           borderRadius: borderRadius.medium,
         }}>
-        <CodeInputComponent />
+        <CodeInputComponent
+          cellCount={CELL_COUNT}
+          onChange={(value: string) => {
+            handleCodeInput(value);
+          }}
+        />
       </View>
 
-      <PartnerLinkSuccess
-        setShowBottomTab={setShowBottomTab}
-        showBottomTab={showBottomTab}
-      />
+      {showBottomTab && (
+        <AbsoluteOverlay>
+          <PartnerLinkSuccess
+            setShowBottomTab={setShowBottomTab}
+            showBottomTab={showBottomTab}
+            onDone={() => {
+              handleStep(5);
+            }}
+          />
+        </AbsoluteOverlay>
+      )}
 
       <AppButton
         title="Connect Now"
@@ -100,8 +202,10 @@ const StepFive = (props: Props) => {
         customViewStyle={{
           marginTop: sizeBlock.getHeightSize(20),
         }}
+        disabled={!isValidCode}
+        loading={linkPartnerMutation.isPending}
         onPress={() => {
-          setShowBottomTab(true);
+          handleLinkPartner();
         }}
       />
     </>

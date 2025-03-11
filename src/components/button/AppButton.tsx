@@ -35,6 +35,7 @@ type Props = {
   borderColor?: string;
   icon?: any;
   iconName?: 'google' | 'apple';
+  iconPosition?: 'left' | 'right';
 };
 
 const AppButton = ({
@@ -51,6 +52,7 @@ const AppButton = ({
   buttonType = 'filled',
   icon,
   iconName,
+  iconPosition = 'right',
 }: Props) => {
   const [animate, setAnimate] = useState(false);
 
@@ -89,7 +91,7 @@ const AppButton = ({
         ]}>
         {loading ? (
           <ActivityIndicator
-            color={textColor ?? appColors.text}
+            color={textColor ?? appColors.white}
             size={textSize ?? fontSize.small}
           />
         ) : (
@@ -100,6 +102,7 @@ const AppButton = ({
             ]}>
             {iconName && iconName === 'google' && <GoogleIcon />}
             {iconName && iconName === 'apple' && <AppleIcon />}
+            {iconPosition === 'left' && icon}
             <AppText
               fontSize={textSize ?? fontSize.small}
               customStyle={customTextStyle}
@@ -109,7 +112,7 @@ const AppButton = ({
               }>
               {title}
             </AppText>
-            {icon && icon}
+            {iconPosition === 'right' && icon}
           </View>
         )}
       </Animatable.View>

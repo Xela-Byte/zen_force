@@ -1,21 +1,21 @@
-import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import AppText from '../text/AppText';
-import AppPressable from './AppPressable';
+import ArrowLeft from '../../assets/svgsComponents/ArrowLeft';
 import {
+  appColors,
   fontSize,
   screenWidth,
-  sizeBlock,
   universalStyle,
 } from '../../styles/universalStyle';
-import ArrowLeft from '../../assets/svgsComponents/ArrowLeft';
+import AppText from '../text/AppText';
+import AppPressable from './AppPressable';
 
 type Props = {
   navigation: any;
   title: string;
   onPress?: () => void;
   extraComponent?: any;
+  theme?: 'light' | 'dark';
 };
 
 const HeaderComponent = ({
@@ -23,17 +23,22 @@ const HeaderComponent = ({
   onPress,
   title,
   extraComponent,
+  theme,
 }: Props) => {
-  const {colors} = useTheme();
   return (
     <View style={styles.header}>
       <AppPressable
         onPress={onPress ? onPress : navigation.goBack}
         customViewStyle={styles.buttonContainer}>
-        <ArrowLeft />
+        <ArrowLeft
+          fill={theme === 'light' ? appColors.white : appColors.black}
+        />
       </AppPressable>
       <View style={styles.headerText}>
-        <AppText fontType="medium" fontSize={fontSize.small + 1}>
+        <AppText
+          color={theme === 'light' ? appColors.white : appColors.black}
+          fontType="medium"
+          fontSize={fontSize.small + 1}>
           {title}
         </AppText>
       </View>
