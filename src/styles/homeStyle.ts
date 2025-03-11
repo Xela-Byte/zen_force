@@ -39,11 +39,11 @@ export const homeStyle = StyleSheet.create({
     backgroundColor: appColors.white,
     borderTopLeftRadius: borderRadius.medium + 5,
     borderTopRightRadius: borderRadius.medium + 5,
-    marginTop: sizeBlock.getHeightSize(30),
+    marginVertical: sizeBlock.getHeightSize(50),
     padding: sizeBlock.getWidthSize(15),
   },
   coupleSectionTabWrapper: {
-    paddingVertical: sizeBlock.getHeightSize(20),
+    paddingVertical: sizeBlock.getHeightSize(30),
     rowGap: sizeBlock.getHeightSize(15),
   },
   coupleSectionTab: {

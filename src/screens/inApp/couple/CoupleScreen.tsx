@@ -19,7 +19,7 @@ interface Game {
   screen?: keyof CoupleStackParamList;
 }
 
-const coupleGames: Game[] = [
+export const coupleGames: Game[] = [
   {
     title: 'AI Counselor',
     description: '',

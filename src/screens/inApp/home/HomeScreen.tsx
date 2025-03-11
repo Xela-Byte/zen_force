@@ -25,30 +25,7 @@ import {
   universalStyle,
 } from '../../../styles/universalStyle';
 import {HomeScreenProps} from '../../../types/navigation/HomeStackNavigationType';
-
-const coupleGames = [
-  // {
-  //   title: 'AI Counselor',
-  //   description: '',
-  //   icon: 'ai_counselor_icon.png',
-  // },
-  {
-    title: 'Question Roulette',
-    description: '5 Stages/Levels',
-  },
-  {
-    title: 'Couple Challenge',
-    description: 'Couple’s Game • 12 Questions',
-  },
-  {
-    title: 'Memory Lane',
-    description: 'Couple’s Game • 12 Questions',
-  },
-  {
-    title: 'Progress Tracking',
-    description: '',
-  },
-];
+import {coupleGames} from '../couple/CoupleScreen';
 
 const HomeScreen = ({navigation}: HomeScreenProps) => {
   // const dispatch = useAppDispatch();
@@ -298,7 +275,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         </View>
 
         <View style={homeStyle.coupleSectionTabWrapper}>
-          {coupleGames.map((cog, index) => {
+          {coupleGames.slice(1).map((cog, index) => {
             return (
               <View key={index} style={homeStyle.coupleSectionTab}>
                 <GraphIcon />
