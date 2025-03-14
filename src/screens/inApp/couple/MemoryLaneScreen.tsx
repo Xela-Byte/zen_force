@@ -17,19 +17,6 @@ import CardIcon from '../../../assets/images/card_grey.svg';
 import SkeletionPlaceholder from 'react-native-skeleton-placeholder';
 import {useFetchMemoryLaneQuery} from '../../../hooks/queries/useFetchMemoryLaneQuery';
 
-// const questions = [
-//   'What was your first thought when you saw me for the first time?',
-//   'What’s one thing about me that always makes you smile?',
-//   'When did you realize you had feelings for me?',
-//   'If we could relive one moment together, which would it be and why?',
-//   'What’s something I do that you find irresistible?',
-//   'What song reminds you of us and why?',
-//   'If you had to describe our relationship in three words, what would they be?',
-//   'What’s a small habit of mine that you secretly love?',
-//   'What’s one thing you want us to do together that we haven’t done yet?',
-//   'If we wrote a book about our love story, what would the title be?',
-// ];
-
 const MemoryLaneScreen = ({navigation}: MemoryLaneScreenProps) => {
   // Fetching questions from hook
   const {isLoading, isSuccess, isError, data, error} =
