@@ -14,6 +14,8 @@ import PartnerIcon from '../../assets/svgsComponents/PartnerIcon';
 import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
 import {setVettingData, VettingData} from '../../store/slices/appSlice';
 
+// 
+
 const AccountSetupScreen = ({navigation}: AccountSetupScreenProps) => {
   const dispatch = useAppDispatch();
 
