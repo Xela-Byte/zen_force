@@ -8,25 +8,25 @@ import {
   FlatList,
 } from 'react-native';
 import React, {memo, useCallback} from 'react';
-import {questionRouletteStyle} from '../../../styles/questionRouletteStyle';
-import HeaderComponent from '../../../components/button/HeaderComponent';
+import {questionRouletteStyle} from '@/styles/questionRouletteStyle';
+import HeaderComponent from '@/components/button/HeaderComponent';
 import {
   CoupleStackParamList,
   QuestionRouletteScreenProps,
-} from '../../../types/navigation/CoupleNavigationType';
+} from '@/types/navigation/CoupleNavigationType';
 import {
   appColors,
   borderRadius,
   fontSize,
   screenHeight,
   sizeBlock,
-} from '../../../styles/universalStyle';
-import AppText from '../../../components/text/AppText';
-import CoupleImage from '../../../assets/images/couple.jpg';
-import AppImage from '../../../components/image/AppImage';
+} from '@/styles/universalStyle';
+import AppText from '@/components/text/AppText';
+import CoupleImage from '@/assets/images/couple.jpg';
+import AppImage from '@/components/image/AppImage';
 import LinearGradient from 'react-native-linear-gradient';
-import AppPressable from '../../../components/button/AppPressable';
-import {QuestionType} from '../../../api/games';
+import AppPressable from '@/components/button/AppPressable';
+import {QuestionType} from '@/api/games';
 
 interface Stage {
   title: string;

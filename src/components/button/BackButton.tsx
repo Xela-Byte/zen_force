@@ -1,6 +1,6 @@
 import {Pressable, StyleSheet} from 'react-native';
-import ArrowLeft from '../../assets/svgsComponents/ArrowLeft';
-import {sizeBlock, universalStyle} from '../../styles/universalStyle';
+import ArrowLeft from '@/assets/svgsComponents/ArrowLeft';
+import {sizeBlock, universalStyle} from '@/styles/universalStyle';
 
 type Props = {
   navigation: any;

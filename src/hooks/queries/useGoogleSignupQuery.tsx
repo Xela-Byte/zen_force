@@ -1,5 +1,5 @@
 import {QueryKey, useQuery} from '@tanstack/react-query';
-import {googleSignupFn} from '../../api/google';
+import {googleSignupFn} from '@/api/google';
 
 export const useGoogleSignupQuery = () =>
   useQuery({

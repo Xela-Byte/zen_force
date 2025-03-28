@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import validateObject from '../../hooks/helpers/useObjectValidation';
+import validateObject from '@/hooks/helpers/useObjectValidation';
 
 export interface AppUser {
   _id: string;
@@ -13,6 +13,7 @@ export interface AppUser {
   gender?: string;
   personalityInsight?: string;
   inviteCode?: string;
+  profileImage?: string;
 }
 
 export interface UserProfile {
@@ -111,6 +112,12 @@ const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
+    updateUser: (state, action: any) => {
+      state.user = {
+        ...state.user,
+        userInfo: action.payload,
+      };
+    },
     setUser: (state, action: PayloadAction<UserProfile>) => {
       state.user = action.payload;
       state.isLoggedIn = true;
@@ -153,6 +160,7 @@ export const {
   setVettingData,
   setCurrentVettingStep,
   resetVetting,
+  updateUser,
 } = appSlice.actions;
 
 export default appSlice.reducer;

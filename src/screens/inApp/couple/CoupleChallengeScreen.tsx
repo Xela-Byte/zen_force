@@ -1,28 +1,28 @@
 import React from 'react';
 import {FlatList, Pressable, ScrollView, StatusBar, View} from 'react-native';
 import {SvgProps} from 'react-native-svg';
-import {ChallengeType} from '../../../api/games';
-import CardIcon from '../../../assets/images/card.svg';
-import MeshIcon from '../../../assets/images/mesh.svg';
-import StarIcon from '../../../assets/images/star.svg';
-import WhirlIcon from '../../../assets/images/whirl.svg';
-import ZigzagIcon from '../../../assets/images/zigzag.svg';
-import ArrowLeft from '../../../assets/svgsComponents/ArrowLeft';
-import AppPressable from '../../../components/button/AppPressable';
-import HeaderComponent from '../../../components/button/HeaderComponent';
-import AppText from '../../../components/text/AppText';
-import {coupleChallengeStyle} from '../../../styles/coupleChallengeStyle';
+import {ChallengeType} from '@/api/games';
+import CardIcon from '@/assets/images/card.svg';
+import MeshIcon from '@/assets/images/mesh.svg';
+import StarIcon from '@/assets/images/star.svg';
+import WhirlIcon from '@/assets/images/whirl.svg';
+import ZigzagIcon from '@/assets/images/zigzag.svg';
+import ArrowLeft from '@/assets/svgsComponents/ArrowLeft';
+import AppPressable from '@/components/button/AppPressable';
+import HeaderComponent from '@/components/button/HeaderComponent';
+import AppText from '@/components/text/AppText';
+import {coupleChallengeStyle} from '@/styles/coupleChallengeStyle';
 import {
   appColors,
   borderRadius,
   fontSize,
   sizeBlock,
   universalStyle,
-} from '../../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import {
   CoupleChallengeScreenProps,
   CoupleStackParamList,
-} from '../../../types/navigation/CoupleNavigationType';
+} from '@/types/navigation/CoupleNavigationType';
 
 interface Challenge {
   title: string;

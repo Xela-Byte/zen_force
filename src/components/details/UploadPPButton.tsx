@@ -1,22 +1,22 @@
 import {View, Text, ActivityIndicator} from 'react-native';
 import React, {useMemo, useState} from 'react';
-import {detailsStyle} from '../../styles/detailsStyle';
+import {detailsStyle} from '@/styles/detailsStyle';
 import AppPressable from '../button/AppPressable';
-import PfpIcon from '../../assets/svgsComponents/PfpIcon';
+import PfpIcon from '@/assets/svgsComponents/PfpIcon';
 import {
   appColors,
   borderRadius,
   fontSize,
   sizeBlock,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import AppText from '../text/AppText';
-import useToast from '../../hooks/helpers/useToast';
+import useToast from '@/hooks/helpers/useToast';
 import {useMutation} from '@tanstack/react-query';
-import {uploadProfilePicture} from '../../api/profile';
-import DocumentPicker, {isCancel} from 'react-native-document-picker';
+import {uploadProfilePicture} from '@/api/profile';
+import {errorCodes, pick, types} from '@react-native-documents/picker';
 import AppImage from '../image/AppImage';
-import {setCurrentVettingStep, VettingData} from '../../store/slices/appSlice';
-import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
+import {setCurrentVettingStep, VettingData} from '@/store/slices/appSlice';
+import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
 
 type Props = {
   storeVettingData: (payload: Partial<VettingData>) => void;
@@ -33,8 +33,8 @@ const UploadPPButton = ({storeVettingData}: Props) => {
 
   const handleFilePick = async () => {
     try {
-      const result = await DocumentPicker.pickSingle({
-        type: [DocumentPicker.types.images],
+      const [result] = await pick({
+        type: [types.images],
       });
 
       const uploadFile = {
@@ -45,7 +45,7 @@ const UploadPPButton = ({storeVettingData}: Props) => {
 
       storeVettingData({profileImage: uploadFile});
     } catch (err) {
-      if (isCancel(err)) {
+      if (errorCodes.OPERATION_CANCELED) {
         console.log('User canceled file picker');
       } else {
         console.error('DocumentPicker Error:', err);

@@ -1,20 +1,20 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Dimensions, StatusBar} from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import AppImage from '../../components/image/AppImage';
-import {onboardingStyle} from '../../styles/onboardingStyle';
-import HeartSign from '../../assets/svgsComponents/HeartSign';
-import AppText from '../../components/text/AppText';
-import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
-import AppButton from '../../components/button/AppButton';
-import ArrowSlantUp from '../../assets/svgsComponents/ArrowSlantUp';
+import AppImage from '@/components/image/AppImage';
+import {onboardingStyle} from '@/styles/onboardingStyle';
+import HeartSign from '@/assets/svgsComponents/HeartSign';
+import AppText from '@/components/text/AppText';
+import {appColors, fontSize, sizeBlock} from '@/styles/universalStyle';
+import AppButton from '@/components/button/AppButton';
+import ArrowSlantUp from '@/assets/svgsComponents/ArrowSlantUp';
 import {
   AuthStackParamList,
   OnboardingScreenProps,
-} from '../../types/navigation/AuthNavigationType';
-import AppPressable from '../../components/button/AppPressable';
-import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
-import {markInstalled} from '../../store/slices/appSlice';
+} from '@/types/navigation/AuthNavigationType';
+import AppPressable from '@/components/button/AppPressable';
+import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
+import {markInstalled} from '@/store/slices/appSlice';
 
 interface Item {
   key: string;

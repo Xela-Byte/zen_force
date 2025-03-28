@@ -1,20 +1,21 @@
-import {View, Text} from 'react-native';
-import {accountSetupStyle} from '../../styles/accountSetupStyle';
-import BackButton from '../../components/button/BackButton';
+import PartnerIcon from '@/assets/svgsComponents/PartnerIcon';
+import PersonIcon from '@/assets/svgsComponents/PersonIcon';
+import SelectComponent from '@/components/auth/SelectComponent';
+import AppButton from '@/components/button/AppButton';
+import BackButton from '@/components/button/BackButton';
+import AppText from '@/components/text/AppText';
+import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
+import {setVettingData, VettingData} from '@/store/slices/appSlice';
+import {accountSetupStyle} from '@/styles/accountSetupStyle';
+import {appColors, fontSize, sizeBlock} from '@/styles/universalStyle';
 import {
   AccountSetupScreenProps,
   AuthStackParamList,
-} from '../../types/navigation/AuthNavigationType';
-import AppText from '../../components/text/AppText';
-import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
-import SelectComponent from '../../components/auth/SelectComponent';
-import {useEffect, useState} from 'react';
-import PersonIcon from '../../assets/svgsComponents/PersonIcon';
-import PartnerIcon from '../../assets/svgsComponents/PartnerIcon';
-import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
-import {setVettingData, VettingData} from '../../store/slices/appSlice';
+} from '@/types/navigation/AuthNavigationType';
+import {useState} from 'react';
+import {View} from 'react-native';
 
-// 
+//
 
 const AccountSetupScreen = ({navigation}: AccountSetupScreenProps) => {
   const dispatch = useAppDispatch();
@@ -69,39 +70,51 @@ const AccountSetupScreen = ({navigation}: AccountSetupScreenProps) => {
     }
   };
 
-  useEffect(() => {
-    handleNext();
-  }, [selectedOption]);
-
   return (
-    <View style={accountSetupStyle.wrapper}>
-      <BackButton navigation={navigation} />
-      <View style={accountSetupStyle.container}>
-        <AppText fontType="medium" fontSize={fontSize.medium}>
-          Are you here by yourself or with your partner?
-        </AppText>
+    <>
+      <View style={accountSetupStyle.wrapper}>
+        <BackButton navigation={navigation} />
+        <View style={accountSetupStyle.container}>
+          <AppText fontType="medium" fontSize={fontSize.medium}>
+            Are you here by yourself or with your partner?
+          </AppText>
 
-        <View
-          style={{
-            marginVertical: sizeBlock.getHeightSize(50),
-          }}>
-          {options.map(option => {
-            return (
-              <SelectComponent
-                key={option.value}
-                label={option.label}
-                onSelect={(value: string) => {
-                  setSelectedOption(value);
-                }}
-                selectedValue={selectedOption}
-                value={option.value}
-                icon={option.icon}
-              />
-            );
-          })}
+          <View
+            style={{
+              marginVertical: sizeBlock.getHeightSize(50),
+            }}>
+            {options.map(option => {
+              return (
+                <SelectComponent
+                  key={option.value}
+                  label={option.label}
+                  onSelect={(value: string) => {
+                    setSelectedOption(value);
+                  }}
+                  selectedValue={selectedOption}
+                  value={option.value}
+                  icon={option.icon}
+                />
+              );
+            })}
+          </View>
         </View>
       </View>
-    </View>
+
+      <View
+        style={{
+          paddingHorizontal: sizeBlock.getWidthSize(20),
+        }}>
+        <AppButton
+          bgColor={appColors.green}
+          title="Set up profile"
+          disabled={!selectedOption}
+          onPress={() => {
+            handleNext();
+          }}
+        />
+      </View>
+    </>
   );
 };
 

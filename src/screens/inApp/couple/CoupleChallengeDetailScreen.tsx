@@ -1,12 +1,9 @@
-import {memo, useCallback, useMemo, useRef, useState} from 'react';
-import {FlatList, ScrollView, StatusBar, View} from 'react-native';
-import SkeletionPlaceholder from 'react-native-skeleton-placeholder';
-import CardIcon from '../../../assets/images/card_grey.svg';
-import PulseIcon from '../../../assets/images/pulse.svg';
-import HeaderComponent from '../../../components/button/HeaderComponent';
-import AppText from '../../../components/text/AppText';
-import {useFetchCoupleChallengeQuery} from '../../../hooks/queries/useFetchCoupleChallengeQuery';
-import {memoryLaneStyle} from '../../../styles/memoryLaneStyle';
+import CardIcon from '@/assets/images/card_grey.svg';
+import PulseIcon from '@/assets/images/pulse.svg';
+import HeaderComponent from '@/components/button/HeaderComponent';
+import AppText from '@/components/text/AppText';
+import {useFetchCoupleChallengeQuery} from '@/hooks/queries/useFetchCoupleChallengeQuery';
+import {memoryLaneStyle} from '@/styles/memoryLaneStyle';
 import {
   appColors,
   borderRadius,
@@ -14,8 +11,11 @@ import {
   screenWidth,
   sizeBlock,
   universalStyle,
-} from '../../../styles/universalStyle';
-import {CoupleChallengeDetailScreenProps} from '../../../types/navigation/CoupleNavigationType';
+} from '@/styles/universalStyle';
+import {CoupleChallengeDetailScreenProps} from '@/types/navigation/CoupleNavigationType';
+import {memo, useCallback, useMemo, useRef, useState} from 'react';
+import {FlatList, ScrollView, StatusBar, View} from 'react-native';
+import SkeletionPlaceholder from 'react-native-skeleton-placeholder';
 
 const CoupleChallengeDetailScreen = ({
   navigation,

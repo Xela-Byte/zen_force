@@ -1,16 +1,16 @@
+import {sendMessageFn} from '@/api/chat';
+import MicIcon from '@/assets/images/Mic.svg';
+import SendIcon from '@/assets/images/send.svg';
+import HeaderComponent from '@/components/button/HeaderComponent';
+import ChatList from '@/components/chat/ChatList';
+import useInvalidateQuery from '@/hooks/queries/useInvalidateQueries';
+import {aiCounselorStyle} from '@/styles/aiCounselorStyle';
+import {appColors} from '@/styles/universalStyle';
+import {AICounselorScreenProps} from '@/types/navigation/CoupleNavigationType';
 import {useMutation} from '@tanstack/react-query';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {Keyboard, TextInput, View} from 'react-native';
-import {sendMessageFn} from '../../../api/chat';
-import MicIcon from '../../../assets/images/Mic.svg';
-import SendIcon from '../../../assets/images/send.svg';
-import HeaderComponent from '../../../components/button/HeaderComponent';
-import ChatList from '../../../components/chat/ChatList';
-import {aiCounselorStyle} from '../../../styles/aiCounselorStyle';
-import {appColors} from '../../../styles/universalStyle';
-import {AICounselorScreenProps} from '../../../types/navigation/CoupleNavigationType';
-import useInvalidateQuery from '../../../hooks/queries/useInvalidateQueries';
 
 interface Inputs {
   messageBody: string;

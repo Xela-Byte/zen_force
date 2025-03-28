@@ -1,5 +1,5 @@
 import {useQuery, QueryKey, UseQueryResult} from '@tanstack/react-query';
-import {fetchQuestionRouletteFn, QuestionType} from '../../api/games';
+import {fetchQuestionRouletteFn, QuestionType} from '@/api/games';
 
 interface QuestionParams {
   questionType: QuestionType;

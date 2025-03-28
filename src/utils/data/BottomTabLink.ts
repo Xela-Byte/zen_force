@@ -1,11 +1,11 @@
-import HomeIcon from '../../assets/bottomIcons/Home.svg';
-import HomeIconGreen from '../../assets/bottomIcons/Home-green.svg';
-import CoupleIcon from '../../assets/bottomIcons/Heart.svg';
-import CoupleIconGreen from '../../assets/bottomIcons/Heart-green.svg';
-import ExploreIcon from '../../assets/bottomIcons/search.svg';
-import ExploreIconGreen from '../../assets/bottomIcons/search-green.svg';
-import ProfileIcon from '../../assets/bottomIcons/Profile.svg';
-import ProfileIconGreen from '../../assets/bottomIcons/Profile-green.svg';
+import HomeIcon from '@/assets/bottomIcons/Home.svg';
+import HomeIconGreen from '@/assets/bottomIcons/Home-green.svg';
+import CoupleIcon from '@/assets/bottomIcons/Heart.svg';
+import CoupleIconGreen from '@/assets/bottomIcons/Heart-green.svg';
+import ExploreIcon from '@/assets/bottomIcons/search.svg';
+import ExploreIconGreen from '@/assets/bottomIcons/search-green.svg';
+import ProfileIcon from '@/assets/bottomIcons/Profile.svg';
+import ProfileIconGreen from '@/assets/bottomIcons/Profile-green.svg';
 
 export interface BottomTabLinkType {
   key: string;

@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
-import EarthIcon from '../../assets/profileIcons/earth.svg';
-import ArrowLeft from '../../assets/svgsComponents/ArrowLeft';
-import AppPressable from '../../components/button/AppPressable';
-import AppText from '../../components/text/AppText';
-import {profileStyle} from '../../styles/profileStyle';
+import EarthIcon from '@/assets/profileIcons/earth.svg';
+import ArrowLeft from '@/assets/svgsComponents/ArrowLeft';
+import AppPressable from '@/components/button/AppPressable';
+import AppText from '@/components/text/AppText';
+import {profileStyle} from '@/styles/profileStyle';
 import AbsoluteOverlay from '../background/AbsoluteOverlay';
 import PlanSelection from './PlanSelection';
 

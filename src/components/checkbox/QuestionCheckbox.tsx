@@ -7,9 +7,9 @@ import {
   fontSize,
   sizeBlock,
   universalStyle,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import AppText from '../text/AppText';
-import CheckCircleIcon from '../../assets/images/check_circle.svg';
+import CheckCircleIcon from '@/assets/images/check_circle.svg';
 import AppPressable from '../button/AppPressable';
 
 interface QuestionCheckboxProps {

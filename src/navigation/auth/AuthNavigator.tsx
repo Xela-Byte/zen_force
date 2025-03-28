@@ -1,31 +1,24 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useSelector} from 'react-redux';
-import AccountSetupScreen from '../../../screens/auth/AccountSetupScreen';
-import CreateNewPasswordScreen from '../../../screens/auth/CreateNewPasswordScreen';
-import DetailsScreen from '../../../screens/auth/DetailsScreen';
-import ForgotPasswordScreen from '../../../screens/auth/ForgotPasswordScreen';
-import LoginScreen from '../../../screens/auth/LoginScreen';
-import OnboardingScreen from '../../../screens/auth/OnboardingScreen';
-import ProfileSummaryScreen from '../../../screens/auth/ProfileSummaryScreen';
-import RegisterScreen from '../../../screens/auth/RegisterScreen';
-import {RootState} from '../../../store';
-import {AuthStackParamList} from '../../../types/navigation/AuthNavigationType';
+import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
+import AccountSetupScreen from '@/screens/auth/AccountSetupScreen';
+import CreateNewPasswordScreen from '@/screens/auth/CreateNewPasswordScreen';
+import DetailsScreen from '@/screens/auth/DetailsScreen';
+import ForgotPasswordScreen from '@/screens/auth/ForgotPasswordScreen';
+import GoogleAuthScreen from '@/screens/auth/GoogleAuthScreen';
+import LoginScreen from '@/screens/auth/LoginScreen';
+import OnboardingScreen from '@/screens/auth/OnboardingScreen';
+import ProfileSummaryScreen from '@/screens/auth/ProfileSummaryScreen';
+import RegisterScreen from '@/screens/auth/RegisterScreen';
+import {setCurrentVettingStep, useCurrentStep} from '@/store/slices/appSlice';
+import {AuthStackParamList} from '@/types/navigation/AuthNavigationType';
 import {useNavigation} from '@react-navigation/native';
-import {useAppDispatch, useAppSelector} from '../../../hooks/helpers/useRedux';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useEffect, useMemo} from 'react';
-import {
-  setCurrentVettingStep,
-  useCurrentStep,
-} from '../../../store/slices/appSlice';
-import GoogleAuthScreen from '../../../screens/auth/GoogleAuthScreen';
 
 const AuthNavigator = () => {
   const Stack = createNativeStackNavigator<AuthStackParamList>();
-  const isNewInstall = useAppSelector(
-    (state: RootState) => state.app.isNewInstall,
-  );
-  const isLoggedIn = useAppSelector((state: RootState) => state.app.isLoggedIn);
-  const user = useAppSelector((state: RootState) => state.app.user);
+  const isNewInstall = useAppSelector(state => state.app.isNewInstall);
+  const isLoggedIn = useAppSelector(state => state.app.isLoggedIn);
+  const user = useAppSelector(state => state.app.user);
   const tempUser = useAppSelector(state => state.app.tempUser);
   const vettingData = useAppSelector(state => state.app.vettingData);
 

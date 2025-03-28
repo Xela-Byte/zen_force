@@ -1,16 +1,16 @@
 import {ScrollView, StyleSheet, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
-import HeaderComponent from '../../../components/button/HeaderComponent';
-import AppText from '../../../components/text/AppText';
+import HeaderComponent from '@/components/button/HeaderComponent';
+import AppText from '@/components/text/AppText';
 import {
   borderRadius,
   fontSize,
   sizeBlock,
   universalStyle,
-} from '../../../styles/universalStyle';
-import ChestIcon from '../../../assets/images/chest.svg';
-import {ProgressTrackingScreenProps} from '../../../types/navigation/CoupleNavigationType';
+} from '@/styles/universalStyle';
+import ChestIcon from '@/assets/images/chest.svg';
+import {ProgressTrackingScreenProps} from '@/types/navigation/CoupleNavigationType';
 
 const ProgressCard = ({
   title,

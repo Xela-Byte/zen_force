@@ -1,6 +1,6 @@
+import {screenHeight, screenWidth} from '@/styles/universalStyle';
+import {View} from 'react-native';
 import {Modal, StatusBar, StyleSheet} from 'react-native';
-import {View} from 'react-native-animatable';
-import {screenHeight, screenWidth} from '../../styles/universalStyle';
 
 interface OverlayProps {
   children: any;

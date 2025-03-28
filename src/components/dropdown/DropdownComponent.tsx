@@ -6,7 +6,7 @@ import {
   borderRadius,
   fontFamily,
   sizeBlock,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 
 interface DropdownProps {
   options: {key: string; value: string}[]; // Dynamic list of options

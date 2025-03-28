@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {View} from 'react-native';
-import {VettingData} from '../../store/slices/appSlice';
-import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
+import {VettingData} from '@/store/slices/appSlice';
+import {appColors, fontSize, sizeBlock} from '@/styles/universalStyle';
 import AppButton from '../button/AppButton';
 import DropdownComponent from '../dropdown/DropdownComponent';
 import AppInput from '../input/AppInput';

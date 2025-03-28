@@ -1,10 +1,8 @@
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
-import {getFocusedRouteNameFromRoute, useTheme} from '@react-navigation/native';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
-
-import AppText from '../text/AppText';
 import NavigationIcon from './NavigationIcon';
 import {
   appColors,
@@ -12,7 +10,8 @@ import {
   screenWidth,
   sizeBlock,
   universalStyle,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
+import AppText from '../text/AppText';
 
 const BottomTabComponent = ({
   descriptors,
@@ -81,8 +80,8 @@ const BottomTabComponent = ({
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
-            ? options.title
-            : route.name;
+              ? options.title
+              : route.name;
 
         const isFocused = state.index === index;
 

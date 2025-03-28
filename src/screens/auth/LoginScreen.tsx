@@ -1,26 +1,25 @@
+import {loginFn} from '@/api/auth/login';
+import AppButton from '@/components/button/AppButton';
+import AppPressable from '@/components/button/AppPressable';
+import BackButton from '@/components/button/BackButton';
+import AppInput from '@/components/input/AppInput';
+import AppText from '@/components/text/AppText';
+import {EMAIL_REGEX} from '@/hooks/helpers/Regex';
+import useToast from '@/hooks/helpers/useToast';
 import {useMutation} from '@tanstack/react-query';
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import {ScrollView, StatusBar, View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {loginFn} from '../../api/login';
-import AppButton from '../../components/button/AppButton';
-import AppPressable from '../../components/button/AppPressable';
-import BackButton from '../../components/button/BackButton';
-import AppInput from '../../components/input/AppInput';
-import AppText from '../../components/text/AppText';
-import {EMAIL_REGEX} from '../../hooks/helpers/Regex';
-import useToast from '../../hooks/helpers/useToast';
-import {AppDispatch} from '../../store';
-import {setUser, UserProfile} from '../../store/slices/appSlice';
-import {loginStyle} from '../../styles/loginStyle';
-import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
+
+import {setUser, UserProfile} from '@/store/slices/appSlice';
+import {loginStyle} from '@/styles/loginStyle';
+import {appColors, fontSize, sizeBlock} from '@/styles/universalStyle';
 import {
   AuthStackParamList,
   LoginScreenProps,
-} from '../../types/navigation/AuthNavigationType';
-
-type Props = {};
+} from '@/types/navigation/AuthNavigationType';
+import {AppDispatch} from '@/store/index';
 
 interface Inputs {
   email: string;
@@ -28,7 +27,7 @@ interface Inputs {
 }
 
 const LoginScreen = ({navigation}: LoginScreenProps) => {
-  const {control, handleSubmit} = useForm<Inputs>();
+  const {control, handleSubmit, setValue, watch} = useForm<Inputs>();
   const {showToast} = useToast();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -49,13 +48,16 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
   const loginMutation = useMutation({
     mutationFn: loginFn,
     onSuccess: result => {
+      console.log('====================================');
+      console.log(result);
+      console.log('====================================');
       showToast({
         text1: `Welcome back to Zen Force!`,
         text2: `Let's go 🚀`,
         type: 'success',
       });
 
-      // storeUser(result.data);
+      storeUser(result.data);
     },
     onError: (error: any) => {
       console.error('login error:', error);
@@ -118,6 +120,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           inputProps={{
             autoFocus: true,
             keyboardType: 'email-address',
+            autoComplete: 'email',
           }}
         />
 

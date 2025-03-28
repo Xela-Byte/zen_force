@@ -1,6 +1,6 @@
+import {useAppSelector} from '@/hooks/helpers/useRedux';
 import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
-import {useAppSelector} from '../../hooks/helpers/useRedux';
 import AuthNavigator from './auth/AuthNavigator';
 import BottomTabNavigator from './bottomTab/BottomTabNavigator';
 

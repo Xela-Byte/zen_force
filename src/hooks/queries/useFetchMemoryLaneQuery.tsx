@@ -1,7 +1,7 @@
 // useFetchMemoryLaneQuery;
 
 import {QueryKey, useQuery, UseQueryResult} from '@tanstack/react-query';
-import {fetchMemoryLaneFn} from '../../api/games';
+import {fetchMemoryLaneFn} from '@/api/games';
 
 interface Question {
   _id: string;

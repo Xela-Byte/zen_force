@@ -14,10 +14,10 @@ import {
   fontSize,
   sizeBlock,
   universalStyle,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import AppText from '../text/AppText';
-import GoogleIcon from '../../assets/svgsComponents/GoogleIcon';
-import AppleIcon from '../../assets/svgsComponents/AppleIcon';
+import GoogleIcon from '@/assets/svgsComponents/GoogleIcon';
+import AppleIcon from '@/assets/svgsComponents/AppleIcon';
 
 type ButtonType = 'filled' | 'outlined';
 
@@ -82,9 +82,9 @@ const AppButton = ({
             opacity: disabled ? 0.3 : 1,
             backgroundColor: isOutlined
               ? 'white'
-              : bgColor ?? appColors.btnBlack,
+              : (bgColor ?? appColors.btnBlack),
             borderColor: isOutlined
-              ? borderColor ?? appColors.border
+              ? (borderColor ?? appColors.border)
               : 'transparent',
             borderWidth: isOutlined ? 2 : 0,
           },

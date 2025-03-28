@@ -1,17 +1,17 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import {ScrollView, StatusBar, View} from 'react-native';
-import AppButton from '../../components/button/AppButton';
-import AppPressable from '../../components/button/AppPressable';
-import BackButton from '../../components/button/BackButton';
-import AppInput from '../../components/input/AppInput';
-import AppText from '../../components/text/AppText';
-import {loginStyle} from '../../styles/loginStyle';
-import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
+import AppButton from '@/components/button/AppButton';
+import AppPressable from '@/components/button/AppPressable';
+import BackButton from '@/components/button/BackButton';
+import AppInput from '@/components/input/AppInput';
+import AppText from '@/components/text/AppText';
+import {loginStyle} from '@/styles/loginStyle';
+import {appColors, fontSize, sizeBlock} from '@/styles/universalStyle';
 import {
   AuthStackParamList,
   ForgotPasswordScreenProps,
-} from '../../types/navigation/AuthNavigationType';
+} from '@/types/navigation/AuthNavigationType';
 
 type Props = {};
 

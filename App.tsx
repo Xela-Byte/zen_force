@@ -11,8 +11,8 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {WithSplashScreen} from './src/components/splashScreen/SplashScreen';
 import {persistor, store} from './src/store';
 import {queryClient} from './src/store/queryClient';
-import Navigator from './src/utils/navigation/Navigator';
 import {appColors, fontFamily, fontSize} from './src/styles/universalStyle';
+import Navigator from '@/navigation/Navigator';
 
 const App = () => {
   const [isAppReady, setIsAppReady] = useState(false);

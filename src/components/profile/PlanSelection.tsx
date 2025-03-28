@@ -12,7 +12,7 @@ import {
   screenWidth,
   sizeBlock,
   universalStyle,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import AppText from '../text/AppText';
 import AppPressable from '../button/AppPressable';
 import {useNavigation} from '@react-navigation/native';

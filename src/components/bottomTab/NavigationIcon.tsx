@@ -1,5 +1,5 @@
+import {bottomTabLinks} from '@/utils/data/BottomTabLink';
 import {View} from 'react-native';
-import {bottomTabLinks} from '../../utils/data/BottomTabLink';
 
 type Props = {
   route: string;
@@ -14,8 +14,8 @@ const NavigationIcon = ({isFocused, route}: Props) => {
   return (
     <View>
       {isFocused
-        ? routeName?.activeLinkIcon ?? ''
-        : routeName?.inactiveLinkIcon ?? ''}
+        ? (routeName?.activeLinkIcon ?? '')
+        : (routeName?.inactiveLinkIcon ?? '')}
     </View>
   );
 };

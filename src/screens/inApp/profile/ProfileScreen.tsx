@@ -1,25 +1,24 @@
 import React from 'react';
 import {ScrollView, StatusBar, View} from 'react-native';
-import Avatar from '../../../assets/images/avatar.png';
-import PencilIcon from '../../../assets/images/pencil_icon.svg';
-import EarthIcon from '../../../assets/profileIcons/earth.svg';
-import LockIcon from '../../../assets/profileIcons/lock.svg';
-import PersonIcon from '../../../assets/profileIcons/profile.svg';
-import TimezoneIcon from '../../../assets/profileIcons/timezone.svg';
-import ArrowLeft from '../../../assets/svgsComponents/ArrowLeft';
-import AppPressable from '../../../components/button/AppPressable';
-import HeaderComponent from '../../../components/button/HeaderComponent';
-import CustomDropdown from '../../../components/dropdown/CustomDropdown';
-import AppImage from '../../../components/image/AppImage';
-import DeleteAccountComponent from '../../../components/profile/DeleteAccountComponent';
-import PlanComponent from '../../../components/profile/PlanComponent';
-import AppText from '../../../components/text/AppText';
-import {profileStyle} from '../../../styles/profileStyle';
-import {appColors, sizeBlock} from '../../../styles/universalStyle';
+import EarthIcon from '@/assets/profileIcons/earth.svg';
+import LockIcon from '@/assets/profileIcons/lock.svg';
+import PersonIcon from '@/assets/profileIcons/profile.svg';
+import TimezoneIcon from '@/assets/profileIcons/timezone.svg';
+import ArrowLeft from '@/assets/svgsComponents/ArrowLeft';
+import AppPressable from '@/components/button/AppPressable';
+import HeaderComponent from '@/components/button/HeaderComponent';
+import CustomDropdown from '@/components/dropdown/CustomDropdown';
+import DeleteAccountComponent from '@/components/profile/DeleteAccountComponent';
+import PlanComponent from '@/components/profile/PlanComponent';
+import ProfilePicture from '@/components/profile/ProfilePicture';
+import AppText from '@/components/text/AppText';
+import {useAppSelector} from '@/hooks/helpers/useRedux';
+import {profileStyle} from '@/styles/profileStyle';
+import {appColors, sizeBlock} from '@/styles/universalStyle';
 import {
   ProfileScreenProps,
   ProfileStackParamList,
-} from '../../../types/navigation/ProfileNavigationType';
+} from '@/types/navigation/ProfileNavigationType';
 
 const languages = [
   {label: 'Language: English', value: 'english'},
@@ -39,6 +38,9 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
     navigation.navigate(route, params);
   };
 
+  const user = useAppSelector(state => state.app.user);
+  const userData = user?.userInfo;
+
   return (
     <ScrollView style={profileStyle.wrapper}>
       <StatusBar backgroundColor={appColors.green} barStyle={'light-content'} />
@@ -49,19 +51,7 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
       />
 
       <View style={profileStyle.container}>
-        <View style={profileStyle.avatarContainer}>
-          <AppImage
-            source={Avatar}
-            style={{
-              width: '100%',
-              height: '100%',
-            }}
-            alt="Avatar"
-          />
-          <View style={profileStyle.editIcon}>
-            <PencilIcon />
-          </View>
-        </View>
+        <ProfilePicture />
         <View style={profileStyle.tabContainer}>
           <AppPressable
             onPress={() => {
@@ -80,7 +70,10 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
             </View>
           </AppPressable>
 
-          <AppPressable onPress={() => {}}>
+          <AppPressable
+            onPress={() => {
+              navigateTo('CreateNewPasswordScreen');
+            }}>
             <View style={profileStyle.tab}>
               <LockIcon />
               <AppText>Password</AppText>

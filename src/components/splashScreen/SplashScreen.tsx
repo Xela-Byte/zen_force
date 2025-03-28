@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, StatusBar, StyleSheet, View} from 'react-native';
-import AppLogo from '../../assets/images/logo.png';
+import AppLogo from '@/assets/images/logo.png';
 import {
   appColors,
   screenWidth,
   sizeBlock,
   universalStyle,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import AppImage from '../image/AppImage';
 
 export function WithSplashScreen({

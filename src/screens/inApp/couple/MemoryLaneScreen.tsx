@@ -1,5 +1,5 @@
 import {View, Text, StatusBar, ScrollView, FlatList} from 'react-native';
-import {memoryLaneStyle} from '../../../styles/memoryLaneStyle';
+import {memoryLaneStyle} from '@/styles/memoryLaneStyle';
 import {
   appColors,
   borderRadius,
@@ -7,15 +7,15 @@ import {
   screenWidth,
   sizeBlock,
   universalStyle,
-} from '../../../styles/universalStyle';
-import HeaderComponent from '../../../components/button/HeaderComponent';
-import {MemoryLaneScreenProps} from '../../../types/navigation/CoupleNavigationType';
-import PulseIcon from '../../../assets/images/pulse.svg';
-import AppText from '../../../components/text/AppText';
+} from '@/styles/universalStyle';
+import HeaderComponent from '@/components/button/HeaderComponent';
+import {MemoryLaneScreenProps} from '@/types/navigation/CoupleNavigationType';
+import PulseIcon from '@/assets/images/pulse.svg';
+import AppText from '@/components/text/AppText';
 import {memo, useCallback, useMemo, useRef, useState} from 'react';
-import CardIcon from '../../../assets/images/card_grey.svg';
+import CardIcon from '@/assets/images/card_grey.svg';
 import SkeletionPlaceholder from 'react-native-skeleton-placeholder';
-import {useFetchMemoryLaneQuery} from '../../../hooks/queries/useFetchMemoryLaneQuery';
+import {useFetchMemoryLaneQuery} from '@/hooks/queries/useFetchMemoryLaneQuery';
 
 const MemoryLaneScreen = ({navigation}: MemoryLaneScreenProps) => {
   // Fetching questions from hook

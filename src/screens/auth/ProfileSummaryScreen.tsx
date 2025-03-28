@@ -1,27 +1,27 @@
 import React, {useMemo} from 'react';
 import {ScrollView, StatusBar, View} from 'react-native';
-import AppButton from '../../components/button/AppButton';
-import AppPressable from '../../components/button/AppPressable';
-import HeaderComponent from '../../components/button/HeaderComponent';
-import {personalityInterests} from '../../components/details/StepTwo';
-import AppText from '../../components/text/AppText';
-import {profileSummaryStyle} from '../../styles/profileSummaryStyle';
+import AppButton from '@/components/button/AppButton';
+import AppPressable from '@/components/button/AppPressable';
+import HeaderComponent from '@/components/button/HeaderComponent';
+import {personalityInterests} from '@/components/details/StepTwo';
+import AppText from '@/components/text/AppText';
+import {profileSummaryStyle} from '@/styles/profileSummaryStyle';
 import {
   appColors,
   borderRadius,
   sizeBlock,
   universalStyle,
-} from '../../styles/universalStyle';
-import {ProfileSummaryScreenProps} from '../../types/navigation/AuthNavigationType';
-import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
+} from '@/styles/universalStyle';
+import {ProfileSummaryScreenProps} from '@/types/navigation/AuthNavigationType';
+import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
 import {
   setCurrentVettingStep,
   setTempUser,
   setUser,
   UserProfile,
-} from '../../store/slices/appSlice';
-import useToast from '../../hooks/helpers/useToast';
-import {useFetchUserProfileQuery} from '../../hooks/queries/useFetchUserProfile';
+} from '@/store/slices/appSlice';
+import useToast from '@/hooks/helpers/useToast';
+import {useFetchUserProfileQuery} from '@/hooks/queries/useFetchUserProfile';
 
 const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
   const dispatch = useAppDispatch();

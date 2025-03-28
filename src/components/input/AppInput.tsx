@@ -16,10 +16,10 @@ import {
   fontFamily,
   fontSize,
   sizeBlock,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 
 import AppText from '../text/AppText';
-import EyeIcon from '../../assets/svgsComponents/EyeIcon';
+import EyeIcon from '@/assets/svgsComponents/EyeIcon';
 
 type AppInputProps<TFieldValues extends FieldValues> = {
   control: any;
@@ -74,13 +74,13 @@ const AppInput = <TFieldValues extends FieldValues>({
                   borderColor: error
                     ? 'red'
                     : isFocused
-                    ? appColors.green
-                    : appColors.border,
+                      ? appColors.green
+                      : appColors.border,
                   marginBottom: mB,
                   backgroundColor: appColors.background,
                   height: mutliline
                     ? sizeBlock.getHeightSize(150)
-                    : sizeBlock.getHeightSize(55),
+                    : sizeBlock.getHeightSize(45),
                 },
                 customStyle,
               ]}>
@@ -164,7 +164,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: sizeBlock.getHeightSize(20),
     marginVertical: sizeBlock.getHeightSize(10),
     borderWidth: 1,
-    height: sizeBlock.getHeightSize(55),
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

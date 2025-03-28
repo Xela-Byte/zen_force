@@ -1,62 +1,146 @@
-import React from 'react';
+import {useMemo} from 'react';
+import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
+import {ProfileSummaryScreenProps} from '@/types/navigation/ProfileNavigationType';
+import {personalityInterests} from '@/components/details/StepTwo';
+import useToast from '@/hooks/helpers/useToast';
 import {ScrollView, StatusBar, View} from 'react-native';
-import HeaderComponent from '../../../components/button/HeaderComponent';
-import {profileSummaryStyle} from '../../../styles/profileSummaryStyle';
-
-import AppPressable from '../../../components/button/AppPressable';
-import {personalityInterests} from '../../../components/details/StepTwo';
-import AppText from '../../../components/text/AppText';
+import {profileSummaryStyle} from '@/styles/profileSummaryStyle';
 import {
   appColors,
   borderRadius,
   sizeBlock,
   universalStyle,
-} from '../../../styles/universalStyle';
-import {ProfileSummaryScreenProps} from '../../../types/navigation/ProfileNavigationType';
+} from '@/styles/universalStyle';
+import HeaderComponent from '@/components/button/HeaderComponent';
+import AppText from '@/components/text/AppText';
+import AppPressable from '@/components/button/AppPressable';
+import AppButton from '@/components/button/AppButton';
 
 const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
+  const dispatch = useAppDispatch();
+
+  const userData = useAppSelector(state => state.app.user?.userInfo);
+
+  const selectedInterests = useMemo(() => {
+    if (!userData?.interests) return [];
+    if (userData?.interests.length === 0) return [];
+
+    let filteredInterests = personalityInterests.filter(({label}) =>
+      userData?.interests.some(term =>
+        label.toLowerCase().includes(term.toLowerCase()),
+      ),
+    );
+
+    return filteredInterests || [];
+  }, [userData?.interests]);
+
+  const handleEdit = (step: number) => {
+    // dispatch(setCurrentVettingStep(step));
+    // navigation.goBack();
+  };
+
+  const {showToast} = useToast();
+
+  const handleSubmit = () => {
+    // tempUser && dispatch(setUser(profileData));
+    // dispatch(setTempUser(null));
+    // showToast({
+    //   text1: `Welcome back to Zen Force!`,
+    //   text2: `Let's go 🚀`,
+    //   type: 'success',
+    // });
+  };
+
   return (
     <>
       <ScrollView style={profileSummaryStyle.wrapper}>
-        <StatusBar backgroundColor={appColors.gray} barStyle={'dark-content'} />
-        <HeaderComponent navigation={navigation} title="Profile summary" />
+        <StatusBar backgroundColor={appColors.gray} />
+        <HeaderComponent
+          navigation={navigation}
+          title="Profile summary"
+          onPress={() => {
+            handleEdit(4);
+          }}
+        />
 
         <View style={profileSummaryStyle.container}>
           <View style={profileSummaryStyle.aboutContainer}>
             <View style={universalStyle.flexBetween}>
               <AppText fontType="medium">About</AppText>
-              <AppPressable onPress={() => {}}>
+              <AppPressable
+                onPress={() => {
+                  handleEdit(0);
+                }}>
                 <AppText color={appColors.border}>Edit</AppText>
               </AppPressable>
             </View>
             <View style={universalStyle.flexBetween}>
-              <AppText>Name</AppText>
-              <AppText>Xela Oladipupo</AppText>
+              <AppText numLine={1}>Name</AppText>
+              <View
+                style={{
+                  width: '50%',
+                  alignItems: 'flex-end',
+                }}>
+                <AppText numLine={1} ellipsizeMode="tail">
+                  {userData?.fullName ?? 'Zen User'}
+                </AppText>
+              </View>
             </View>
             <View style={universalStyle.flexBetween}>
               <AppText>Age</AppText>
-              <AppText>20</AppText>
+              <AppText numLine={1} ellipsizeMode="tail">
+                {userData?.age ?? '18'}
+              </AppText>
             </View>
             <View style={universalStyle.flexBetween}>
               <AppText>Gender</AppText>
-              <AppText>Male</AppText>
+              <AppText
+                customStyle={{
+                  textTransform: 'capitalize',
+                }}>
+                {userData?.gender ?? 'Zen'}
+              </AppText>
             </View>
             <View style={universalStyle.flexBetween}>
               <AppText>Personality</AppText>
-              <AppText>Big Five</AppText>
+              <AppText>{userData?.personalityInsight}</AppText>
             </View>
             <View style={universalStyle.flexBetween}>
               <AppText>Love language</AppText>
-              <AppText>Quality time</AppText>
+              <View
+                style={{
+                  width: '50%',
+                  alignItems: 'flex-end',
+                }}>
+                <AppText numLine={1} ellipsizeMode="tail">
+                  {userData?.loveLanguage}
+                </AppText>
+              </View>
             </View>
-            <View style={universalStyle.flexBetween}>
+            {/* <View style={universalStyle.flexBetween}>
               <AppText>Communication preference</AppText>
-              <AppText>Quality time</AppText>
+              <View
+                style={{
+                  width: '30%',
+                  alignItems: 'flex-end',
+                }}>
+                <AppText numLine={1} ellipsizeMode="tail">
+                  Quality time
+                </AppText>
+              </View>
             </View>
             <View style={universalStyle.flexBetween}>
               <AppText>Attachment style</AppText>
-              <AppText>Quality time</AppText>
-            </View>
+              <View
+                style={{
+                  width: '50%',
+                  alignItems: 'flex-end',
+                }}>
+                <AppText numLine={1} ellipsizeMode="tail">
+                  Quality time
+                </AppText>
+              </View>
+            </View> */}
           </View>
           <View style={profileSummaryStyle.aboutContainer}>
             <View style={universalStyle.flexBetween}>
@@ -72,7 +156,7 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
                 paddingVertical: sizeBlock.getHeightSize(10),
                 gap: sizeBlock.getWidthSize(10),
               }}>
-              {personalityInterests.slice(0, 4).map(interest => {
+              {selectedInterests.map(interest => {
                 return (
                   <View key={interest.value}>
                     <View
@@ -101,12 +185,30 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
               </AppPressable>
             </View>
             <View style={universalStyle.flexBetween}>
-              <AppText>Relationship stage</AppText>
-              <AppText>Newly weds</AppText>
+              <AppText>Relationship Stage</AppText>
+              <AppText>{userData?.relationshipStage}</AppText>
             </View>
             <View style={universalStyle.flexBetween}>
               <AppText>Relationship Age</AppText>
-              <AppText>2 years</AppText>
+              <AppText customStyle={{textTransform: 'capitalize'}}>
+                {userData?.relationshipDuration}
+              </AppText>
+            </View>
+
+            <View style={universalStyle.flexBetween}>
+              <AppText>Relationship Desire</AppText>
+              <View
+                style={{
+                  width: '50%',
+                  alignItems: 'flex-end',
+                }}>
+                <AppText
+                  numLine={1}
+                  ellipsizeMode="tail"
+                  customStyle={{textTransform: 'capitalize'}}>
+                  {userData?.relationshipDesire}
+                </AppText>
+              </View>
             </View>
           </View>
           <View style={profileSummaryStyle.aboutContainer}>
@@ -117,16 +219,34 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
               </AppPressable>
             </View>
             <View style={universalStyle.flexBetween}>
-              <AppText>Relationship stage</AppText>
-              <AppText>Newly weds</AppText>
-            </View>
-            <View style={universalStyle.flexBetween}>
-              <AppText>Relationship Age</AppText>
-              <AppText>To build Intimacy</AppText>
+              <AppText>Relationship goal</AppText>
+              <View
+                style={{
+                  width: '50%',
+                  alignItems: 'flex-end',
+                }}>
+                <AppText numLine={1} ellipsizeMode="tail">
+                  {userData?.relationshipGoal}
+                </AppText>
+              </View>
             </View>
           </View>
         </View>
       </ScrollView>
+      {/* <View style={profileSummaryStyle.container}>
+        <AppButton
+          customViewStyle={{
+            position: 'relative',
+          }}
+          title="Submit"
+          loading={isLoading}
+          disabled={isLoading}
+          bgColor={appColors.green}
+          onPress={() => {
+            handleSubmit();
+          }}
+        />
+      </View> */}
     </>
   );
 };

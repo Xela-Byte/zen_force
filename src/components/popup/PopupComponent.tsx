@@ -6,15 +6,15 @@ import {
   screenWidth,
   sizeBlock,
   universalStyle,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import AppText from '../text/AppText';
 import AppButton from '../button/AppButton';
-import CheckMarkIcon from '../../assets/images/circle-checkmark.svg';
+import CheckMarkIcon from '@/assets/images/circle-checkmark.svg';
 import * as Animated from 'react-native-animatable';
 import AbsoluteOverlay from '../background/AbsoluteOverlay';
 import LottieView from 'lottie-react-native';
 import {useEffect, useRef, useState} from 'react';
-import {questionRouletteStyle} from '../../styles/questionRouletteStyle';
+import {questionRouletteStyle} from '@/styles/questionRouletteStyle';
 
 type Props = {
   title: string;

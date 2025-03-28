@@ -1,8 +1,8 @@
 import {useQuery} from '@tanstack/react-query';
-import React, {memo, useCallback, useEffect, useRef} from 'react';
+import React, {memo, useRef} from 'react';
 import {FlatList, View} from 'react-native';
-import {fetchUserChats} from '../../api/chat';
-import {screenHeight, sizeBlock} from '../../styles/universalStyle';
+import {fetchUserChats} from '@/api/chat';
+import {screenHeight, sizeBlock} from '@/styles/universalStyle';
 import AppText from '../text/AppText';
 import ChatBubbleComponent from './ChatBubbleComponent';
 import PendingMessageComponent from './PendingMessageComponent';

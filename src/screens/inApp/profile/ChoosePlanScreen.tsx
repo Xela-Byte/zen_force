@@ -6,19 +6,19 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import {choosePlanStyle} from '../../../styles/choosePlanStyle';
+import {choosePlanStyle} from '@/styles/choosePlanStyle';
 import {
   appColors,
   fontSize,
   sizeBlock,
   universalStyle,
-} from '../../../styles/universalStyle';
-import HeaderComponent from '../../../components/button/HeaderComponent';
-import {ChoosePlanScreenProps} from '../../../types/navigation/ProfileNavigationType';
-import {plans} from '../../../components/profile/PlanSelection';
-import AppText from '../../../components/text/AppText';
-import BulletIcon from '../../../assets/images/bullet.svg';
-import AppButton from '../../../components/button/AppButton';
+} from '@/styles/universalStyle';
+import HeaderComponent from '@/components/button/HeaderComponent';
+import {ChoosePlanScreenProps} from '@/types/navigation/ProfileNavigationType';
+import {plans} from '@/components/profile/PlanSelection';
+import AppText from '@/components/text/AppText';
+import BulletIcon from '@/assets/images/bullet.svg';
+import AppButton from '@/components/button/AppButton';
 
 const ChoosePlanScreen = ({navigation, route}: ChoosePlanScreenProps) => {
   const {params} = route;

@@ -1,9 +1,9 @@
+import BottomTabComponent from '@/components/bottomTab/BottomTabComponent';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeStack from '../inApp/HomeStack';
-import BottomTabComponent from '../../../components/bottomTab/BottomTabComponent';
 import CoupleStack from '../inApp/CoupleStack';
-import ProfileStack from '../inApp/ProfileStack';
 import ExploreStack from '../inApp/ExploreStack';
+import ProfileStack from '../inApp/ProfileStack';
 
 const BottomTabNavigator = () => {
   const Tab = createBottomTabNavigator();

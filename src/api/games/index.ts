@@ -1,4 +1,4 @@
-import ApiClient, {API_URL} from '..';
+import ApiClient, {API_URL} from '../apiCliente';
 
 export type QuestionType =
   | 'single-dating'

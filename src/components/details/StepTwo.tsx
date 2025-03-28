@@ -2,7 +2,7 @@ import {useMutation} from '@tanstack/react-query';
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {SvgProps} from 'react-native-svg';
-import {profileInterestUpdateFn} from '../../api/profile';
+import {profileInterestUpdateFn} from '@/api/profile';
 import {
   ArtIcon,
   CookingIcon,
@@ -18,20 +18,20 @@ import {
   SightIcon,
   SwimmingIcon,
   TravelIcon,
-} from '../../assets/interestIcons';
-import useToast from '../../hooks/helpers/useToast';
-import {VettingData} from '../../store/slices/appSlice';
+} from '@/assets/interestIcons';
+import useToast from '@/hooks/helpers/useToast';
+import {VettingData} from '@/store/slices/appSlice';
 import {
   appColors,
   borderRadius,
   fontSize,
   sizeBlock,
   universalStyle,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import AppButton from '../button/AppButton';
 import AppPressable from '../button/AppPressable';
 import AppText from '../text/AppText';
-import {useAppSelector} from '../../hooks/helpers/useRedux';
+import {useAppSelector} from '@/hooks/helpers/useRedux';
 
 interface Props {
   handleStep: (value: number) => void;

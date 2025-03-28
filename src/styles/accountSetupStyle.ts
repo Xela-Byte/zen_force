@@ -4,9 +4,9 @@ import {sizeBlock, universalStyle} from './universalStyle';
 export const accountSetupStyle = StyleSheet.create({
   wrapper: {
     ...universalStyle.container,
+    height: '85%',
   },
   container: {
-    paddingVertical: sizeBlock.getHeightSize(20),
-    paddingHorizontal: sizeBlock.getWidthSize(20),
+    padding: sizeBlock.getWidthSize(20),
   },
 });

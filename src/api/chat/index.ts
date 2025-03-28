@@ -1,5 +1,5 @@
 import {AxiosResponse} from 'axios';
-import ApiClient, {API_URL} from '..';
+import ApiClient, {API_URL} from '../apiCliente';
 
 export const fetchUserChats = async () => {
   try {

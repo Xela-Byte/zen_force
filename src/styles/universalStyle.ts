@@ -29,7 +29,7 @@ export const appColors = {
 export const screenWidth = Dimensions.get('screen').width;
 export const screenHeight = Dimensions.get('screen').height;
 
-export const sizeBlock = new sizes(screenHeight, screenWidth);
+export const sizeBlock = sizes;
 
 export const fontFamily = {
   light: 'Fredoka-Light',

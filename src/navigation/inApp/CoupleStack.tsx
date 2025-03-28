@@ -1,15 +1,14 @@
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import AICounselorScreen from '@/screens/inApp/couple/AICounselorScreen';
+import CoupleChallengeDetailScreen from '@/screens/inApp/couple/CoupleChallengeDetailScreen';
+import CoupleChallengeScreen from '@/screens/inApp/couple/CoupleChallengeScreen';
+import CoupleScreen from '@/screens/inApp/couple/CoupleScreen';
+import MemoryLaneScreen from '@/screens/inApp/couple/MemoryLaneScreen';
+import ProgressTrackingScreen from '@/screens/inApp/couple/ProgressTrackingScreen';
+import QuestionRouletteDetailScreen from '@/screens/inApp/couple/QuestionRouletteDetailScreen';
+import QuestionRouletteScreen from '@/screens/inApp/couple/QuestionRouletteScreen';
+import {CoupleStackParamList} from '@/types/navigation/CoupleNavigationType';
+import {useNavigation} from '@react-navigation/native';
 import {TransitionPresets, createStackNavigator} from '@react-navigation/stack';
-import {useCallback} from 'react';
-import CoupleScreen from '../../../screens/inApp/couple/CoupleScreen';
-import {CoupleStackParamList} from '../../../types/navigation/CoupleNavigationType';
-import AICounselorScreen from '../../../screens/inApp/couple/AICounselorScreen';
-import QuestionRouletteScreen from '../../../screens/inApp/couple/QuestionRouletteScreen';
-import CoupleChallengeScreen from '../../../screens/inApp/couple/CoupleChallengeScreen';
-import MemoryLaneScreen from '../../../screens/inApp/couple/MemoryLaneScreen';
-import CoupleChallengeDetailScreen from '../../../screens/inApp/couple/CoupleChallengeDetailScreen';
-import QuestionRouletteDetailScreen from '../../../screens/inApp/couple/QuestionRouletteDetailScreen';
-import ProgressTrackingScreen from '../../../screens/inApp/couple/ProgressTrackingScreen';
 
 const CoupleStack = () => {
   const Stack = createStackNavigator<CoupleStackParamList>();

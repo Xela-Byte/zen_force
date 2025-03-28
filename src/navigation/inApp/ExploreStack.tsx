@@ -1,8 +1,7 @@
+import ExploreScreen from '@/screens/inApp/explore/ExploreScreen';
+import {ExploreStackParamList} from '@/types/navigation/ExploreStackNavigationType';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {TransitionPresets, createStackNavigator} from '@react-navigation/stack';
-import {useCallback} from 'react';
-import ExploreScreen from '../../../screens/inApp/explore/ExploreScreen';
-import {ExploreStackParamList} from '../../../types/navigation/ExploreStackNavigationType';
 
 const ExploreStack = () => {
   const Stack = createStackNavigator<ExploreStackParamList>();

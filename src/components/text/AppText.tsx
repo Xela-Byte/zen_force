@@ -3,7 +3,7 @@ import {
   appColors,
   fontFamily,
   fontSize as fontSizes,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 
 type Props = {
   children: React.ReactNode;

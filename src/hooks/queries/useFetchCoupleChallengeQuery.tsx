@@ -1,7 +1,7 @@
 // useFetchCoupleChallengeQuery
 
 import {QueryKey, useQuery, UseQueryResult} from '@tanstack/react-query';
-import {ChallengeType, fetchCoupleChallengeFn} from '../../api/games';
+import {ChallengeType, fetchCoupleChallengeFn} from '@/api/games';
 
 interface ChallengeParams {
   challengeType: ChallengeType;

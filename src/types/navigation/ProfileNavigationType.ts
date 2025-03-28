@@ -6,6 +6,7 @@ export type ProfileStackParamList = {
   ChoosePlanScreen: {
     plan: any;
   };
+  CreateNewPasswordScreen: undefined;
 };
 
 export type ProfileScreenProps = {
@@ -19,4 +20,8 @@ export type ProfileSummaryScreenProps = {
 export type ChoosePlanScreenProps = {
   navigation: NavigationProp<ProfileStackParamList, 'ChoosePlanScreen'>;
   route: RouteProp<ProfileStackParamList, 'ChoosePlanScreen'>;
+};
+
+export type CreateNewPasswordScreenProps = {
+  navigation: NavigationProp<ProfileStackParamList, 'CreateNewPasswordScreen'>;
 };

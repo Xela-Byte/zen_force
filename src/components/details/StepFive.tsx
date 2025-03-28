@@ -1,24 +1,24 @@
 import React, {useMemo, useState} from 'react';
 import {Alert, Share, ToastAndroid, View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import ClipboardIcon from '../../assets/images/clipboard_icon.svg';
+import ClipboardIcon from '@/assets/images/clipboard_icon.svg';
 import {
   appColors,
   borderRadius,
   fontSize,
   sizeBlock,
   universalStyle,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import AppButton from '../button/AppButton';
 import AppPressable from '../button/AppPressable';
 import AppText from '../text/AppText';
 import PartnerLinkSuccess from './PartnerLinkSuccess';
 import CodeInputComponent from './CodeInputComponent';
 import AbsoluteOverlay from '../background/AbsoluteOverlay';
-import useToast from '../../hooks/helpers/useToast';
+import useToast from '@/hooks/helpers/useToast';
 import {useMutation} from '@tanstack/react-query';
-import {linkPartnerFn} from '../../api/profile';
-import {useAppSelector} from '../../hooks/helpers/useRedux';
+import {linkPartnerFn} from '@/api/profile';
+import {useAppSelector} from '@/hooks/helpers/useRedux';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 interface Props {

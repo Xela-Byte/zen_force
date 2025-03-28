@@ -12,9 +12,9 @@ import {
   screenWidth,
   sizeBlock,
   universalStyle,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import AppText from '../text/AppText';
-import CheckmarkIcon from '../../assets/images/circle-checkmark.svg';
+import CheckmarkIcon from '@/assets/images/circle-checkmark.svg';
 import AppButton from '../button/AppButton';
 
 type Props = {

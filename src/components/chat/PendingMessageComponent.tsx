@@ -1,6 +1,6 @@
 import {View, Text, Pressable} from 'react-native';
 import React from 'react';
-import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
+import {appColors, fontSize, sizeBlock} from '@/styles/universalStyle';
 import ChatBubbleComponent from './ChatBubbleComponent';
 import AppText from '../text/AppText';
 

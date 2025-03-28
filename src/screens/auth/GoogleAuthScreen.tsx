@@ -1,6 +1,6 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import {useGoogleSignupQuery} from '../../hooks/queries/useGoogleSignupQuery';
+import {useGoogleSignupQuery} from '@/hooks/queries/useGoogleSignupQuery';
 
 type Props = {};
 

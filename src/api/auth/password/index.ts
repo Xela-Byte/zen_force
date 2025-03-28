@@ -1,30 +1,23 @@
-import {AxiosResponse} from 'axios';
-import ApiClient, {API_URL} from '..';
-import {UserProfile} from '../../store/slices/appSlice';
+// https://zen-force-backend.up.railway.app/auth/profile/new-password
 
-interface LoginResponse {
+import ApiClient, {API_URL} from '@/api/apiCliente';
+import {AxiosResponse} from 'axios';
+
+interface CHangePasswordResponse {
   success: boolean;
   message: string;
-  data: UserProfile;
 }
 
-interface LoginPayload {
-  email: string;
+interface ChangePasswordPayload {
   password: string;
 }
 
-export async function loginFn({
-  email,
-  password,
-}: LoginPayload): Promise<LoginResponse> {
+export async function changePasswordFn(
+  payload: ChangePasswordPayload,
+): Promise<CHangePasswordResponse> {
   try {
-    const response: AxiosResponse<LoginResponse> = await ApiClient.post(
-      `${API_URL}/auth/signin`,
-      {
-        email,
-        password,
-      },
-    );
+    const response: AxiosResponse<CHangePasswordResponse> =
+      await ApiClient.patch(`${API_URL}/auth/profile/new-password`, payload);
 
     return response.data;
   } catch (error: any) {
@@ -39,6 +32,6 @@ export async function loginFn({
       console.error('Error message:', error.message);
     }
 
-    throw new Error(error?.response?.data?.message || 'Login failed');
+    throw new Error(error?.response?.data?.message || 'Change password failed');
   }
 }

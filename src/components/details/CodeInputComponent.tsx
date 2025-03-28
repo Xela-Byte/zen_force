@@ -11,7 +11,7 @@ import {
   fontFamily,
   fontSize,
   sizeBlock,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 
 type Props = {
   onChange: (value: string) => void;

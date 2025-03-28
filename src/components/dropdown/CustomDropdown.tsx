@@ -1,7 +1,7 @@
 import React, {memo, useCallback, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-import EarthIcon from '../../assets/profileIcons/earth.svg';
+import EarthIcon from '@/assets/profileIcons/earth.svg';
 import {
   appColors,
   borderRadius,
@@ -9,7 +9,7 @@ import {
   fontSize,
   sizeBlock,
   universalStyle,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import AppPressable from '../button/AppPressable';
 import AppText from '../text/AppText';
 

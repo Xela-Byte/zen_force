@@ -1,22 +1,22 @@
 import {useEffect} from 'react';
 import {ScrollView, View} from 'react-native';
-import AppPressable from '../../components/button/AppPressable';
-import HeaderComponent from '../../components/button/HeaderComponent';
-import StepFive from '../../components/details/StepFive';
-import StepFour from '../../components/details/StepFour';
-import StepOne from '../../components/details/StepOne';
-import StepThree from '../../components/details/StepThree';
-import StepTwo from '../../components/details/StepTwo';
-import AppText from '../../components/text/AppText';
-import {useAppDispatch, useAppSelector} from '../../hooks/helpers/useRedux';
+import AppPressable from '@/components/button/AppPressable';
+import HeaderComponent from '@/components/button/HeaderComponent';
+import StepFive from '@/components/details/StepFive';
+import StepFour from '@/components/details/StepFour';
+import StepOne from '@/components/details/StepOne';
+import StepThree from '@/components/details/StepThree';
+import StepTwo from '@/components/details/StepTwo';
+import AppText from '@/components/text/AppText';
+import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
 import {
   setCurrentVettingStep,
   setVettingData,
   VettingData,
-} from '../../store/slices/appSlice';
-import {detailsStyle} from '../../styles/detailsStyle';
-import {appColors} from '../../styles/universalStyle';
-import {DetailsScreenProps} from '../../types/navigation/AuthNavigationType';
+} from '@/store/slices/appSlice';
+import {detailsStyle} from '@/styles/detailsStyle';
+import {appColors} from '@/styles/universalStyle';
+import {DetailsScreenProps} from '@/types/navigation/AuthNavigationType';
 
 interface Step {
   stepName: string;

@@ -1,31 +1,29 @@
-import React, {useState} from 'react';
-import {ScrollView, StatusBar, View} from 'react-native';
-import ProgressPie from 'react-native-progress/Pie';
-import Avatar from '../../../assets/images/avatar.png';
-import FemaleIcon from '../../../assets/images/female.svg';
-import GraphIcon from '../../../assets/images/graph_icon.svg';
-import MaleIcon from '../../../assets/images/male.svg';
-import OrbIcon from '../../../assets/images/orb_icon.svg';
-import PulseIcon from '../../../assets/images/pulse.svg';
-import PuzzleIcon from '../../../assets/images/puzzle_icon.svg';
-import SunIcon from '../../../assets/images/sun_icon.svg';
-import ArrowLeft from '../../../assets/svgsComponents/ArrowLeft';
-import AppButton from '../../../components/button/AppButton';
-import AppPressable from '../../../components/button/AppPressable';
-import AppImage from '../../../components/image/AppImage';
-import AppText from '../../../components/text/AppText';
-import useHexToRGBA from '../../../hooks/helpers/useHexToRGBA';
-import {useAppSelector} from '../../../hooks/helpers/useRedux';
-import {homeStyle} from '../../../styles/homeStyle';
+import Avatar from '@/assets/images/avatar.png';
+import FemaleIcon from '@/assets/images/female.svg';
+import MaleIcon from '@/assets/images/male.svg';
+import OrbIcon from '@/assets/images/orb_icon.svg';
+import PulseIcon from '@/assets/images/pulse.svg';
+import PuzzleIcon from '@/assets/images/puzzle_icon.svg';
+import SunIcon from '@/assets/images/sun_icon.svg';
+import AppButton from '@/components/button/AppButton';
+import AppPressable from '@/components/button/AppPressable';
+import AppImage from '@/components/image/AppImage';
+import AppText from '@/components/text/AppText';
+import useHexToRGBA from '@/hooks/helpers/useHexToRGBA';
+import {useAppSelector} from '@/hooks/helpers/useRedux';
+import {homeStyle} from '@/styles/homeStyle';
 import {
   appColors,
   borderRadius,
   fontSize,
   sizeBlock,
   universalStyle,
-} from '../../../styles/universalStyle';
-import {HomeScreenProps} from '../../../types/navigation/HomeStackNavigationType';
-import {coupleGames} from '../couple/CoupleScreen';
+} from '@/styles/universalStyle';
+import {HomeScreenProps} from '@/types/navigation/HomeStackNavigationType';
+import React, {useMemo, useState} from 'react';
+import {ScrollView, StatusBar, View} from 'react-native';
+import ProgressPie from 'react-native-progress/Pie';
+import {GamesComponent} from '../couple/CoupleScreen';
 
 const HomeScreen = ({navigation}: HomeScreenProps) => {
   // const dispatch = useAppDispatch();
@@ -71,13 +69,16 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
   //   }
   // }, [authToken]);
 
-  const navigateTo = (route: any, screenName: any) => {
-    navigation.navigate(route, {screenName});
+  const navigateTo = (route: any, screenName?: any) => {
+    navigation.navigate(route, {screen: screenName});
   };
 
   const [progress, setProgress] = useState(0.65);
 
   const user = useAppSelector(state => state.app.user);
+  const userData = useMemo(() => {
+    return user?.userInfo;
+  }, [user]);
 
   return (
     <ScrollView style={homeStyle.wrapper}>
@@ -113,15 +114,31 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
           </View>
 
           <View style={homeStyle.avatar}>
-            <AppImage
-              source={Avatar}
-              style={{
-                width: '100%',
-                height: '100%',
-              }}
-              alt="Avatar"
-              resizeMode="cover"
-            />
+            {!userData?.profileImage ? (
+              <AppImage
+                source={Avatar}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: borderRadius.full,
+                }}
+                alt="Avatar"
+                resizeMode="cover"
+              />
+            ) : (
+              <AppImage
+                source={{
+                  uri: userData?.profileImage,
+                }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: borderRadius.full,
+                }}
+                alt="Avatar"
+                resizeMode="cover"
+              />
+            )}
           </View>
         </View>
 
@@ -246,8 +263,12 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
                 width: 'auto',
                 borderRadius: borderRadius.full,
               }}
-              onPress={() => {}}
-              title="Add Partner"
+              onPress={() => {
+                !userData?.linkedPartner
+                  ? navigateTo('AddPartnerScreen')
+                  : navigateTo('ViewPartnerScreen');
+              }}
+              title={!userData?.linkedPartner ? 'Add Partner' : 'View Partner'}
             />
           </View>
         </View>
@@ -274,33 +295,12 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
           </AppPressable>
         </View>
 
-        <View style={homeStyle.coupleSectionTabWrapper}>
-          {coupleGames.slice(1).map((cog, index) => {
-            return (
-              <View key={index} style={homeStyle.coupleSectionTab}>
-                <GraphIcon />
-                <View
-                  style={{width: '65%', rowGap: sizeBlock.getHeightSize(5)}}>
-                  <AppText fontType="medium" fontSize={fontSize.small + 1}>
-                    {cog.title}
-                  </AppText>
-                  <AppText
-                    fontSize={fontSize.small - 3}
-                    color={appColors.textGrey}>
-                    {cog.description}
-                  </AppText>
-                </View>
-                <ArrowLeft
-                  fill={appColors.green}
-                  style={{
-                    transform: [{rotate: '180deg'}, {scale: 1.3}],
-                    marginRight: sizeBlock.getWidthSize(10),
-                  }}
-                />
-              </View>
-            );
-          })}
-        </View>
+        <GamesComponent
+          slice={1}
+          navigateTo={(screen: string) => {
+            navigateTo('Couple', screen);
+          }}
+        />
       </View>
     </ScrollView>
   );

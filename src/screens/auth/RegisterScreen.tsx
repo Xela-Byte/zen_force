@@ -1,29 +1,24 @@
 import {useMutation} from '@tanstack/react-query';
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {Alert, ScrollView, StatusBar, View} from 'react-native';
-import {registerFn} from '../../api/register';
-import AppButton from '../../components/button/AppButton';
-import AppPressable from '../../components/button/AppPressable';
-import BackButton from '../../components/button/BackButton';
-import AppInput from '../../components/input/AppInput';
-import AppText from '../../components/text/AppText';
-import {EMAIL_REGEX, PASSWORD_REGEX} from '../../hooks/helpers/Regex';
-import {useAppDispatch} from '../../hooks/helpers/useRedux';
-import useToast from '../../hooks/helpers/useToast';
-import {
-  AppUser,
-  resetVetting,
-  setCurrentVettingStep,
-  setTempUser,
-  setVettingData,
-} from '../../store/slices/appSlice';
-import {loginStyle} from '../../styles/loginStyle';
-import {appColors, fontSize, sizeBlock} from '../../styles/universalStyle';
+import {ScrollView, StatusBar, View} from 'react-native';
+
+import {registerFn} from '@/api/auth/register';
+import AppButton from '@/components/button/AppButton';
+import AppPressable from '@/components/button/AppPressable';
+import BackButton from '@/components/button/BackButton';
+import AppInput from '@/components/input/AppInput';
+import AppText from '@/components/text/AppText';
+import {EMAIL_REGEX, PASSWORD_REGEX} from '@/hooks/helpers/Regex';
+import {useAppDispatch} from '@/hooks/helpers/useRedux';
+import useToast from '@/hooks/helpers/useToast';
+import {AppUser, resetVetting, setTempUser} from '@/store/slices/appSlice';
+import {loginStyle} from '@/styles/loginStyle';
+import {appColors, fontSize, sizeBlock} from '@/styles/universalStyle';
 import {
   AuthStackParamList,
   RegisterScreenProps,
-} from '../../types/navigation/AuthNavigationType';
+} from '@/types/navigation/AuthNavigationType';
 
 interface Inputs {
   email: string;

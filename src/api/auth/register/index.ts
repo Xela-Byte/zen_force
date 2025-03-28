@@ -1,5 +1,5 @@
+import ApiClient, {API_URL} from '@/api/apiCliente';
 import {AxiosResponse} from 'axios';
-import ApiClient, {API_URL} from '..';
 
 interface RegisterResponse {
   success: boolean;

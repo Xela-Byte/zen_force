@@ -1,24 +1,24 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import {detailsStyle} from '../../styles/detailsStyle';
+import {detailsStyle} from '@/styles/detailsStyle';
 import AppPressable from '../button/AppPressable';
-import PfpIcon from '../../assets/svgsComponents/PfpIcon';
+import PfpIcon from '@/assets/svgsComponents/PfpIcon';
 import {
   appColors,
   borderRadius,
   fontSize,
   sizeBlock,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import AppText from '../text/AppText';
 import AppInput from '../input/AppInput';
 import {useForm} from 'react-hook-form';
 import DropdownComponent from '../dropdown/DropdownComponent';
 import AppButton from '../button/AppButton';
-import {VettingData} from '../../store/slices/appSlice';
-import {profileRUpdateFn} from '../../api/profile';
+import {VettingData} from '@/store/slices/appSlice';
+import {profileRUpdateFn} from '@/api/profile';
 import {useMutation} from '@tanstack/react-query';
-import useToast from '../../hooks/helpers/useToast';
-import {useAppSelector} from '../../hooks/helpers/useRedux';
+import useToast from '@/hooks/helpers/useToast';
+import {useAppSelector} from '@/hooks/helpers/useRedux';
 
 interface Inputs {
   relationshipGoal: string;

@@ -1,12 +1,12 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import ArrowLeft from '../../assets/svgsComponents/ArrowLeft';
+import ArrowLeft from '@/assets/svgsComponents/ArrowLeft';
 import {
   appColors,
   fontSize,
   screenWidth,
   universalStyle,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
 import AppText from '../text/AppText';
 import AppPressable from './AppPressable';
 

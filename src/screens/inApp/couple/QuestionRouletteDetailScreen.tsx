@@ -1,13 +1,13 @@
 import LottieView from 'lottie-react-native';
 import React, {useMemo, useRef, useState} from 'react';
 import {ScrollView, StatusBar, View} from 'react-native';
-import PulseIcon from '../../../assets/images/pulse.svg';
-import AppButton from '../../../components/button/AppButton';
-import HeaderComponent from '../../../components/button/HeaderComponent';
-import QuestionCheckbox from '../../../components/checkbox/QuestionCheckbox';
-import PopupComponent from '../../../components/popup/PopupComponent';
-import AppText from '../../../components/text/AppText';
-import {questionRouletteStyle} from '../../../styles/questionRouletteStyle';
+import PulseIcon from '@/assets/images/pulse.svg';
+import AppButton from '@/components/button/AppButton';
+import HeaderComponent from '@/components/button/HeaderComponent';
+import QuestionCheckbox from '@/components/checkbox/QuestionCheckbox';
+import PopupComponent from '@/components/popup/PopupComponent';
+import AppText from '@/components/text/AppText';
+import {questionRouletteStyle} from '@/styles/questionRouletteStyle';
 import {
   appColors,
   borderRadius,
@@ -15,11 +15,11 @@ import {
   screenWidth,
   sizeBlock,
   universalStyle,
-} from '../../../styles/universalStyle';
-import {QuestionRouletteDetailScreenProps} from '../../../types/navigation/CoupleNavigationType';
-import {useFetchQuestionRouletteQuery} from '../../../hooks/queries/useFetchQuestionRouletteQuery';
+} from '@/styles/universalStyle';
+import {QuestionRouletteDetailScreenProps} from '@/types/navigation/CoupleNavigationType';
+import {useFetchQuestionRouletteQuery} from '@/hooks/queries/useFetchQuestionRouletteQuery';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import {QuestionType} from '../../../api/games';
+import {QuestionType} from '@/api/games';
 
 // const questions = [
 //   {

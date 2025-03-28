@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
-import * as Animatable from 'react-native-animatable';
-import AppText from '../text/AppText';
-import CheckIcon from '../../assets/svgsComponents/CheckIcon';
 import {
   appColors,
   borderRadius,
   sizeBlock,
   universalStyle,
-} from '../../styles/universalStyle';
+} from '@/styles/universalStyle';
+import {useState} from 'react';
+import {Pressable, StyleSheet, View} from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import AppText from '../text/AppText';
+import CheckIcon from '@/assets/svgsComponents/CheckIcon';
 
 type SelectComponentProps = {
   label: string;
