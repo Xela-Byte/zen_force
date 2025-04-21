@@ -198,6 +198,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
           buttonType="outlined"
           title="Sign up with Google"
           iconName="google"
+          disabled
           bgColor={appColors.green}
           onPress={() => {
             navigateTo('GoogleAuthScreen');

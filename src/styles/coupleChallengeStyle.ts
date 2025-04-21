@@ -2,6 +2,7 @@ import {StyleSheet} from 'react-native';
 import {
   appColors,
   borderRadius,
+  screenHeight,
   sizeBlock,
   universalStyle,
 } from './universalStyle';
@@ -13,12 +14,14 @@ export const coupleChallengeStyle = StyleSheet.create({
     paddingTop: sizeBlock.getHeightSize(10),
   },
   container: {
-    paddingVertical: sizeBlock.getHeightSize(20),
+    paddingTop: sizeBlock.getHeightSize(20),
+    paddingBottom: sizeBlock.getHeightSize(35),
     paddingHorizontal: sizeBlock.getWidthSize(20),
     borderTopLeftRadius: borderRadius.medium * 2,
     borderTopRightRadius: borderRadius.medium * 2,
     backgroundColor: appColors.white,
     marginTop: sizeBlock.getHeightSize(20),
+    height: screenHeight * 0.85,
   },
   challengeTab: {
     width: '47%',

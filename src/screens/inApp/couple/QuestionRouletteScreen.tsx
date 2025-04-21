@@ -131,18 +131,20 @@ const QuestionRouletteScreen = ({navigation}: QuestionRouletteScreenProps) => {
         <AppText fontSize={fontSize.small + 1} fontType="semiBold">
           Select Stage/Level
         </AppText>
-        <FlatList
-          contentContainerStyle={{
-            paddingVertical: sizeBlock.getHeightSize(15),
-          }}
+        <View
           style={{
-            height: screenHeight * 0.8,
-          }}
-          data={stages}
-          renderItem={({item}) => {
-            return <StageButton stg={item} />;
-          }}
-        />
+            height: screenHeight * 0.75,
+          }}>
+          <FlatList
+            contentContainerStyle={{
+              paddingVertical: sizeBlock.getHeightSize(15),
+            }}
+            data={stages}
+            renderItem={({item}) => {
+              return <StageButton stg={item} />;
+            }}
+          />
+        </View>
       </View>
     </View>
   );

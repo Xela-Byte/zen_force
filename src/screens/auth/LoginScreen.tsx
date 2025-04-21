@@ -176,6 +176,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           bgColor={appColors.green}
           onPress={() => {}}
           textColor={appColors.text}
+          disabled
           customViewStyle={{
             marginBottom: sizeBlock.getHeightSize(10),
           }}
@@ -187,6 +188,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           textColor={appColors.text}
           title="Sign in with Apple"
           bgColor={appColors.green}
+          disabled
           onPress={() => {}}
         />
 

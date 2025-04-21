@@ -21,6 +21,7 @@ export const questionRouletteStyle = StyleSheet.create({
     borderTopRightRadius: borderRadius.medium * 2,
     backgroundColor: appColors.white,
     marginTop: sizeBlock.getHeightSize(20),
+    height: '100%',
   },
   gameTabWrapper: {
     paddingTop: sizeBlock.getHeightSize(15),

@@ -16,6 +16,7 @@ import {
   appColors,
   borderRadius,
   fontSize,
+  screenHeight,
   sizeBlock,
   universalStyle,
 } from '@/styles/universalStyle';
@@ -138,44 +139,46 @@ const CoupleChallengeScreen = ({navigation}: CoupleChallengeScreenProps) => {
         navigation={navigation}
         theme="light"
       />
-      <ScrollView style={coupleChallengeStyle.container}>
-        <FlatList
-          numColumns={2}
-          data={challenges}
-          renderItem={renderChallengeCard}
-          keyExtractor={item => item.challengeType} // Assuming challengeType is unique
-          contentContainerStyle={{rowGap: sizeBlock.getWidthSize(20)}}
-          columnWrapperStyle={{columnGap: sizeBlock.getWidthSize(20)}}
-          scrollEnabled={false}
-        />
+      <View style={coupleChallengeStyle.container}>
+        <ScrollView>
+          <FlatList
+            numColumns={2}
+            data={challenges}
+            renderItem={renderChallengeCard}
+            keyExtractor={item => item.challengeType} // Assuming challengeType is unique
+            contentContainerStyle={{rowGap: sizeBlock.getWidthSize(20)}}
+            columnWrapperStyle={{columnGap: sizeBlock.getWidthSize(20)}}
+            scrollEnabled={false}
+          />
 
-        <AppPressable onPress={() => navigateTo('AICounselorScreen')}>
-          <View style={coupleChallengeStyle.adButton}>
-            <View style={{rowGap: sizeBlock.getHeightSize(5)}}>
-              <AppText
-                fontType="medium"
-                fontSize={fontSize.small + 5}
-                color={appColors.white}>
-                Try the Date Conscious
-              </AppText>
-              <AppText fontSize={fontSize.small + 5} fontType="medium">
-                AI Counselor
-              </AppText>
+          <AppPressable onPress={() => navigateTo('AICounselorScreen')}>
+            <View style={coupleChallengeStyle.adButton}>
+              <View style={{rowGap: sizeBlock.getHeightSize(5)}}>
+                <AppText
+                  fontType="medium"
+                  fontSize={fontSize.small + 5}
+                  color={appColors.white}>
+                  Try the Date Conscious
+                </AppText>
+                <AppText fontSize={fontSize.small + 5} fontType="medium">
+                  AI Counselor
+                </AppText>
+              </View>
+              <View
+                style={{
+                  ...universalStyle.centering,
+                  backgroundColor: appColors.white,
+                  padding: sizeBlock.getWidthSize(20),
+                  borderRadius: borderRadius.full,
+                  width: sizeBlock.getWidthSize(30),
+                  height: sizeBlock.getWidthSize(30),
+                }}>
+                <ArrowLeft style={{transform: [{rotate: '180deg'}]}} />
+              </View>
             </View>
-            <View
-              style={{
-                ...universalStyle.centering,
-                backgroundColor: appColors.white,
-                padding: sizeBlock.getWidthSize(20),
-                borderRadius: borderRadius.full,
-                width: sizeBlock.getWidthSize(30),
-                height: sizeBlock.getWidthSize(30),
-              }}>
-              <ArrowLeft style={{transform: [{rotate: '180deg'}]}} />
-            </View>
-          </View>
-        </AppPressable>
-      </ScrollView>
+          </AppPressable>
+        </ScrollView>
+      </View>
     </View>
   );
 };
