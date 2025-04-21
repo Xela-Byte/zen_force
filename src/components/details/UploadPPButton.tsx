@@ -1,22 +1,22 @@
-import {View, Text, ActivityIndicator} from 'react-native';
-import React, {useMemo, useState} from 'react';
-import {detailsStyle} from '@/styles/detailsStyle';
-import AppPressable from '../button/AppPressable';
+import {uploadProfilePicture} from '@/api/profile';
 import PfpIcon from '@/assets/svgsComponents/PfpIcon';
+import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
+import useToast from '@/hooks/helpers/useToast';
+import {VettingData} from '@/store/slices/appSlice';
+import {detailsStyle} from '@/styles/detailsStyle';
 import {
   appColors,
   borderRadius,
   fontSize,
   sizeBlock,
 } from '@/styles/universalStyle';
-import AppText from '../text/AppText';
-import useToast from '@/hooks/helpers/useToast';
-import {useMutation} from '@tanstack/react-query';
-import {uploadProfilePicture} from '@/api/profile';
 import {errorCodes, pick, types} from '@react-native-documents/picker';
+import {useMutation} from '@tanstack/react-query';
+import React, {useMemo} from 'react';
+import {ActivityIndicator, View} from 'react-native';
+import AppPressable from '../button/AppPressable';
 import AppImage from '../image/AppImage';
-import {setCurrentVettingStep, VettingData} from '@/store/slices/appSlice';
-import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
+import AppText from '../text/AppText';
 
 type Props = {
   storeVettingData: (payload: Partial<VettingData>) => void;

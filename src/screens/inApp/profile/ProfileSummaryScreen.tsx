@@ -1,9 +1,10 @@
-import {useMemo} from 'react';
-import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
-import {ProfileSummaryScreenProps} from '@/types/navigation/ProfileNavigationType';
+import AppPressable from '@/components/button/AppPressable';
+import HeaderComponent from '@/components/button/HeaderComponent';
 import {personalityInterests} from '@/components/details/StepTwo';
+import AppText from '@/components/text/AppText';
+import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
 import useToast from '@/hooks/helpers/useToast';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {setCurrentVettingStep} from '@/store/slices/appSlice';
 import {profileSummaryStyle} from '@/styles/profileSummaryStyle';
 import {
   appColors,
@@ -11,10 +12,9 @@ import {
   sizeBlock,
   universalStyle,
 } from '@/styles/universalStyle';
-import HeaderComponent from '@/components/button/HeaderComponent';
-import AppText from '@/components/text/AppText';
-import AppPressable from '@/components/button/AppPressable';
-import AppButton from '@/components/button/AppButton';
+import {ProfileSummaryScreenProps} from '@/types/navigation/ProfileNavigationType';
+import {useMemo} from 'react';
+import {ScrollView, StatusBar, View} from 'react-native';
 
 const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
   const dispatch = useAppDispatch();
@@ -26,7 +26,7 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
     if (userData?.interests.length === 0) return [];
 
     let filteredInterests = personalityInterests.filter(({label}) =>
-      userData?.interests.some(term =>
+      userData?.interests.some((term: string) =>
         label.toLowerCase().includes(term.toLowerCase()),
       ),
     );
@@ -35,8 +35,8 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
   }, [userData?.interests]);
 
   const handleEdit = (step: number) => {
-    // dispatch(setCurrentVettingStep(step));
-    // navigation.goBack();
+    dispatch(setCurrentVettingStep(step));
+    navigation.navigate('DetailsScreen');
   };
 
   const {showToast} = useToast();
@@ -55,13 +55,7 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
     <>
       <ScrollView style={profileSummaryStyle.wrapper}>
         <StatusBar backgroundColor={appColors.gray} />
-        <HeaderComponent
-          navigation={navigation}
-          title="Profile summary"
-          onPress={() => {
-            handleEdit(4);
-          }}
-        />
+        <HeaderComponent navigation={navigation} title="Profile summary" />
 
         <View style={profileSummaryStyle.container}>
           <View style={profileSummaryStyle.aboutContainer}>
@@ -145,7 +139,10 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
           <View style={profileSummaryStyle.aboutContainer}>
             <View style={universalStyle.flexBetween}>
               <AppText fontType="medium">Peronality Interest</AppText>
-              <AppPressable onPress={() => {}}>
+              <AppPressable
+                onPress={() => {
+                  handleEdit(1);
+                }}>
                 <AppText color={appColors.border}>Edit</AppText>
               </AppPressable>
             </View>
@@ -180,7 +177,10 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
           <View style={profileSummaryStyle.aboutContainer}>
             <View style={universalStyle.flexBetween}>
               <AppText fontType="medium">Relationship Info</AppText>
-              <AppPressable onPress={() => {}}>
+              <AppPressable
+                onPress={() => {
+                  handleEdit(2);
+                }}>
                 <AppText color={appColors.border}>Edit</AppText>
               </AppPressable>
             </View>
@@ -214,7 +214,10 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
           <View style={profileSummaryStyle.aboutContainer}>
             <View style={universalStyle.flexBetween}>
               <AppText fontType="medium">Relationship Goal</AppText>
-              <AppPressable onPress={() => {}}>
+              <AppPressable
+                onPress={() => {
+                  handleEdit(3);
+                }}>
                 <AppText color={appColors.border}>Edit</AppText>
               </AppPressable>
             </View>

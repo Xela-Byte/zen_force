@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {FlatList, Pressable, ScrollView, StatusBar, View} from 'react-native';
 import {SvgProps} from 'react-native-svg';
 import {ChallengeType} from '@/api/games';
@@ -23,6 +23,7 @@ import {
   CoupleChallengeScreenProps,
   CoupleStackParamList,
 } from '@/types/navigation/CoupleNavigationType';
+import {useFetchCoupleChallengeQuery} from '@/hooks/queries/useFetchCoupleChallengeQuery';
 
 interface Challenge {
   title: string;
@@ -58,6 +59,54 @@ const challenges: Challenge[] = [
   },
 ];
 
+// ChallengeCard Component
+const ChallengeCard: React.FC<{item: Challenge; onPress: () => void}> = ({
+  item,
+  onPress,
+}) => {
+  const {data, isPending, isError} = useFetchCoupleChallengeQuery({
+    challengeType: item.challengeType,
+  });
+
+  const memoizedQuestions = useMemo(
+    () => data?.questions ?? [],
+    [data?.questions],
+  );
+
+  return (
+    <Pressable
+      onPress={onPress}
+      style={[
+        coupleChallengeStyle.challengeTab,
+        {backgroundColor: item.bgColor},
+      ]}>
+      <item.icon style={{position: 'absolute'}} />
+      <View style={coupleChallengeStyle.challengeCard}>
+        <AppText
+          fontSize={fontSize.small + 5}
+          fontType="medium"
+          color={appColors.white}>
+          {item.title}
+        </AppText>
+
+        <View
+          style={{
+            paddingTop: sizeBlock.getHeightSize(10),
+            ...universalStyle.verticalCentering,
+            columnGap: sizeBlock.getWidthSize(5),
+          }}>
+          <CardIcon />
+          <AppText color={appColors.white} fontSize={fontSize.small - 3}>
+            {isPending || isError
+              ? '- of -'
+              : `1 of ${memoizedQuestions.length}`}
+          </AppText>
+        </View>
+      </View>
+    </Pressable>
+  );
+};
+
 const CoupleChallengeScreen = ({navigation}: CoupleChallengeScreenProps) => {
   const navigateTo = <T extends keyof CoupleStackParamList>(
     route: T,
@@ -66,6 +115,21 @@ const CoupleChallengeScreen = ({navigation}: CoupleChallengeScreenProps) => {
     // @ts-ignore
     navigation.navigate(route, params);
   };
+
+  const renderChallengeCard = ({item}: {item: Challenge}) => {
+    return (
+      <ChallengeCard
+        item={item}
+        onPress={() => {
+          navigateTo('CoupleChallengeDetailScreen', {
+            questionType: item.title,
+            challengeType: item.challengeType,
+          });
+        }}
+      />
+    );
+  };
+
   return (
     <View style={coupleChallengeStyle.wrapper}>
       <StatusBar backgroundColor={appColors.green} barStyle={'light-content'} />
@@ -77,69 +141,17 @@ const CoupleChallengeScreen = ({navigation}: CoupleChallengeScreenProps) => {
       <ScrollView style={coupleChallengeStyle.container}>
         <FlatList
           numColumns={2}
-          contentContainerStyle={{
-            rowGap: sizeBlock.getWidthSize(20),
-          }}
-          columnWrapperStyle={{
-            columnGap: sizeBlock.getWidthSize(20),
-          }}
           data={challenges}
+          renderItem={renderChallengeCard}
+          keyExtractor={item => item.challengeType} // Assuming challengeType is unique
+          contentContainerStyle={{rowGap: sizeBlock.getWidthSize(20)}}
+          columnWrapperStyle={{columnGap: sizeBlock.getWidthSize(20)}}
           scrollEnabled={false}
-          renderItem={({item, index}) => {
-            return (
-              <Pressable
-                key={index}
-                onPress={() => {
-                  navigateTo('CoupleChallengeDetailScreen', {
-                    questionType: item.title,
-                    challengeType: item.challengeType,
-                  });
-                }}
-                style={[
-                  coupleChallengeStyle.challengeTab,
-                  {backgroundColor: item.bgColor},
-                ]}>
-                <item.icon
-                  style={{
-                    position: 'absolute',
-                  }}
-                />
-                <View style={coupleChallengeStyle.challengeCard}>
-                  <AppText
-                    fontSize={fontSize.small + 5}
-                    fontType="medium"
-                    color={appColors.white}>
-                    {item.title}
-                  </AppText>
-
-                  <View
-                    style={{
-                      paddingTop: sizeBlock.getHeightSize(10),
-                      ...universalStyle.verticalCentering,
-                      columnGap: sizeBlock.getWidthSize(5),
-                    }}>
-                    <CardIcon />
-                    <AppText
-                      color={appColors.white}
-                      fontSize={fontSize.small - 3}>
-                      1 of 100
-                    </AppText>
-                  </View>
-                </View>
-              </Pressable>
-            );
-          }}
         />
 
-        <AppPressable
-          onPress={() => {
-            navigateTo('AICounselorScreen');
-          }}>
+        <AppPressable onPress={() => navigateTo('AICounselorScreen')}>
           <View style={coupleChallengeStyle.adButton}>
-            <View
-              style={{
-                rowGap: sizeBlock.getHeightSize(5),
-              }}>
+            <View style={{rowGap: sizeBlock.getHeightSize(5)}}>
               <AppText
                 fontType="medium"
                 fontSize={fontSize.small + 5}

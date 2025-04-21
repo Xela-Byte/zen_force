@@ -12,12 +12,14 @@ interface DropdownProps {
   options: {key: string; value: string}[]; // Dynamic list of options
   placeholder: string; // Placeholder text
   onSelect: (value: string) => void;
+  defaultOption?: {key: string; value: string};
 }
 
 const DropdownComponent: React.FC<DropdownProps> = ({
   options,
   placeholder,
   onSelect,
+  defaultOption,
 }) => {
   const handleSelect = (value: string) => {
     onSelect(value);
@@ -54,6 +56,7 @@ const DropdownComponent: React.FC<DropdownProps> = ({
         }}
         save="value"
         placeholder={placeholder}
+        defaultOption={defaultOption}
       />
     </View>
   );

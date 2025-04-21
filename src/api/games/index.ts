@@ -80,6 +80,8 @@ export const fetchCoupleChallengeFn = async ({
     return response.data;
   } catch (error: any) {
     if (error.response) {
+      console.log(error.response);
+
       // The request was made and the server responded with a status code outside the range 2xx
       console.error('Error response:', error.response?.data?.message);
     } else if (error.request) {

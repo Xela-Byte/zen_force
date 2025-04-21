@@ -33,7 +33,7 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
     if (vettingData?.interest.length === 0) return [];
 
     let filteredInterests = personalityInterests.filter(({label}) =>
-      vettingData?.interest?.some(term =>
+      vettingData?.interest?.some((term: string) =>
         label.toLowerCase().includes(term.toLowerCase()),
       ),
     );
@@ -43,7 +43,7 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
 
   const handleEdit = (step: number) => {
     dispatch(setCurrentVettingStep(step));
-    navigation.goBack();
+    navigation.navigate('DetailsScreen');
   };
 
   const {showToast} = useToast();

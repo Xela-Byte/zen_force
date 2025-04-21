@@ -64,7 +64,6 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
                 style={{
                   transform: [{rotate: '180deg'}],
                   marginLeft: 'auto',
-                  // transform: [{rotate: '90deg'}],
                 }}
               />
             </View>

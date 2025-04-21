@@ -1,7 +1,8 @@
 import CreateNewPasswordScreen from '@/screens/auth/CreateNewPasswordScreen';
-import ProfileSummaryScreen from '@/screens/auth/ProfileSummaryScreen';
+import DetailsScreen from '@/screens/inApp/profile/DetailsScreen';
 import ChoosePlanScreen from '@/screens/inApp/profile/ChoosePlanScreen';
 import ProfileScreen from '@/screens/inApp/profile/ProfileScreen';
+import ProfileSummaryScreen from '@/screens/inApp/profile/ProfileSummaryScreen';
 import {ProfileStackParamList} from '@/types/navigation/ProfileNavigationType';
 import {useNavigation} from '@react-navigation/native';
 import {TransitionPresets, createStackNavigator} from '@react-navigation/stack';
@@ -40,6 +41,7 @@ const ProfileStack = () => {
           name="CreateNewPasswordScreen"
           component={CreateNewPasswordScreen}
         />
+        <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
       </Stack.Navigator>
     </>
   );

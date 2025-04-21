@@ -1,24 +1,16 @@
-import {View, Text} from 'react-native';
-import React from 'react';
-import {detailsStyle} from '@/styles/detailsStyle';
-import AppPressable from '../button/AppPressable';
-import PfpIcon from '@/assets/svgsComponents/PfpIcon';
-import {
-  appColors,
-  borderRadius,
-  fontSize,
-  sizeBlock,
-} from '@/styles/universalStyle';
-import AppText from '../text/AppText';
-import AppInput from '../input/AppInput';
-import {useForm} from 'react-hook-form';
-import DropdownComponent from '../dropdown/DropdownComponent';
-import AppButton from '../button/AppButton';
-import {VettingData} from '@/store/slices/appSlice';
-import {profileRUpdateFn} from '@/api/profile';
-import {useMutation} from '@tanstack/react-query';
+import {profileRUpdateFn, profileUpdateFn} from '@/api/profile';
+import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
 import useToast from '@/hooks/helpers/useToast';
-import {useAppSelector} from '@/hooks/helpers/useRedux';
+import {updateUser, VettingData} from '@/store/slices/appSlice';
+import {appColors, fontSize, sizeBlock} from '@/styles/universalStyle';
+import {useNavigation} from '@react-navigation/native';
+import {useMutation} from '@tanstack/react-query';
+import React from 'react';
+import {useForm} from 'react-hook-form';
+import {View} from 'react-native';
+import AppButton from '../button/AppButton';
+import DropdownComponent from '../dropdown/DropdownComponent';
+import AppText from '../text/AppText';
 
 interface Inputs {
   relationshipGoal: string;
@@ -27,6 +19,7 @@ interface Inputs {
 interface Props {
   handleStep: (value: number) => void;
   storeVettingData: (payload: Partial<VettingData>) => void;
+  type?: 'auth' | 'inApp';
 }
 
 const relationshipGoals = [
@@ -42,79 +35,165 @@ const relationshipGoals = [
   {key: 'no_commitment', value: 'Not Looking for Commitment'}, // No strings attached
 ];
 
-const StepFour = ({handleStep, storeVettingData}: Props) => {
-  const {watch, setValue} = useForm<Inputs>();
+const StepFour = ({handleStep, storeVettingData, type = 'auth'}: Props) => {
+  if (type === 'auth') {
+    const {watch, setValue} = useForm<Inputs>();
 
-  const handleValues = (key: keyof Inputs, value: string) => {
-    setValue(key, value);
-  };
-  const vettingData = useAppSelector(state => state.app.vettingData);
+    const handleValues = (key: keyof Inputs, value: string) => {
+      setValue(key, value);
+    };
+    const vettingData = useAppSelector(state => state.app.vettingData);
 
-  const goal = watch('relationshipGoal');
+    const goal = watch('relationshipGoal');
 
-  const {showToast} = useToast();
+    const {showToast} = useToast();
 
-  const profileRUpdateMutation = useMutation({
-    mutationFn: profileRUpdateFn,
-    onSuccess: result => {
-      showToast({
-        text1: `Profile updated!`,
-        text2: `Let's go 🚀`,
-        type: 'success',
-      });
-      storeVettingData({relationshipGoal: goal});
-      handleStep(4);
-    },
-    onError: (error: any) => {
-      showToast({
-        text1: 'Error updating profile.',
-        type: 'error',
-        text2: 'Profile update failed',
-      });
-    },
-  });
-
-  const handleNext = () => {
-    profileRUpdateMutation.mutate({
-      loveLanguage: vettingData?.loveLanguage ?? '',
-      relationshipDesire: vettingData?.relationshipDesire ?? '',
-      relationshipDuration: vettingData?.relationshipDuration ?? '',
-      relationshipGoal: goal,
-      relationshipStage: vettingData?.relationshipStage ?? '',
+    const profileRUpdateMutation = useMutation({
+      mutationFn: profileRUpdateFn,
+      onSuccess: result => {
+        showToast({
+          text1: `Profile updated!`,
+          text2: `Let's go 🚀`,
+          type: 'success',
+        });
+        storeVettingData({relationshipGoal: goal});
+        handleStep(4);
+      },
+      onError: (error: any) => {
+        showToast({
+          text1: 'Error updating profile.',
+          type: 'error',
+          text2: 'Profile update failed',
+        });
+      },
     });
-  };
 
-  return (
-    <>
-      <AppText fontSize={fontSize.medium} fontType="medium">
-        What do you want to improve in your relationship?
-      </AppText>
+    const handleNext = () => {
+      profileRUpdateMutation.mutate({
+        loveLanguage: vettingData?.loveLanguage ?? '',
+        relationshipDesire: vettingData?.relationshipDesire ?? '',
+        relationshipDuration: vettingData?.relationshipDuration ?? '',
+        relationshipGoal: goal,
+        relationshipStage: vettingData?.relationshipStage ?? '',
+      });
+    };
 
-      <View style={{height: sizeBlock.getHeightSize(30)}} />
+    return (
+      <>
+        <AppText fontSize={fontSize.medium} fontType="medium">
+          What do you want to improve in your relationship?
+        </AppText>
 
-      <View style={{height: sizeBlock.getHeightSize(10)}} />
-      <DropdownComponent
-        options={relationshipGoals}
-        placeholder={'What’s your relationship goal?'}
-        onSelect={(value: string) => {
-          handleValues('relationshipGoal', value);
-        }}
-      />
+        <View style={{height: sizeBlock.getHeightSize(30)}} />
 
-      <AppButton
-        customViewStyle={{
-          marginTop: '60%',
-        }}
-        title="Next"
-        bgColor={appColors.green}
-        disabled={!goal}
-        loading={profileRUpdateMutation.isPending}
-        onPress={() => {
-          handleNext();
-        }}
-      />
-    </>
-  );
+        <View style={{height: sizeBlock.getHeightSize(10)}} />
+        <DropdownComponent
+          options={relationshipGoals}
+          placeholder={'What’s your relationship goal?'}
+          onSelect={(value: string) => {
+            handleValues('relationshipGoal', value);
+          }}
+        />
+
+        <AppButton
+          customViewStyle={{
+            marginTop: '60%',
+          }}
+          title="Next"
+          bgColor={appColors.green}
+          disabled={!goal}
+          loading={profileRUpdateMutation.isPending}
+          onPress={() => {
+            handleNext();
+          }}
+        />
+      </>
+    );
+  }
+
+  if (type === 'inApp') {
+    const userData = useAppSelector(state => state.app.user?.userInfo);
+
+    const {watch, setValue} = useForm<Inputs>({
+      defaultValues: {
+        relationshipGoal: userData?.relationshipGoal,
+      },
+    });
+
+    const handleValues = (key: keyof Inputs, value: string) => {
+      setValue(key, value);
+    };
+
+    const goal = watch('relationshipGoal');
+
+    const {showToast} = useToast();
+
+    const dispatch = useAppDispatch();
+    const navigation = useNavigation<any>();
+
+    const updateUserData = (payload: any) => {
+      dispatch(updateUser(payload));
+    };
+
+    const profileUpdateMutation = useMutation({
+      mutationFn: profileUpdateFn,
+      onSuccess: result => {
+        updateUserData(result.data);
+        showToast({
+          text1: `Profile updated!`,
+          text2: `Let's go 🚀`,
+          type: 'success',
+        });
+        navigation.goBack();
+      },
+      onError: (error: any) => {
+        showToast({
+          text1: 'Error updating profile.',
+          type: 'error',
+          text2: 'Profile update failed',
+        });
+      },
+    });
+
+    const handleNext = () => {
+      profileUpdateMutation.mutate({relationshipGoal: goal});
+    };
+
+    return (
+      <>
+        <AppText fontSize={fontSize.medium} fontType="medium">
+          What do you want to improve in your relationship?
+        </AppText>
+
+        <View style={{height: sizeBlock.getHeightSize(30)}} />
+
+        <View style={{height: sizeBlock.getHeightSize(10)}} />
+        <DropdownComponent
+          options={relationshipGoals}
+          placeholder={'What’s your relationship goal?'}
+          onSelect={(value: string) => {
+            handleValues('relationshipGoal', value);
+          }}
+          defaultOption={relationshipGoals.find(
+            rg => rg.value === userData?.relationshipGoal,
+          )}
+        />
+
+        <AppButton
+          customViewStyle={{
+            marginTop: '60%',
+          }}
+          title="Update"
+          bgColor={appColors.green}
+          disabled={!goal}
+          loading={profileUpdateMutation.isPending}
+          onPress={() => {
+            handleNext();
+          }}
+        />
+      </>
+    );
+  }
 };
 
 export default StepFour;

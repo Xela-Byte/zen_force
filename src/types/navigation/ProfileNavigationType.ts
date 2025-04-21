@@ -7,6 +7,7 @@ export type ProfileStackParamList = {
     plan: any;
   };
   CreateNewPasswordScreen: undefined;
+  DetailsScreen: undefined;
 };
 
 export type ProfileScreenProps = {

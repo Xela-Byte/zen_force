@@ -89,6 +89,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
           <View
             style={{
               rowGap: sizeBlock.getHeightSize(5),
+              width: '80%',
             }}>
             <View
               style={[
@@ -108,6 +109,7 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
             <AppText
               color={appColors.white}
               fontSize={fontSize.medium - 1}
+              numLine={2}
               fontType="medium">
               {user?.userInfo?.fullName}
             </AppText>
