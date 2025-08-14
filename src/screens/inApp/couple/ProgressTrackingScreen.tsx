@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View, SafeAreaView} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import HeaderComponent from '@/components/button/HeaderComponent';
@@ -66,32 +66,38 @@ const ProgressCard = ({
 
 const ProgressTrackingScreen = ({navigation}: ProgressTrackingScreenProps) => {
   return (
-    <LinearGradient
-      style={[universalStyle.container]}
-      colors={['#3BA700', '#5B783D', '#364724']}>
-      <HeaderComponent navigation={navigation} title="Activity" theme="light" />
-      <ScrollView
-        contentContainerStyle={{
-          padding: sizeBlock.getWidthSize(20),
-          rowGap: sizeBlock.getHeightSize(30),
-        }}>
-        <ProgressCard
-          progress={25}
-          title="Communication"
-          subtitle="Measure communication improvements"
+    <SafeAreaView style={[universalStyle.container]}>
+      <LinearGradient
+        style={[universalStyle.container]}
+        colors={['#3BA700', '#5B783D', '#364724']}>
+        <HeaderComponent
+          navigation={navigation}
+          title="Activity"
+          theme="light"
         />
-        <ProgressCard
-          progress={5}
-          title="Relationship Health"
-          subtitle="Measure communication improvements"
-        />
-        <ProgressCard
-          progress={false}
-          title="Milestone tracker"
-          subtitle="It’s 5 years now! Happy anniversary..."
-        />
-      </ScrollView>
-    </LinearGradient>
+        <ScrollView
+          contentContainerStyle={{
+            padding: sizeBlock.getWidthSize(20),
+            rowGap: sizeBlock.getHeightSize(30),
+          }}>
+          <ProgressCard
+            progress={25}
+            title="Communication"
+            subtitle="Measure communication improvements"
+          />
+          <ProgressCard
+            progress={5}
+            title="Relationship Health"
+            subtitle="Measure communication improvements"
+          />
+          <ProgressCard
+            progress={false}
+            title="Milestone tracker"
+            subtitle="It’s 5 years now! Happy anniversary..."
+          />
+        </ScrollView>
+      </LinearGradient>
+    </SafeAreaView>
   );
 };
 

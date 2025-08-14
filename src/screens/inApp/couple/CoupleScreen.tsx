@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {ScrollView, StatusBar, View, SafeAreaView} from 'react-native';
 import GraphIcon from '@/assets/images/graph_icon.svg';
 import ArrowLeft from '@/assets/svgsComponents/ArrowLeft';
 import AppText from '@/components/text/AppText';
@@ -109,22 +109,24 @@ const CoupleScreen = ({navigation}: CoupleScreenProps) => {
     navigation.navigate(route, params);
   };
   return (
-    <ScrollView style={coupleStyle.wrapper}>
+    <SafeAreaView style={coupleStyle.wrapper}>
       <StatusBar backgroundColor={appColors.green} barStyle={'light-content'} />
-      <AppText
-        customStyle={{
-          textAlign: 'center',
-          marginTop: sizeBlock.getHeightSize(30),
-        }}
-        fontType="semiBold"
-        fontSize={fontSize.small + 5}
-        color={appColors.white}>
-        Couple
-      </AppText>
-      <View style={coupleStyle.container}>
-        <GamesComponent navigateTo={navigateTo} />
-      </View>
-    </ScrollView>
+      <ScrollView style={coupleStyle.wrapper}>
+        <AppText
+          customStyle={{
+            textAlign: 'center',
+            marginTop: sizeBlock.getHeightSize(30),
+          }}
+          fontType="semiBold"
+          fontSize={fontSize.small + 5}
+          color={appColors.white}>
+          Couple
+        </AppText>
+        <View style={coupleStyle.container}>
+          <GamesComponent navigateTo={navigateTo} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

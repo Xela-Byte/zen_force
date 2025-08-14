@@ -1,13 +1,15 @@
-import {View, Text} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
 import React from 'react';
 
 type Props = {};
 
 const ExploreScreen = (props: Props) => {
   return (
-    <View>
-      <Text>ExploreScreen</Text>
-    </View>
+    <SafeAreaView>
+      <View>
+        <Text>ExploreScreen</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 

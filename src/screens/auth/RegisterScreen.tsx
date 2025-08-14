@@ -1,7 +1,7 @@
 import {useMutation} from '@tanstack/react-query';
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {ScrollView, StatusBar, View, SafeAreaView} from 'react-native';
 
 import {registerFn} from '@/api/auth/register';
 import AppButton from '@/components/button/AppButton';
@@ -95,144 +95,146 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
   };
 
   return (
-    <ScrollView style={loginStyle.wrapper}>
+    <SafeAreaView style={loginStyle.wrapper}>
       <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
-      {canGoBack ? (
-        <BackButton navigation={navigation} />
-      ) : (
-        <View
-          style={{
-            height: sizeBlock.getWidthSize(45),
-          }}
-        />
-      )}
-      <View style={loginStyle.container}>
-        <AppText fontSize={fontSize.medium} fontType="medium">
-          Create Account
-        </AppText>
-        <AppText
-          color={appColors.textGrey}
-          customStyle={{marginTop: sizeBlock.getHeightSize(10)}}>
-          Sign up to get started
-        </AppText>
-
-        {/* Email Input */}
-        <AppInput<Inputs>
-          control={control}
-          name="email"
-          placeholder="Enter your email"
-          animatedPlaceholder="Email"
-          rules={{
-            setValueAs: (value: any) => value.trim().toLowerCase(),
-            required: 'Please enter an email',
-            pattern: {value: EMAIL_REGEX, message: 'Invalid email format'},
-          }}
-          customStyle={{marginTop: sizeBlock.getHeightSize(50)}}
-          inputProps={{
-            autoComplete: 'email',
-            keyboardType: 'email-address',
-            textContentType: 'emailAddress',
-          }}
-        />
-
-        {/* Password Input */}
-        <AppInput<Inputs>
-          control={control}
-          name="password"
-          placeholder="Enter your password"
-          animatedPlaceholder="Password"
-          password
-          rules={{
-            required: 'Please enter a password',
-            pattern: {
-              value: PASSWORD_REGEX,
-              message:
-                'Password must contain at least one uppercase, one lowercase, one numeric, and one special character.',
-            },
-          }}
-          customStyle={{marginTop: sizeBlock.getHeightSize(10)}}
-          inputProps={{
-            autoComplete: 'new-password',
-          }}
-        />
-
-        {/* Confirm Password Input */}
-        <AppInput<Inputs>
-          control={control}
-          name="confirmPassword"
-          placeholder="Confirm your password"
-          animatedPlaceholder="Confirm Password"
-          password
-          rules={{
-            required: 'Please confirm your password',
-            validate: (value: string) =>
-              value === watch('password') || 'Passwords do not match',
-          }}
-          customStyle={{marginTop: sizeBlock.getHeightSize(10)}}
-          inputProps={{
-            autoComplete: 'new-password',
-          }}
-        />
-
-        <View style={{marginVertical: sizeBlock.getHeightSize(10)}} />
-
-        {/* Signup Button */}
-        <AppButton
-          title="Sign up"
-          bgColor={appColors.green}
-          onPress={handleSubmit(onSubmit)}
-          loading={registerMutation.isPending}
-        />
-
-        {/* Other Sign-up Methods */}
-        <AppText
-          color={appColors.textGrey}
-          customStyle={{
-            textAlign: 'center',
-            marginVertical: sizeBlock.getHeightSize(25),
-          }}>
-          or sign up with
-        </AppText>
-
-        <AppButton
-          buttonType="outlined"
-          title="Sign up with Google"
-          iconName="google"
-          disabled
-          bgColor={appColors.green}
-          onPress={() => {
-            navigateTo('GoogleAuthScreen');
-          }}
-          textColor={appColors.text}
-          customViewStyle={{marginBottom: sizeBlock.getHeightSize(10)}}
-        />
-
-        <AppButton
-          buttonType="outlined"
-          iconName="apple"
-          textColor={appColors.text}
-          title="Sign up with Apple"
-          bgColor={appColors.green}
-          disabled
-          onPress={() => {}}
-        />
-
-        {/* Already Have an Account? */}
-        <AppPressable onPress={() => navigateTo('LoginScreen')}>
+      <ScrollView style={loginStyle.wrapper}>
+        {canGoBack ? (
+          <BackButton navigation={navigation} />
+        ) : (
+          <View
+            style={{
+              height: sizeBlock.getWidthSize(45),
+            }}
+          />
+        )}
+        <View style={loginStyle.container}>
+          <AppText fontSize={fontSize.medium} fontType="medium">
+            Create Account
+          </AppText>
           <AppText
-            fontType="medium"
+            color={appColors.textGrey}
+            customStyle={{marginTop: sizeBlock.getHeightSize(10)}}>
+            Sign up to get started
+          </AppText>
+
+          {/* Email Input */}
+          <AppInput<Inputs>
+            control={control}
+            name="email"
+            placeholder="Enter your email"
+            animatedPlaceholder="Email"
+            rules={{
+              setValueAs: (value: any) => value.trim().toLowerCase(),
+              required: 'Please enter an email',
+              pattern: {value: EMAIL_REGEX, message: 'Invalid email format'},
+            }}
+            customStyle={{marginTop: sizeBlock.getHeightSize(50)}}
+            inputProps={{
+              autoComplete: 'email',
+              keyboardType: 'email-address',
+              textContentType: 'emailAddress',
+            }}
+          />
+
+          {/* Password Input */}
+          <AppInput<Inputs>
+            control={control}
+            name="password"
+            placeholder="Enter your password"
+            animatedPlaceholder="Password"
+            password
+            rules={{
+              required: 'Please enter a password',
+              pattern: {
+                value: PASSWORD_REGEX,
+                message:
+                  'Password must contain at least one uppercase, one lowercase, one numeric, and one special character.',
+              },
+            }}
+            customStyle={{marginTop: sizeBlock.getHeightSize(10)}}
+            inputProps={{
+              autoComplete: 'new-password',
+            }}
+          />
+
+          {/* Confirm Password Input */}
+          <AppInput<Inputs>
+            control={control}
+            name="confirmPassword"
+            placeholder="Confirm your password"
+            animatedPlaceholder="Confirm Password"
+            password
+            rules={{
+              required: 'Please confirm your password',
+              validate: (value: string) =>
+                value === watch('password') || 'Passwords do not match',
+            }}
+            customStyle={{marginTop: sizeBlock.getHeightSize(10)}}
+            inputProps={{
+              autoComplete: 'new-password',
+            }}
+          />
+
+          <View style={{marginVertical: sizeBlock.getHeightSize(10)}} />
+
+          {/* Signup Button */}
+          <AppButton
+            title="Sign up"
+            bgColor={appColors.green}
+            onPress={handleSubmit(onSubmit)}
+            loading={registerMutation.isPending}
+          />
+
+          {/* Other Sign-up Methods */}
+          <AppText
+            color={appColors.textGrey}
             customStyle={{
               textAlign: 'center',
-              marginTop: sizeBlock.getHeightSize(20),
+              marginVertical: sizeBlock.getHeightSize(25),
             }}>
-            Already have an account?{'  '}
-            <AppText fontType="medium" color={appColors.green}>
-              Login
-            </AppText>
+            or sign up with
           </AppText>
-        </AppPressable>
-      </View>
-    </ScrollView>
+
+          <AppButton
+            buttonType="outlined"
+            title="Sign up with Google"
+            iconName="google"
+            disabled
+            bgColor={appColors.green}
+            onPress={() => {
+              navigateTo('GoogleAuthScreen');
+            }}
+            textColor={appColors.text}
+            customViewStyle={{marginBottom: sizeBlock.getHeightSize(10)}}
+          />
+
+          <AppButton
+            buttonType="outlined"
+            iconName="apple"
+            textColor={appColors.text}
+            title="Sign up with Apple"
+            bgColor={appColors.green}
+            disabled
+            onPress={() => {}}
+          />
+
+          {/* Already Have an Account? */}
+          <AppPressable onPress={() => navigateTo('LoginScreen')}>
+            <AppText
+              fontType="medium"
+              customStyle={{
+                textAlign: 'center',
+                marginTop: sizeBlock.getHeightSize(20),
+              }}>
+              Already have an account?{'  '}
+              <AppText fontType="medium" color={appColors.green}>
+                Login
+              </AppText>
+            </AppText>
+          </AppPressable>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

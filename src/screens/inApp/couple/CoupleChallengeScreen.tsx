@@ -1,5 +1,12 @@
 import React, {useMemo} from 'react';
-import {FlatList, Pressable, ScrollView, StatusBar, View} from 'react-native';
+import {
+  FlatList,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  View,
+} from 'react-native';
 import {SvgProps} from 'react-native-svg';
 import {ChallengeType} from '@/api/games';
 import CardIcon from '@/assets/images/card.svg';
@@ -132,7 +139,7 @@ const CoupleChallengeScreen = ({navigation}: CoupleChallengeScreenProps) => {
   };
 
   return (
-    <View style={coupleChallengeStyle.wrapper}>
+    <SafeAreaView style={coupleChallengeStyle.wrapper}>
       <StatusBar backgroundColor={appColors.green} barStyle={'light-content'} />
       <HeaderComponent
         title="Couple challenge"
@@ -179,7 +186,7 @@ const CoupleChallengeScreen = ({navigation}: CoupleChallengeScreenProps) => {
           </AppPressable>
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

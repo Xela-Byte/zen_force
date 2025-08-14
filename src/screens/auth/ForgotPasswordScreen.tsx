@@ -1,6 +1,6 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {ScrollView, StatusBar, View, SafeAreaView} from 'react-native';
 import AppButton from '@/components/button/AppButton';
 import AppPressable from '@/components/button/AppPressable';
 import BackButton from '@/components/button/BackButton';
@@ -27,46 +27,48 @@ const ForgotPasswordScreen = ({navigation}: ForgotPasswordScreenProps) => {
     navigation.navigate(route);
   };
   return (
-    <ScrollView style={loginStyle.wrapper}>
+    <SafeAreaView style={loginStyle.wrapper}>
       <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
-      <BackButton navigation={navigation} />
-      <View style={loginStyle.container}>
-        <AppText fontSize={fontSize.medium} fontType="medium">
-          Forgot Password?
-        </AppText>
-        <AppText
-          color={appColors.textGrey}
-          customStyle={{
-            marginTop: sizeBlock.getHeightSize(10),
-          }}>
-          Sign up to get started
-        </AppText>
+      <ScrollView style={loginStyle.wrapper}>
+        <BackButton navigation={navigation} />
+        <View style={loginStyle.container}>
+          <AppText fontSize={fontSize.medium} fontType="medium">
+            Forgot Password?
+          </AppText>
+          <AppText
+            color={appColors.textGrey}
+            customStyle={{
+              marginTop: sizeBlock.getHeightSize(10),
+            }}>
+            Sign up to get started
+          </AppText>
 
-        <AppInput<Inputs>
-          control={control}
-          name="email"
-          placeholder="Enter your email"
-          animatedPlaceholder="Email"
-          customStyle={{
-            marginTop: sizeBlock.getHeightSize(50),
-          }}
-        />
+          <AppInput<Inputs>
+            control={control}
+            name="email"
+            placeholder="Enter your email"
+            animatedPlaceholder="Email"
+            customStyle={{
+              marginTop: sizeBlock.getHeightSize(50),
+            }}
+          />
 
-        <View
-          style={{
-            marginVertical: sizeBlock.getHeightSize(10),
-          }}
-        />
+          <View
+            style={{
+              marginVertical: sizeBlock.getHeightSize(10),
+            }}
+          />
 
-        <AppButton
-          title="Send Reset Link"
-          bgColor={appColors.green}
-          onPress={() => {
-            navigateTo('CreateNewPasswordScreen');
-          }}
-        />
-      </View>
-    </ScrollView>
+          <AppButton
+            title="Send Reset Link"
+            bgColor={appColors.green}
+            onPress={() => {
+              navigateTo('CreateNewPasswordScreen');
+            }}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

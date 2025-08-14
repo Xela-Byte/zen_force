@@ -22,7 +22,14 @@ import {AddPartnerScreenProps} from '@/types/navigation/HomeStackNavigationType'
 import Clipboard from '@react-native-clipboard/clipboard';
 import {useMutation} from '@tanstack/react-query';
 import React, {useMemo, useState} from 'react';
-import {ScrollView, Share, StatusBar, ToastAndroid, View} from 'react-native';
+import {
+  ScrollView,
+  Share,
+  StatusBar,
+  ToastAndroid,
+  View,
+  SafeAreaView,
+} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
 type Props = {};
@@ -120,110 +127,119 @@ const AddPartnerScreen = ({navigation}: AddPartnerScreenProps) => {
 
   return (
     <>
-      <StatusBar backgroundColor={appColors.white} barStyle={'dark-content'} />
-      <ScrollView style={detailsStyle.wrapper}>
-        <HeaderComponent title={'Add Partner'} navigation={navigation} />
-        <View style={detailsStyle.container}>
-          <AppText customStyle={{marginVertical: sizeBlock.getHeightSize(10)}}>
-            Your partner must also install the app and get a user ID
-          </AppText>
+      <SafeAreaView style={detailsStyle.wrapper}>
+        <StatusBar
+          backgroundColor={appColors.white}
+          barStyle={'dark-content'}
+        />
+        <ScrollView style={detailsStyle.wrapper}>
+          <HeaderComponent title={'Add Partner'} navigation={navigation} />
+          <View style={detailsStyle.container}>
+            <AppText
+              customStyle={{marginVertical: sizeBlock.getHeightSize(10)}}>
+              Your partner must also install the app and get a user ID
+            </AppText>
 
-          <AppButton
-            title="Invite partner to download"
-            onPress={() => {
-              onShare();
-            }}
-            textColor={appColors.green}
-            bgColor={appColors.lightGreen}
-            customViewStyle={{
-              marginVertical: sizeBlock.getHeightSize(20),
-            }}
-          />
+            <AppButton
+              title="Invite partner to download"
+              onPress={() => {
+                onShare();
+              }}
+              textColor={appColors.green}
+              bgColor={appColors.lightGreen}
+              customViewStyle={{
+                marginVertical: sizeBlock.getHeightSize(20),
+              }}
+            />
 
-          <AppText fontSize={fontSize.small + 1}>Your invite code is:</AppText>
+            <AppText fontSize={fontSize.small + 1}>
+              Your invite code is:
+            </AppText>
 
-          <AppPressable
-            onPress={() => {
-              copyInviteCode();
-            }}
-            customViewStyle={{
-              marginVertical: sizeBlock.getHeightSize(20),
-              marginHorizontal: 'auto',
-            }}>
+            <AppPressable
+              onPress={() => {
+                copyInviteCode();
+              }}
+              customViewStyle={{
+                marginVertical: sizeBlock.getHeightSize(20),
+                marginHorizontal: 'auto',
+              }}>
+              <View
+                style={{
+                  ...universalStyle.flexBetween,
+                  columnGap: sizeBlock.getWidthSize(15),
+                }}>
+                <AppText
+                  fontSize={sizeBlock.fontSize(32)}
+                  fontType="medium"
+                  color={appColors.green}>
+                  {userInviteCode}
+                </AppText>
+
+                <ClipboardIcon />
+              </View>
+            </AppPressable>
+
             <View
               style={{
-                ...universalStyle.flexBetween,
-                columnGap: sizeBlock.getWidthSize(15),
+                marginHorizontal: 'auto',
+                marginBottom: sizeBlock.getHeightSize(30),
               }}>
-              <AppText
-                fontSize={sizeBlock.fontSize(32)}
-                fontType="medium"
-                color={appColors.green}>
-                {userInviteCode}
-              </AppText>
-
-              <ClipboardIcon />
+              <QRCode value={'123ABC'} />
             </View>
-          </AppPressable>
 
-          <View
-            style={{
-              marginHorizontal: 'auto',
-              marginBottom: sizeBlock.getHeightSize(30),
-            }}>
-            <QRCode value={'123ABC'} />
-          </View>
+            <AppText
+              customStyle={{marginBottom: sizeBlock.getHeightSize(5)}}
+              fontType="medium">
+              If your partner has a Code
+            </AppText>
+            <AppText>
+              Input your partner’s code to connect Or scan your partner’s QR
+              Code
+            </AppText>
 
-          <AppText
-            customStyle={{marginBottom: sizeBlock.getHeightSize(5)}}
-            fontType="medium">
-            If your partner has a Code
-          </AppText>
-          <AppText>
-            Input your partner’s code to connect Or scan your partner’s QR Code
-          </AppText>
+            <View
+              style={{
+                backgroundColor: appColors.lightCyan,
+                marginVertical: sizeBlock.getHeightSize(20),
+                padding: sizeBlock.getWidthSize(10),
+                borderRadius: borderRadius.medium,
+              }}>
+              <CodeInputComponent
+                cellCount={CELL_COUNT}
+                onChange={(value: string) => {
+                  handleCodeInput(value);
+                }}
+              />
+            </View>
 
-          <View
-            style={{
-              backgroundColor: appColors.lightCyan,
-              marginVertical: sizeBlock.getHeightSize(20),
-              padding: sizeBlock.getWidthSize(10),
-              borderRadius: borderRadius.medium,
-            }}>
-            <CodeInputComponent
-              cellCount={CELL_COUNT}
-              onChange={(value: string) => {
-                handleCodeInput(value);
+            {showBottomTab && (
+              <AbsoluteOverlay>
+                <PartnerLinkSuccess
+                  setShowBottomTab={setShowBottomTab}
+                  showBottomTab={showBottomTab}
+                  onDone={() => {
+                    navigation.goBack();
+                  }}
+                />
+              </AbsoluteOverlay>
+            )}
+
+            <AppButton
+              title="Connect Now"
+              bgColor={appColors.green}
+              customViewStyle={{
+                marginTop: sizeBlock.getHeightSize(20),
+              }}
+              disabled={!isValidCode}
+              loading={linkPartnerMutation.isPending}
+              onPress={() => {
+                handleLinkPartner();
               }}
             />
           </View>
-
-          {showBottomTab && (
-            <AbsoluteOverlay>
-              <PartnerLinkSuccess
-                setShowBottomTab={setShowBottomTab}
-                showBottomTab={showBottomTab}
-                onDone={() => {
-                  navigation.goBack();
-                }}
-              />
-            </AbsoluteOverlay>
-          )}
-
-          <AppButton
-            title="Connect Now"
-            bgColor={appColors.green}
-            customViewStyle={{
-              marginTop: sizeBlock.getHeightSize(20),
-            }}
-            disabled={!isValidCode}
-            loading={linkPartnerMutation.isPending}
-            onPress={() => {
-              handleLinkPartner();
-            }}
-          />
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 };

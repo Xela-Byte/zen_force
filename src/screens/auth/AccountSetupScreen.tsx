@@ -13,7 +13,7 @@ import {
   AuthStackParamList,
 } from '@/types/navigation/AuthNavigationType';
 import {useState} from 'react';
-import {View} from 'react-native';
+import {View, SafeAreaView} from 'react-native';
 
 //
 
@@ -72,7 +72,7 @@ const AccountSetupScreen = ({navigation}: AccountSetupScreenProps) => {
 
   return (
     <>
-      <View style={accountSetupStyle.wrapper}>
+      <SafeAreaView style={accountSetupStyle.wrapper}>
         <BackButton navigation={navigation} />
         <View style={accountSetupStyle.container}>
           <AppText fontType="medium" fontSize={fontSize.medium}>
@@ -99,21 +99,21 @@ const AccountSetupScreen = ({navigation}: AccountSetupScreenProps) => {
             })}
           </View>
         </View>
-      </View>
 
-      <View
-        style={{
-          paddingHorizontal: sizeBlock.getWidthSize(20),
-        }}>
-        <AppButton
-          bgColor={appColors.green}
-          title="Set up profile"
-          disabled={!selectedOption}
-          onPress={() => {
-            handleNext();
-          }}
-        />
-      </View>
+        <View
+          style={{
+            paddingHorizontal: sizeBlock.getWidthSize(20),
+          }}>
+          <AppButton
+            bgColor={appColors.green}
+            title="Set up profile"
+            disabled={!selectedOption}
+            onPress={() => {
+              handleNext();
+            }}
+          />
+        </View>
+      </SafeAreaView>
     </>
   );
 };

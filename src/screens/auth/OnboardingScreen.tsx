@@ -1,5 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Dimensions, StatusBar} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  StatusBar,
+  SafeAreaView,
+} from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import AppImage from '@/components/image/AppImage';
 import {onboardingStyle} from '@/styles/onboardingStyle';
@@ -82,7 +89,7 @@ const OnboardingScreen = ({navigation}: OnboardingScreenProps) => {
   }, [isNewInstall, dispatch]);
 
   return (
-    <View style={onboardingStyle.wrapper}>
+    <SafeAreaView style={onboardingStyle.wrapper}>
       <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
       <View
         style={{
@@ -134,7 +141,7 @@ const OnboardingScreen = ({navigation}: OnboardingScreenProps) => {
           </AppText>
         </AppPressable>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

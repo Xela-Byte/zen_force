@@ -1,6 +1,6 @@
 import LottieView from 'lottie-react-native';
 import React, {useMemo, useRef, useState} from 'react';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
 import PulseIcon from '@/assets/images/pulse.svg';
 import AppButton from '@/components/button/AppButton';
 import HeaderComponent from '@/components/button/HeaderComponent';
@@ -234,7 +234,7 @@ const QuestionRouletteDetailScreen = ({
   };
 
   return (
-    <View style={questionRouletteStyle.wrapper}>
+    <SafeAreaView style={questionRouletteStyle.wrapper}>
       <StatusBar backgroundColor={appColors.green} barStyle={'light-content'} />
       <HeaderComponent
         title={stageType}
@@ -338,7 +338,7 @@ const QuestionRouletteDetailScreen = ({
           </>
         )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

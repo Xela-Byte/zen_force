@@ -20,7 +20,7 @@ import {
 import {viewPartnerStyle} from '@/styles/viewPartnerStyle';
 import {ViewPartnerScreenProps} from '@/types/navigation/HomeStackNavigationType';
 import {useMemo, useState} from 'react';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {ScrollView, StatusBar, View, SafeAreaView} from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const ViewPartnerScreen = ({navigation}: ViewPartnerScreenProps) => {
@@ -106,187 +106,189 @@ const ViewPartnerScreen = ({navigation}: ViewPartnerScreenProps) => {
           content="All history with this partner will be cleared if you disconnect partner."
         />
       )}
-      <ScrollView style={viewPartnerStyle.wrapper}>
+      <SafeAreaView style={viewPartnerStyle.wrapper}>
         <StatusBar
           barStyle={'dark-content'}
           backgroundColor={appColors.white}
         />
-        <Pattern
-          width={screenWidth}
-          height={screenHeight}
-          style={{
-            position: 'absolute',
-          }}
-        />
-        <HeaderComponent title="Your Partner" navigation={navigation} />
-        <View style={viewPartnerStyle.container}>
-          <View style={viewPartnerStyle.partnerTab}>
-            <AppText fontType="semiBold" fontSize={fontSize.medium + 5}>
-              Your
-            </AppText>
-
-            <View
-              style={{
-                position: 'relative',
-              }}>
-              <View
-                style={{
-                  width: sizeBlock.getWidthSize(180),
-                  height: sizeBlock.getHeightSize(50),
-                  ...universalStyle.centering,
-                  zIndex: 9,
-                  backgroundColor: appColors.green,
-                  paddingHorizontal: sizeBlock.getWidthSize(20),
-                  paddingVertical: sizeBlock.getWidthSize(7),
-                }}>
-                <AppText
-                  fontType="semiBold"
-                  color={appColors.white}
-                  fontSize={fontSize.medium + 5}>
-                  Partner!
-                </AppText>
-              </View>
-              <View
-                style={{
-                  width: sizeBlock.getWidthSize(167),
-                  height: sizeBlock.getHeightSize(50),
-                  ...universalStyle.centering,
-                  zIndex: 8,
-                  paddingHorizontal: sizeBlock.getWidthSize(20),
-                  paddingVertical: sizeBlock.getWidthSize(7),
-                  backgroundColor: '#CFE0C5',
-                  bottom: -sizeBlock.getHeightSize(7),
-                  left: sizeBlock.getWidthSize(20),
-                  position: 'absolute',
-                }}>
-                <AppText
-                  customStyle={{opacity: 0}}
-                  fontType="semiBold"
-                  color={appColors.white}
-                  fontSize={fontSize.medium + 5}>
-                  Partner
-                </AppText>
-              </View>
-            </View>
-          </View>
-          {isLoading && <LoadingState />}
-
-          {isSuccess && data && (
-            <View
-              style={{
-                marginVertical: sizeBlock.getHeightSize(80),
-                ...universalStyle.spaceBetween,
-              }}>
-              <CurvedArrow
-                width={sizeBlock.getWidthSize(95)}
-                height={sizeBlock.getHeightSize(35)}
-                style={{
-                  position: 'absolute',
-                  left: '35%',
-                  right: '50%',
-                  top: 0,
-                  transform: [{rotate: '180deg'}],
-                }}
-              />
-              <CurvedArrow
-                width={sizeBlock.getWidthSize(100)}
-                height={sizeBlock.getHeightSize(35)}
-                style={{
-                  position: 'absolute',
-                  left: '35%',
-                  right: '50%',
-                  bottom: sizeBlock.getHeightSize(20),
-                }}
-              />
-
-              <View>
-                <View style={viewPartnerStyle.partnerAvatar}>
-                  {!userData?.profileImage ? (
-                    <AppImage
-                      source={AppLogo}
-                      style={{
-                        width: sizeBlock.getWidthSize(90),
-                        height: sizeBlock.getWidthSize(90),
-                        borderRadius: borderRadius.full,
-                      }}
-                      resizeMode="cover"
-                    />
-                  ) : (
-                    <AppImage
-                      source={{
-                        uri: userData?.profileImage,
-                      }}
-                      style={{
-                        width: sizeBlock.getWidthSize(90),
-                        height: sizeBlock.getWidthSize(90),
-                        borderRadius: borderRadius.full,
-                      }}
-                      alt="Avatar"
-                      resizeMode="cover"
-                    />
-                  )}
-                </View>
-                <AppText
-                  fontType="medium"
-                  customStyle={{
-                    textAlign: 'center',
-                    marginVertical: sizeBlock.getHeightSize(10),
-                  }}>
-                  {userData?.fullName}
-                </AppText>
-              </View>
-
-              {/* Partner */}
-              <View>
-                <View style={viewPartnerStyle.partnerAvatar}>
-                  {!partnerImage ? (
-                    <AppImage
-                      source={AppLogo}
-                      style={{
-                        width: sizeBlock.getWidthSize(90),
-                        height: sizeBlock.getWidthSize(90),
-                        borderRadius: borderRadius.full,
-                      }}
-                      resizeMode="cover"
-                    />
-                  ) : (
-                    <AppImage
-                      source={{
-                        uri: partnerImage,
-                      }}
-                      style={{
-                        width: sizeBlock.getWidthSize(90),
-                        height: sizeBlock.getWidthSize(90),
-                        borderRadius: borderRadius.full,
-                      }}
-                      alt="Avatar"
-                      resizeMode="cover"
-                    />
-                  )}
-                </View>
-                <AppText
-                  fontType="medium"
-                  customStyle={{
-                    textAlign: 'center',
-                    marginVertical: sizeBlock.getHeightSize(10),
-                  }}>
-                  {partnerName}
-                </AppText>
-              </View>
-            </View>
-          )}
-
-          <AppButton
-            bgColor={appColors.green}
-            customViewStyle={{
-              marginTop: '40%',
+        <ScrollView style={viewPartnerStyle.wrapper}>
+          <Pattern
+            width={screenWidth}
+            height={screenHeight}
+            style={{
+              position: 'absolute',
             }}
-            disabled={isLoading || isError}
-            onPress={() => {}}
-            title="Disconnect Partner"
           />
-        </View>
-      </ScrollView>
+          <HeaderComponent title="Your Partner" navigation={navigation} />
+          <View style={viewPartnerStyle.container}>
+            <View style={viewPartnerStyle.partnerTab}>
+              <AppText fontType="semiBold" fontSize={fontSize.medium + 5}>
+                Your
+              </AppText>
+
+              <View
+                style={{
+                  position: 'relative',
+                }}>
+                <View
+                  style={{
+                    width: sizeBlock.getWidthSize(180),
+                    height: sizeBlock.getHeightSize(50),
+                    ...universalStyle.centering,
+                    zIndex: 9,
+                    backgroundColor: appColors.green,
+                    paddingHorizontal: sizeBlock.getWidthSize(20),
+                    paddingVertical: sizeBlock.getWidthSize(7),
+                  }}>
+                  <AppText
+                    fontType="semiBold"
+                    color={appColors.white}
+                    fontSize={fontSize.medium + 5}>
+                    Partner!
+                  </AppText>
+                </View>
+                <View
+                  style={{
+                    width: sizeBlock.getWidthSize(167),
+                    height: sizeBlock.getHeightSize(50),
+                    ...universalStyle.centering,
+                    zIndex: 8,
+                    paddingHorizontal: sizeBlock.getWidthSize(20),
+                    paddingVertical: sizeBlock.getWidthSize(7),
+                    backgroundColor: '#CFE0C5',
+                    bottom: -sizeBlock.getHeightSize(7),
+                    left: sizeBlock.getWidthSize(20),
+                    position: 'absolute',
+                  }}>
+                  <AppText
+                    customStyle={{opacity: 0}}
+                    fontType="semiBold"
+                    color={appColors.white}
+                    fontSize={fontSize.medium + 5}>
+                    Partner
+                  </AppText>
+                </View>
+              </View>
+            </View>
+            {isLoading && <LoadingState />}
+
+            {isSuccess && data && (
+              <View
+                style={{
+                  marginVertical: sizeBlock.getHeightSize(80),
+                  ...universalStyle.spaceBetween,
+                }}>
+                <CurvedArrow
+                  width={sizeBlock.getWidthSize(95)}
+                  height={sizeBlock.getHeightSize(35)}
+                  style={{
+                    position: 'absolute',
+                    left: '35%',
+                    right: '50%',
+                    top: 0,
+                    transform: [{rotate: '180deg'}],
+                  }}
+                />
+                <CurvedArrow
+                  width={sizeBlock.getWidthSize(100)}
+                  height={sizeBlock.getHeightSize(35)}
+                  style={{
+                    position: 'absolute',
+                    left: '35%',
+                    right: '50%',
+                    bottom: sizeBlock.getHeightSize(20),
+                  }}
+                />
+
+                <View>
+                  <View style={viewPartnerStyle.partnerAvatar}>
+                    {!userData?.profileImage ? (
+                      <AppImage
+                        source={AppLogo}
+                        style={{
+                          width: sizeBlock.getWidthSize(90),
+                          height: sizeBlock.getWidthSize(90),
+                          borderRadius: borderRadius.full,
+                        }}
+                        resizeMode="cover"
+                      />
+                    ) : (
+                      <AppImage
+                        source={{
+                          uri: userData?.profileImage,
+                        }}
+                        style={{
+                          width: sizeBlock.getWidthSize(90),
+                          height: sizeBlock.getWidthSize(90),
+                          borderRadius: borderRadius.full,
+                        }}
+                        alt="Avatar"
+                        resizeMode="cover"
+                      />
+                    )}
+                  </View>
+                  <AppText
+                    fontType="medium"
+                    customStyle={{
+                      textAlign: 'center',
+                      marginVertical: sizeBlock.getHeightSize(10),
+                    }}>
+                    {userData?.fullName}
+                  </AppText>
+                </View>
+
+                {/* Partner */}
+                <View>
+                  <View style={viewPartnerStyle.partnerAvatar}>
+                    {!partnerImage ? (
+                      <AppImage
+                        source={AppLogo}
+                        style={{
+                          width: sizeBlock.getWidthSize(90),
+                          height: sizeBlock.getWidthSize(90),
+                          borderRadius: borderRadius.full,
+                        }}
+                        resizeMode="cover"
+                      />
+                    ) : (
+                      <AppImage
+                        source={{
+                          uri: partnerImage,
+                        }}
+                        style={{
+                          width: sizeBlock.getWidthSize(90),
+                          height: sizeBlock.getWidthSize(90),
+                          borderRadius: borderRadius.full,
+                        }}
+                        alt="Avatar"
+                        resizeMode="cover"
+                      />
+                    )}
+                  </View>
+                  <AppText
+                    fontType="medium"
+                    customStyle={{
+                      textAlign: 'center',
+                      marginVertical: sizeBlock.getHeightSize(10),
+                    }}>
+                    {partnerName}
+                  </AppText>
+                </View>
+              </View>
+            )}
+
+            <AppButton
+              bgColor={appColors.green}
+              customViewStyle={{
+                marginTop: '40%',
+              }}
+              disabled={isLoading || isError}
+              onPress={() => {}}
+              title="Disconnect Partner"
+            />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 };
