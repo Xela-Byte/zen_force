@@ -33,6 +33,7 @@ export const plans = [
       'Limited prompts per day',
       'Community support',
     ],
+    planType: 'free' as const,
   },
   {
     title: 'PRO PLAN',
@@ -45,6 +46,7 @@ export const plans = [
       'Priority customer support',
       'Ad-free experience',
     ],
+    planType: 'basic' as const,
   },
   {
     title: 'PREMIUM PLAN',
@@ -57,6 +59,7 @@ export const plans = [
       'Early access to new features',
       '1-on-1 expert consultations',
     ],
+    planType: 'premium' as const,
   },
 ];
 
@@ -99,6 +102,24 @@ const PlanSelection = ({setShowBottomTab, showBottomTab}: Props) => {
   );
 
   const snapPoints = useMemo(() => ['55%'], []);
+
+  // Determine if selected plan is free
+  const isFreePlan = selectedPlan.planType === 'free';
+
+  // Get button title and color based on plan type
+  const getButtonTitle = () => {
+    if (isFreePlan) {
+      return 'Free Plan Selected';
+    }
+    return 'Continue to Payment';
+  };
+
+  const getButtonColor = () => {
+    if (isFreePlan) {
+      return appColors.grey;
+    }
+    return appColors.green;
+  };
 
   return (
     <>
@@ -172,11 +193,14 @@ const PlanSelection = ({setShowBottomTab, showBottomTab}: Props) => {
               </ScrollView>
 
               <AppButton
-                bgColor={appColors.green}
+                bgColor={getButtonColor()}
                 onPress={() => {
-                  handleDone();
+                  if (!isFreePlan) {
+                    handleDone();
+                  }
                 }}
-                title="Continue to payment"
+                title={getButtonTitle()}
+                disabled={isFreePlan}
               />
             </View>
           </BottomSheetView>

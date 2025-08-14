@@ -24,6 +24,7 @@ export const appColors = {
   limeGreen: '#83AD58',
   input: '#AACF95',
   card: '#EFF8ED',
+  blue: '#007AFF',
 };
 
 export const screenWidth = Dimensions.get('screen').width;

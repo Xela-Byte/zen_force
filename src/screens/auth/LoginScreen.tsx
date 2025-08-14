@@ -1,4 +1,5 @@
 import {loginFn} from '@/api/auth/login';
+import {googleAuthFn} from '@/api/google';
 import AppButton from '@/components/button/AppButton';
 import AppPressable from '@/components/button/AppPressable';
 import BackButton from '@/components/button/BackButton';
@@ -6,12 +7,7 @@ import AppInput from '@/components/input/AppInput';
 import AppText from '@/components/text/AppText';
 import {EMAIL_REGEX} from '@/hooks/helpers/Regex';
 import useToast from '@/hooks/helpers/useToast';
-import {useMutation} from '@tanstack/react-query';
-import React from 'react';
-import {useForm} from 'react-hook-form';
-import {ScrollView, StatusBar, View} from 'react-native';
-import {useDispatch} from 'react-redux';
-
+import {AppDispatch} from '@/store/index';
 import {setUser, UserProfile} from '@/store/slices/appSlice';
 import {loginStyle} from '@/styles/loginStyle';
 import {appColors, fontSize, sizeBlock} from '@/styles/universalStyle';
@@ -19,7 +15,15 @@ import {
   AuthStackParamList,
   LoginScreenProps,
 } from '@/types/navigation/AuthNavigationType';
-import {AppDispatch} from '@/store/index';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {useMutation} from '@tanstack/react-query';
+import React, {useEffect} from 'react';
+import {useForm} from 'react-hook-form';
+import {ScrollView, StatusBar, View} from 'react-native';
+import {useDispatch} from 'react-redux';
 
 interface Inputs {
   email: string;
@@ -32,6 +36,25 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const canGoBack = navigation.canGoBack();
+
+  //   client id for android : 640380190205-r733gdlkak5ag3qqalp1tn0t0jlmk7pa.apps.googleusercontent.com
+  // [11/08, 7:57 pm] Khalid: 640380190205-puskkrjs4jdlemeuld1t32n3vgutc464.apps.googleusercontent.com
+
+  // Configure Google Sign-In
+  useEffect(() => {
+    try {
+      GoogleSignin.configure({
+        webClientId:
+          '640380190205-puskkrjs4jdlemeuld1t32n3vgutc464.apps.googleusercontent.com', // required for getting the idToken on Android
+        offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+        hostedDomain: '', // specifies a hosted domain restriction
+        forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below
+      });
+      console.log('✅ Google Sign-In configuration successful');
+    } catch (error) {
+      console.error('❌ Google Sign-In configuration failed:', error);
+    }
+  }, []);
 
   const storeUser = (user: UserProfile) => {
     dispatch(setUser(user));
@@ -69,6 +92,30 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
     },
   });
 
+  const googleAuthMutation = useMutation({
+    mutationFn: googleAuthFn,
+    onSuccess: result => {
+      console.log('====================================');
+      console.log('Google auth result:', result);
+      console.log('====================================');
+      showToast({
+        text1: `Welcome back to Zen Force!`,
+        text2: `Let's go 🚀`,
+        type: 'success',
+      });
+
+      storeUser(result.data);
+    },
+    onError: (error: any) => {
+      console.error('Google auth error:', error);
+      showToast({
+        text1: 'Error with Google authentication.',
+        type: 'error',
+        text2: error.message || 'Google authentication failed',
+      });
+    },
+  });
+
   const cleanValue = (string: string = '') => {
     return string.toLowerCase().trim();
   };
@@ -79,6 +126,49 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
       password: data.password.trim(),
     };
     await loginMutation.mutateAsync(updatedData);
+  };
+
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log('Google Sign-In user info:', userInfo);
+
+      // Get the ID token
+      const tokens = await GoogleSignin.getTokens();
+      if (tokens.accessToken) {
+        await googleAuthMutation.mutateAsync({
+          idToken: tokens.accessToken,
+          platform: 'mobile',
+        });
+      } else {
+        throw new Error('No access token received from Google');
+      }
+    } catch (error: any) {
+      console.error('Google Sign-In error:', error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        showToast({
+          text1: 'Sign in cancelled',
+          type: 'info',
+        });
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        showToast({
+          text1: 'Sign in already in progress',
+          type: 'info',
+        });
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        showToast({
+          text1: 'Play services not available',
+          type: 'error',
+        });
+      } else {
+        showToast({
+          text1: 'Google Sign-In failed',
+          type: 'error',
+          text2: error.message || 'Unknown error occurred',
+        });
+      }
+    }
   };
 
   return (
@@ -174,9 +264,9 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           title="Sign in with Google"
           iconName="google"
           bgColor={appColors.green}
-          onPress={() => {}}
+          onPress={signIn}
           textColor={appColors.text}
-          disabled
+          loading={googleAuthMutation.isPending}
           customViewStyle={{
             marginBottom: sizeBlock.getHeightSize(10),
           }}

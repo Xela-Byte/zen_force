@@ -1,6 +1,7 @@
 import {useAppSelector} from '@/hooks/helpers/useRedux';
 import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
+import {Linking} from 'react-native';
 import AuthNavigator from './auth/AuthNavigator';
 import BottomTabNavigator from './bottomTab/BottomTabNavigator';
 
@@ -8,8 +9,22 @@ type Props = {};
 
 const Navigator = (props: Props) => {
   const user = useAppSelector(state => state.app.user);
+
+  const linking = {
+    prefixes: ['zenforce://'],
+    config: {
+      screens: {
+        Profile: {
+          screens: {
+            ChoosePlanScreen: 'choose-plan',
+          },
+        },
+      },
+    },
+  };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <StatusBar />
       {!user ? <AuthNavigator /> : <BottomTabNavigator />}
     </NavigationContainer>
