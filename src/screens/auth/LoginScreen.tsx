@@ -211,6 +211,9 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
             autoFocus: true,
             keyboardType: 'email-address',
             autoComplete: 'email',
+            onSubmitEditing: e => {
+              cleanValue(e.nativeEvent.text);
+            },
           }}
         />
 
@@ -225,6 +228,9 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           }}
           customStyle={{
             marginTop: sizeBlock.getHeightSize(10),
+          }}
+          inputProps={{
+            autoComplete: 'password',
           }}
         />
 

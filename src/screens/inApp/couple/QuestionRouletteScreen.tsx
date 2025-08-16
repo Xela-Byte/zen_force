@@ -33,6 +33,7 @@ interface Stage {
   questions: number;
   status: string;
   questionType: QuestionType;
+  imageSrc: any;
 }
 
 const stages: Stage[] = [
@@ -41,30 +42,35 @@ const stages: Stage[] = [
     questions: 12,
     status: 'Free',
     questionType: 'single-dating',
+    imageSrc: require('@/assets/images/single-dating.png'),
   },
   {
     title: 'Couple (Non married)',
     questions: 12,
     status: 'Free',
     questionType: 'couple-unmarried',
+    imageSrc: require('@/assets/images/couple-non-married.png'),
   },
   {
     title: 'Married Couples',
     questions: 12,
     status: 'Free',
     questionType: 'married-couples',
+    imageSrc: require('@/assets/images/married-couples.png'),
   },
   {
     title: 'Newly wed',
     questions: 12,
     status: 'Free',
     questionType: 'newly-wed',
+    imageSrc: require('@/assets/images/newly-wed.png'),
   },
   {
     title: 'Advance (Romance & Erotica)',
     questions: 12,
     status: 'Premium',
     questionType: 'advance-romance-erotica',
+    imageSrc: require('@/assets/images/advanced.png'),
   },
 ];
 
@@ -89,7 +95,7 @@ const QuestionRouletteScreen = ({navigation}: QuestionRouletteScreenProps) => {
       <AppPressable onPress={handlePress}>
         <View style={questionRouletteStyle.gameTab}>
           <AppImage
-            source={CoupleImage}
+            source={stg.imageSrc}
             style={{
               width: '100%',
               height: '100%',
