@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
 import React from 'react';
 import {useGoogleSignupQuery} from '@/hooks/queries/useGoogleSignupQuery';
 
@@ -8,9 +8,11 @@ const GoogleAuthScreen = (props: Props) => {
   const {data} = useGoogleSignupQuery();
 
   return (
-    <View>
-      <Text>GoogleAuthScreen</Text>
-    </View>
+    <SafeAreaView>
+      <View>
+        <Text>GoogleAuthScreen</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, View, SafeAreaView} from 'react-native';
 import AppPressable from '@/components/button/AppPressable';
 import HeaderComponent from '@/components/button/HeaderComponent';
 import StepFive from '@/components/details/StepFive';
@@ -100,38 +100,40 @@ const DetailsScreen = ({navigation}: DetailsScreenProps) => {
   }, [currentStep]);
   return (
     <>
-      <ScrollView style={detailsStyle.wrapper}>
-        <HeaderComponent
-          title={allSteps[currentStep]?.headerText || ''}
-          navigation={navigation}
-          extraComponent={currentStep === 4 && <SkipButton />}
-          onPress={() => {
-            currentStep !== 0
-              ? setCurrentStep(currentStep - 1)
-              : navigation.goBack();
-          }}
-        />
-        <View style={detailsStyle.container}>
-          <View style={detailsStyle.slideWrapper}>
-            {Array.from({length: 5}, (_, index) => {
-              return (
-                <AppPressable
-                  key={index}
-                  customViewStyle={
-                    currentStep >= index
-                      ? detailsStyle.activeSlideStyle
-                      : detailsStyle.slideStyle
-                  }
-                  onPress={() => {
-                    setCurrentStep(index);
-                  }}
-                />
-              );
-            })}
+      <SafeAreaView style={detailsStyle.wrapper}>
+        <ScrollView style={detailsStyle.wrapper}>
+          <HeaderComponent
+            title={allSteps[currentStep]?.headerText || ''}
+            navigation={navigation}
+            extraComponent={currentStep === 4 && <SkipButton />}
+            onPress={() => {
+              currentStep !== 0
+                ? setCurrentStep(currentStep - 1)
+                : navigation.goBack();
+            }}
+          />
+          <View style={detailsStyle.container}>
+            <View style={detailsStyle.slideWrapper}>
+              {Array.from({length: 5}, (_, index) => {
+                return (
+                  <AppPressable
+                    key={index}
+                    customViewStyle={
+                      currentStep >= index
+                        ? detailsStyle.activeSlideStyle
+                        : detailsStyle.slideStyle
+                    }
+                    onPress={() => {
+                      setCurrentStep(index);
+                    }}
+                  />
+                );
+              })}
+            </View>
+            {allSteps[currentStep]?.stepComponent || null}
           </View>
-          {allSteps[currentStep]?.stepComponent || null}
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 };

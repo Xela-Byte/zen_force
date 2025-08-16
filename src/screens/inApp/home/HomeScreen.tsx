@@ -21,7 +21,7 @@ import {
 } from '@/styles/universalStyle';
 import {HomeScreenProps} from '@/types/navigation/HomeStackNavigationType';
 import React, {useMemo, useState} from 'react';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {ScrollView, StatusBar, View, SafeAreaView} from 'react-native';
 import ProgressPie from 'react-native-progress/Pie';
 import {GamesComponent} from '../couple/CoupleScreen';
 
@@ -81,230 +81,234 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
   }, [user]);
 
   return (
-    <ScrollView style={homeStyle.wrapper}>
+    <SafeAreaView style={homeStyle.wrapper}>
       <StatusBar backgroundColor={appColors.green} barStyle={'light-content'} />
-      <View style={homeStyle.container}>
-        {/* Header */}
-        <View style={universalStyle.flexBetween}>
-          <View
-            style={{
-              rowGap: sizeBlock.getHeightSize(5),
-              width: '80%',
-            }}>
+      <ScrollView style={homeStyle.wrapper}>
+        <View style={homeStyle.container}>
+          {/* Header */}
+          <View style={universalStyle.flexBetween}>
             <View
-              style={[
-                universalStyle.verticalCentering,
-                {
-                  columnGap: sizeBlock.getWidthSize(10),
-                },
-              ]}>
-              <SunIcon />
+              style={{
+                rowGap: sizeBlock.getHeightSize(5),
+                width: '80%',
+              }}>
+              <View
+                style={[
+                  universalStyle.verticalCentering,
+                  {
+                    columnGap: sizeBlock.getWidthSize(10),
+                  },
+                ]}>
+                <SunIcon />
+                <AppText
+                  fontType="medium"
+                  fontSize={fontSize.small - 3}
+                  color={appColors.lightPink}>
+                  GOOD MORNING
+                </AppText>
+              </View>
+              <AppText
+                color={appColors.white}
+                fontSize={fontSize.medium - 1}
+                numLine={2}
+                fontType="medium">
+                {user?.userInfo?.fullName}
+              </AppText>
+            </View>
+
+            <View style={homeStyle.avatar}>
+              {!userData?.profileImage ? (
+                <AppImage
+                  source={Avatar}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: borderRadius.full,
+                  }}
+                  alt="Avatar"
+                  resizeMode="cover"
+                />
+              ) : (
+                <AppImage
+                  source={{
+                    uri: userData?.profileImage,
+                  }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: borderRadius.full,
+                  }}
+                  alt="Avatar"
+                  resizeMode="cover"
+                />
+              )}
+            </View>
+          </View>
+
+          {/* Game */}
+          <View style={[universalStyle.flexBetween, homeStyle.gameContainer]}>
+            <View
+              style={{
+                rowGap: sizeBlock.getHeightSize(5),
+              }}>
               <AppText
                 fontType="medium"
-                fontSize={fontSize.small - 3}
-                color={appColors.lightPink}>
-                GOOD MORNING
+                fontSize={fontSize.small - 1}
+                color={useHexToRGBA(appColors.brown, 0.5)}>
+                TOP GAME
               </AppText>
-            </View>
-            <AppText
-              color={appColors.white}
-              fontSize={fontSize.medium - 1}
-              numLine={2}
-              fontType="medium">
-              {user?.userInfo?.fullName}
-            </AppText>
-          </View>
 
-          <View style={homeStyle.avatar}>
-            {!userData?.profileImage ? (
-              <AppImage
-                source={Avatar}
+              <View
+                style={[
+                  universalStyle.verticalCentering,
+                  {
+                    columnGap: sizeBlock.getWidthSize(5),
+                  },
+                ]}>
+                <PuzzleIcon />
+                <AppText
+                  color={appColors.brown}
+                  fontSize={fontSize.small + 3}
+                  fontType="medium">
+                  Memory Lane
+                </AppText>
+              </View>
+            </View>
+
+            <View style={homeStyle.avatar}>
+              <ProgressPie
+                key={`${progress}`}
+                progress={progress}
+                color={'#FF8FA2'}
+                unfilledColor={'#FFB3C0'}
+                size={sizeBlock.getWidthSize(55)}
+              />
+              <View
                 style={{
                   width: '100%',
                   height: '100%',
-                  borderRadius: borderRadius.full,
-                }}
-                alt="Avatar"
-                resizeMode="cover"
-              />
-            ) : (
-              <AppImage
-                source={{
-                  uri: userData?.profileImage,
-                }}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: borderRadius.full,
-                }}
-                alt="Avatar"
-                resizeMode="cover"
-              />
-            )}
-          </View>
-        </View>
-
-        {/* Game */}
-        <View style={[universalStyle.flexBetween, homeStyle.gameContainer]}>
-          <View
-            style={{
-              rowGap: sizeBlock.getHeightSize(5),
-            }}>
-            <AppText
-              fontType="medium"
-              fontSize={fontSize.small - 1}
-              color={useHexToRGBA(appColors.brown, 0.5)}>
-              TOP GAME
-            </AppText>
-
-            <View
-              style={[
-                universalStyle.verticalCentering,
-                {
-                  columnGap: sizeBlock.getWidthSize(5),
-                },
-              ]}>
-              <PuzzleIcon />
-              <AppText
-                color={appColors.brown}
-                fontSize={fontSize.small + 3}
-                fontType="medium">
-                Memory Lane
-              </AppText>
+                  position: 'absolute',
+                  ...universalStyle.centering,
+                }}>
+                <AppText
+                  color={appColors.white}
+                  fontSize={fontSize.small - 1}
+                  fontType="medium">
+                  {progress * 100}%
+                </AppText>
+              </View>
             </View>
           </View>
 
-          <View style={homeStyle.avatar}>
-            <ProgressPie
-              key={`${progress}`}
-              progress={progress}
-              color={'#FF8FA2'}
-              unfilledColor={'#FFB3C0'}
-              size={sizeBlock.getWidthSize(55)}
+          {/* Add partner */}
+          <View style={homeStyle.partnerCard}>
+            <MaleIcon
+              style={{
+                position: 'absolute',
+                top: sizeBlock.getHeightSize(15),
+                left: sizeBlock.getWidthSize(15),
+              }}
+            />
+            <FemaleIcon
+              style={{
+                position: 'absolute',
+                bottom: sizeBlock.getHeightSize(15),
+                right: sizeBlock.getWidthSize(15),
+              }}
+            />
+            <PulseIcon
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                transform: [{rotate: '180deg'}],
+                zIndex: 10,
+              }}
+            />
+            <PulseIcon
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                zIndex: 10,
+                left: 0,
+              }}
             />
             <View
               style={{
-                width: '100%',
-                height: '100%',
-                position: 'absolute',
                 ...universalStyle.centering,
+                flexDirection: 'column',
+                rowGap: sizeBlock.getHeightSize(25),
+                paddingHorizontal: sizeBlock.getWidthSize(35),
+                paddingVertical: sizeBlock.getHeightSize(25),
               }}>
               <AppText
                 color={appColors.white}
                 fontSize={fontSize.small - 1}
                 fontType="medium">
-                {progress * 100}%
+                YOUR PARTNER
               </AppText>
+              <AppText
+                fontSize={fontSize.small + 3}
+                customStyle={{
+                  textAlign: 'center',
+                  marginTop: sizeBlock.getHeightSize(10),
+                }}
+                fontType="medium"
+                color={appColors.white}>
+                Take part in challenges with your partner
+              </AppText>
+              <AppButton
+                icon={<OrbIcon />}
+                iconPosition="left"
+                bgColor={appColors.white}
+                textColor={appColors.green}
+                customViewStyle={{
+                  width: 'auto',
+                  borderRadius: borderRadius.full,
+                }}
+                onPress={() => {
+                  !userData?.linkedPartner
+                    ? navigateTo('AddPartnerScreen')
+                    : navigateTo('ViewPartnerScreen');
+                }}
+                title={
+                  !userData?.linkedPartner ? 'Add Partner' : 'View Partner'
+                }
+              />
             </View>
           </View>
         </View>
-
-        {/* Add partner */}
-        <View style={homeStyle.partnerCard}>
-          <MaleIcon
-            style={{
-              position: 'absolute',
-              top: sizeBlock.getHeightSize(15),
-              left: sizeBlock.getWidthSize(15),
-            }}
-          />
-          <FemaleIcon
-            style={{
-              position: 'absolute',
-              bottom: sizeBlock.getHeightSize(15),
-              right: sizeBlock.getWidthSize(15),
-            }}
-          />
-          <PulseIcon
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              transform: [{rotate: '180deg'}],
-              zIndex: 10,
-            }}
-          />
-          <PulseIcon
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              zIndex: 10,
-              left: 0,
-            }}
-          />
+        {/* Couple */}
+        <View style={homeStyle.coupleSection}>
           <View
             style={{
-              ...universalStyle.centering,
-              flexDirection: 'column',
-              rowGap: sizeBlock.getHeightSize(25),
-              paddingHorizontal: sizeBlock.getWidthSize(35),
-              paddingVertical: sizeBlock.getHeightSize(25),
+              ...universalStyle.flexBetween,
             }}>
-            <AppText
-              color={appColors.white}
-              fontSize={fontSize.small - 1}
-              fontType="medium">
-              YOUR PARTNER
+            <AppText fontType="medium" fontSize={fontSize.medium - 5}>
+              Couple
             </AppText>
-            <AppText
-              fontSize={fontSize.small + 3}
-              customStyle={{
-                textAlign: 'center',
-                marginTop: sizeBlock.getHeightSize(10),
-              }}
-              fontType="medium"
-              color={appColors.white}>
-              Take part in challenges with your partner
-            </AppText>
-            <AppButton
-              icon={<OrbIcon />}
-              iconPosition="left"
-              bgColor={appColors.white}
-              textColor={appColors.green}
-              customViewStyle={{
-                width: 'auto',
-                borderRadius: borderRadius.full,
-              }}
+            <AppPressable
               onPress={() => {
-                !userData?.linkedPartner
-                  ? navigateTo('AddPartnerScreen')
-                  : navigateTo('ViewPartnerScreen');
-              }}
-              title={!userData?.linkedPartner ? 'Add Partner' : 'View Partner'}
-            />
+                navigateTo('Couple', 'CoupleScreen');
+              }}>
+              <AppText
+                fontSize={fontSize.small - 1}
+                fontType="medium"
+                color={appColors.green}>
+                See all
+              </AppText>
+            </AppPressable>
           </View>
-        </View>
-      </View>
-      {/* Couple */}
-      <View style={homeStyle.coupleSection}>
-        <View
-          style={{
-            ...universalStyle.flexBetween,
-          }}>
-          <AppText fontType="medium" fontSize={fontSize.medium - 5}>
-            Couple
-          </AppText>
-          <AppPressable
-            onPress={() => {
-              navigateTo('Couple', 'CoupleScreen');
-            }}>
-            <AppText
-              fontSize={fontSize.small - 1}
-              fontType="medium"
-              color={appColors.green}>
-              See all
-            </AppText>
-          </AppPressable>
-        </View>
 
-        <GamesComponent
-          slice={1}
-          navigateTo={(screen: string) => {
-            navigateTo('Couple', screen);
-          }}
-        />
-      </View>
-    </ScrollView>
+          <GamesComponent
+            slice={1}
+            navigateTo={(screen: string) => {
+              navigateTo('Couple', screen);
+            }}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

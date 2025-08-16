@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {ScrollView, StatusBar, View, SafeAreaView} from 'react-native';
 import EarthIcon from '@/assets/profileIcons/earth.svg';
 import LockIcon from '@/assets/profileIcons/lock.svg';
 import PersonIcon from '@/assets/profileIcons/profile.svg';
@@ -42,80 +42,82 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
   const userData = user?.userInfo;
 
   return (
-    <ScrollView style={profileStyle.wrapper}>
+    <SafeAreaView style={profileStyle.wrapper}>
       <StatusBar backgroundColor={appColors.green} barStyle={'light-content'} />
-      <HeaderComponent
-        theme={'light'}
-        navigation={navigation}
-        title="Profile"
-      />
+      <ScrollView style={profileStyle.wrapper}>
+        <HeaderComponent
+          theme={'light'}
+          navigation={navigation}
+          title="Profile"
+        />
 
-      <View style={profileStyle.container}>
-        <ProfilePicture />
-        <View style={profileStyle.tabContainer}>
-          <AppPressable
-            onPress={() => {
-              navigateTo('ProfileSummaryScreen');
-            }}>
-            <View style={profileStyle.tab}>
-              <PersonIcon />
-              <AppText>Account Information</AppText>
-              <ArrowLeft
-                style={{
-                  transform: [{rotate: '180deg'}],
-                  marginLeft: 'auto',
-                }}
-              />
-            </View>
-          </AppPressable>
+        <View style={profileStyle.container}>
+          <ProfilePicture />
+          <View style={profileStyle.tabContainer}>
+            <AppPressable
+              onPress={() => {
+                navigateTo('ProfileSummaryScreen');
+              }}>
+              <View style={profileStyle.tab}>
+                <PersonIcon />
+                <AppText>Account Information</AppText>
+                <ArrowLeft
+                  style={{
+                    transform: [{rotate: '180deg'}],
+                    marginLeft: 'auto',
+                  }}
+                />
+              </View>
+            </AppPressable>
 
-          <AppPressable
-            onPress={() => {
-              navigateTo('CreateNewPasswordScreen');
-            }}>
-            <View style={profileStyle.tab}>
-              <LockIcon />
-              <AppText>Password</AppText>
-              <ArrowLeft
-                style={{
-                  transform: [{rotate: '180deg'}],
-                  marginLeft: 'auto',
-                  // transform: [{rotate: '90deg'}],
-                }}
-              />
-            </View>
-          </AppPressable>
+            <AppPressable
+              onPress={() => {
+                navigateTo('CreateNewPasswordScreen');
+              }}>
+              <View style={profileStyle.tab}>
+                <LockIcon />
+                <AppText>Password</AppText>
+                <ArrowLeft
+                  style={{
+                    transform: [{rotate: '180deg'}],
+                    marginLeft: 'auto',
+                    // transform: [{rotate: '90deg'}],
+                  }}
+                />
+              </View>
+            </AppPressable>
 
-          <CustomDropdown
-            data={languages}
-            placeholder={'Language: English'}
-            defaultValue="english"
-            onSelect={value => console.log('Selected:', value)}
-            leftIcon={
-              <EarthIcon style={{marginRight: sizeBlock.getWidthSize(10)}} />
-            }
-          />
+            <CustomDropdown
+              data={languages}
+              placeholder={'Language: English'}
+              defaultValue="english"
+              onSelect={value => console.log('Selected:', value)}
+              leftIcon={
+                <EarthIcon style={{marginRight: sizeBlock.getWidthSize(10)}} />
+              }
+            />
 
-          <AppPressable onPress={() => {}}>
-            <View style={profileStyle.tab}>
-              <TimezoneIcon />
-              <AppText>Time zone: CAT (+1:00)</AppText>
-              <ArrowLeft
-                style={{
-                  transform: [{rotate: '180deg'}],
-                  marginLeft: 'auto',
-                  // transform: [{rotate: '90deg'}],
-                }}
-              />
-            </View>
-          </AppPressable>
+            <AppPressable onPress={() => {}}>
+              <View style={profileStyle.tab}>
+                <TimezoneIcon />
+                <AppText>Time zone: CAT (+1:00)</AppText>
+                <ArrowLeft
+                  style={{
+                    transform: [{rotate: '180deg'}],
+                    marginLeft: 'auto',
+                    // transform: [{rotate: '90deg'}],
+                  }}
+                />
+              </View>
+            </AppPressable>
 
-          <PlanComponent />
+            <PlanComponent />
 
-          <DeleteAccountComponent />
+            <DeleteAccountComponent />
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

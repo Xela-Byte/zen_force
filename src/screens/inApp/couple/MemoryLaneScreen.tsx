@@ -1,4 +1,11 @@
-import {View, Text, StatusBar, ScrollView, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  StatusBar,
+  ScrollView,
+  FlatList,
+  SafeAreaView,
+} from 'react-native';
 import {memoryLaneStyle} from '@/styles/memoryLaneStyle';
 import {
   appColors,
@@ -141,44 +148,49 @@ const MemoryLaneScreen = ({navigation}: MemoryLaneScreenProps) => {
   );
 
   return (
-    <View style={memoryLaneStyle.wrapper}>
-      <StatusBar backgroundColor={appColors.green} barStyle={'light-content'} />
-      <HeaderComponent
-        title="Memory Lane"
-        navigation={navigation}
-        theme="light"
-      />
-      <ScrollView style={memoryLaneStyle.container}>
-        {isLoading && <LoadingComponent />}
-        {isError && <ErrorComponent />}
-        {isSuccess && (
-          <>
-            <FlatList
-              data={memoizedQuestions}
-              horizontal
-              contentContainerStyle={{
-                gap: sizeBlock.getWidthSize(20),
-              }}
-              renderItem={({item, index}) => {
-                return <GameCard card={item.text} index={index} />;
-              }}
-              keyExtractor={(item, index) => index.toString()}
-              onViewableItemsChanged={onViewableItemsChanged}
-              viewabilityConfig={{viewAreaCoveragePercentThreshold: 75}}
-              ListEmptyComponent={() => {
-                return <EmptyStateComponent />;
-              }}
-            />
-            <View style={memoryLaneStyle.counterCard}>
-              <CardIcon stroke={appColors.textGrey} />
-              <AppText color={appColors.textGrey}>
-                {currentIndex + 1} of {memoizedQuestions.length}
-              </AppText>
-            </View>
-          </>
-        )}
-      </ScrollView>
-    </View>
+    <SafeAreaView style={memoryLaneStyle.wrapper}>
+      <View style={memoryLaneStyle.wrapper}>
+        <StatusBar
+          backgroundColor={appColors.green}
+          barStyle={'light-content'}
+        />
+        <HeaderComponent
+          title="Memory Lane"
+          navigation={navigation}
+          theme="light"
+        />
+        <ScrollView style={memoryLaneStyle.container}>
+          {isLoading && <LoadingComponent />}
+          {isError && <ErrorComponent />}
+          {isSuccess && (
+            <>
+              <FlatList
+                data={memoizedQuestions}
+                horizontal
+                contentContainerStyle={{
+                  gap: sizeBlock.getWidthSize(20),
+                }}
+                renderItem={({item, index}) => {
+                  return <GameCard card={item.text} index={index} />;
+                }}
+                keyExtractor={(item, index) => index.toString()}
+                onViewableItemsChanged={onViewableItemsChanged}
+                viewabilityConfig={{viewAreaCoveragePercentThreshold: 75}}
+                ListEmptyComponent={() => {
+                  return <EmptyStateComponent />;
+                }}
+              />
+              <View style={memoryLaneStyle.counterCard}>
+                <CardIcon stroke={appColors.textGrey} />
+                <AppText color={appColors.textGrey}>
+                  {currentIndex + 1} of {memoizedQuestions.length}
+                </AppText>
+              </View>
+            </>
+          )}
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 

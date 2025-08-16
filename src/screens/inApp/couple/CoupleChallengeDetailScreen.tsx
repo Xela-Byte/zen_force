@@ -14,7 +14,13 @@ import {
 } from '@/styles/universalStyle';
 import {CoupleChallengeDetailScreenProps} from '@/types/navigation/CoupleNavigationType';
 import {memo, useCallback, useMemo, useRef, useState} from 'react';
-import {FlatList, ScrollView, StatusBar, View} from 'react-native';
+import {
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  View,
+} from 'react-native';
 import SkeletionPlaceholder from 'react-native-skeleton-placeholder';
 
 const CoupleChallengeDetailScreen = ({
@@ -160,7 +166,7 @@ const CoupleChallengeDetailScreen = ({
   );
 
   return (
-    <View style={memoryLaneStyle.wrapper}>
+    <SafeAreaView style={memoryLaneStyle.wrapper}>
       <StatusBar backgroundColor={appColors.green} barStyle={'light-content'} />
       <HeaderComponent
         title={questionType}
@@ -195,7 +201,7 @@ const CoupleChallengeDetailScreen = ({
           </>
         )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

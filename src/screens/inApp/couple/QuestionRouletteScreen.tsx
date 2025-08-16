@@ -6,6 +6,7 @@ import {
   Image,
   Pressable,
   FlatList,
+  SafeAreaView,
 } from 'react-native';
 import React, {memo, useCallback} from 'react';
 import {questionRouletteStyle} from '@/styles/questionRouletteStyle';
@@ -126,33 +127,35 @@ const QuestionRouletteScreen = ({navigation}: QuestionRouletteScreenProps) => {
   });
 
   return (
-    <View style={questionRouletteStyle.wrapper}>
+    <SafeAreaView style={questionRouletteStyle.wrapper}>
       <StatusBar backgroundColor={appColors.green} barStyle={'light-content'} />
-      <HeaderComponent
-        title="Question Roulette"
-        navigation={navigation}
-        theme="light"
-      />
-      <View style={questionRouletteStyle.container}>
-        <AppText fontSize={fontSize.small + 1} fontType="semiBold">
-          Select Stage/Level
-        </AppText>
-        <View
-          style={{
-            height: screenHeight * 0.75,
-          }}>
-          <FlatList
-            contentContainerStyle={{
-              paddingVertical: sizeBlock.getHeightSize(15),
-            }}
-            data={stages}
-            renderItem={({item}) => {
-              return <StageButton stg={item} />;
-            }}
-          />
+      <View style={questionRouletteStyle.wrapper}>
+        <HeaderComponent
+          title="Question Roulette"
+          navigation={navigation}
+          theme="light"
+        />
+        <View style={questionRouletteStyle.container}>
+          <AppText fontSize={fontSize.small + 1} fontType="semiBold">
+            Select Stage/Level
+          </AppText>
+          <View
+            style={{
+              height: screenHeight * 0.75,
+            }}>
+            <FlatList
+              contentContainerStyle={{
+                paddingVertical: sizeBlock.getHeightSize(15),
+              }}
+              data={stages}
+              renderItem={({item}) => {
+                return <StageButton stg={item} />;
+              }}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

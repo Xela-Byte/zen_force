@@ -14,7 +14,7 @@ import {
 } from '@/styles/universalStyle';
 import {ProfileSummaryScreenProps} from '@/types/navigation/ProfileNavigationType';
 import {useMemo} from 'react';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {ScrollView, StatusBar, View, SafeAreaView} from 'react-native';
 
 const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
   const dispatch = useAppDispatch();
@@ -53,65 +53,66 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
 
   return (
     <>
-      <ScrollView style={profileSummaryStyle.wrapper}>
+      <SafeAreaView style={profileSummaryStyle.wrapper}>
         <StatusBar backgroundColor={appColors.gray} />
-        <HeaderComponent navigation={navigation} title="Profile summary" />
+        <ScrollView style={profileSummaryStyle.wrapper}>
+          <HeaderComponent navigation={navigation} title="Profile summary" />
 
-        <View style={profileSummaryStyle.container}>
-          <View style={profileSummaryStyle.aboutContainer}>
-            <View style={universalStyle.flexBetween}>
-              <AppText fontType="medium">About</AppText>
-              <AppPressable
-                onPress={() => {
-                  handleEdit(0);
-                }}>
-                <AppText color={appColors.border}>Edit</AppText>
-              </AppPressable>
-            </View>
-            <View style={universalStyle.flexBetween}>
-              <AppText numLine={1}>Name</AppText>
-              <View
-                style={{
-                  width: '50%',
-                  alignItems: 'flex-end',
-                }}>
+          <View style={profileSummaryStyle.container}>
+            <View style={profileSummaryStyle.aboutContainer}>
+              <View style={universalStyle.flexBetween}>
+                <AppText fontType="medium">About</AppText>
+                <AppPressable
+                  onPress={() => {
+                    handleEdit(0);
+                  }}>
+                  <AppText color={appColors.border}>Edit</AppText>
+                </AppPressable>
+              </View>
+              <View style={universalStyle.flexBetween}>
+                <AppText numLine={1}>Name</AppText>
+                <View
+                  style={{
+                    width: '50%',
+                    alignItems: 'flex-end',
+                  }}>
+                  <AppText numLine={1} ellipsizeMode="tail">
+                    {userData?.fullName ?? 'Zen User'}
+                  </AppText>
+                </View>
+              </View>
+              <View style={universalStyle.flexBetween}>
+                <AppText>Age</AppText>
                 <AppText numLine={1} ellipsizeMode="tail">
-                  {userData?.fullName ?? 'Zen User'}
+                  {userData?.age ?? '18'}
                 </AppText>
               </View>
-            </View>
-            <View style={universalStyle.flexBetween}>
-              <AppText>Age</AppText>
-              <AppText numLine={1} ellipsizeMode="tail">
-                {userData?.age ?? '18'}
-              </AppText>
-            </View>
-            <View style={universalStyle.flexBetween}>
-              <AppText>Gender</AppText>
-              <AppText
-                customStyle={{
-                  textTransform: 'capitalize',
-                }}>
-                {userData?.gender ?? 'Zen'}
-              </AppText>
-            </View>
-            <View style={universalStyle.flexBetween}>
-              <AppText>Personality</AppText>
-              <AppText>{userData?.personalityInsight}</AppText>
-            </View>
-            <View style={universalStyle.flexBetween}>
-              <AppText>Love language</AppText>
-              <View
-                style={{
-                  width: '50%',
-                  alignItems: 'flex-end',
-                }}>
-                <AppText numLine={1} ellipsizeMode="tail">
-                  {userData?.loveLanguage}
+              <View style={universalStyle.flexBetween}>
+                <AppText>Gender</AppText>
+                <AppText
+                  customStyle={{
+                    textTransform: 'capitalize',
+                  }}>
+                  {userData?.gender ?? 'Zen'}
                 </AppText>
               </View>
-            </View>
-            {/* <View style={universalStyle.flexBetween}>
+              <View style={universalStyle.flexBetween}>
+                <AppText>Personality</AppText>
+                <AppText>{userData?.personalityInsight}</AppText>
+              </View>
+              <View style={universalStyle.flexBetween}>
+                <AppText>Love language</AppText>
+                <View
+                  style={{
+                    width: '50%',
+                    alignItems: 'flex-end',
+                  }}>
+                  <AppText numLine={1} ellipsizeMode="tail">
+                    {userData?.loveLanguage}
+                  </AppText>
+                </View>
+              </View>
+              {/* <View style={universalStyle.flexBetween}>
               <AppText>Communication preference</AppText>
               <View
                 style={{
@@ -135,107 +136,110 @@ const ProfileSummaryScreen = ({navigation}: ProfileSummaryScreenProps) => {
                 </AppText>
               </View>
             </View> */}
-          </View>
-          <View style={profileSummaryStyle.aboutContainer}>
-            <View style={universalStyle.flexBetween}>
-              <AppText fontType="medium">Peronality Interest</AppText>
-              <AppPressable
-                onPress={() => {
-                  handleEdit(1);
-                }}>
-                <AppText color={appColors.border}>Edit</AppText>
-              </AppPressable>
             </View>
+            <View style={profileSummaryStyle.aboutContainer}>
+              <View style={universalStyle.flexBetween}>
+                <AppText fontType="medium">Peronality Interest</AppText>
+                <AppPressable
+                  onPress={() => {
+                    handleEdit(1);
+                  }}>
+                  <AppText color={appColors.border}>Edit</AppText>
+                </AppPressable>
+              </View>
 
-            <View
-              style={{
-                ...universalStyle.flexWrap,
-                paddingVertical: sizeBlock.getHeightSize(10),
-                gap: sizeBlock.getWidthSize(10),
-              }}>
-              {selectedInterests.map(interest => {
-                return (
-                  <View key={interest.value}>
-                    <View
-                      style={{
-                        ...universalStyle.verticalCentering,
-                        paddingVertical: sizeBlock.getHeightSize(10),
-                        paddingHorizontal: sizeBlock.getWidthSize(15),
-                        borderRadius: borderRadius.full,
-                        columnGap: sizeBlock.getWidthSize(10),
-                        backgroundColor: appColors.lightGray,
-                      }}>
-                      <interest.icon />
+              <View
+                style={{
+                  ...universalStyle.flexWrap,
+                  paddingVertical: sizeBlock.getHeightSize(10),
+                  gap: sizeBlock.getWidthSize(10),
+                }}>
+                {selectedInterests.map(interest => {
+                  return (
+                    <View key={interest.value}>
+                      <View
+                        style={{
+                          ...universalStyle.verticalCentering,
+                          paddingVertical: sizeBlock.getHeightSize(10),
+                          paddingHorizontal: sizeBlock.getWidthSize(15),
+                          borderRadius: borderRadius.full,
+                          columnGap: sizeBlock.getWidthSize(10),
+                          backgroundColor: appColors.lightGray,
+                        }}>
+                        <interest.icon />
 
-                      <AppText color={appColors.text}>{interest.label}</AppText>
+                        <AppText color={appColors.text}>
+                          {interest.label}
+                        </AppText>
+                      </View>
                     </View>
-                  </View>
-                );
-              })}
+                  );
+                })}
+              </View>
             </View>
-          </View>
-          <View style={profileSummaryStyle.aboutContainer}>
-            <View style={universalStyle.flexBetween}>
-              <AppText fontType="medium">Relationship Info</AppText>
-              <AppPressable
-                onPress={() => {
-                  handleEdit(2);
-                }}>
-                <AppText color={appColors.border}>Edit</AppText>
-              </AppPressable>
-            </View>
-            <View style={universalStyle.flexBetween}>
-              <AppText>Relationship Stage</AppText>
-              <AppText>{userData?.relationshipStage}</AppText>
-            </View>
-            <View style={universalStyle.flexBetween}>
-              <AppText>Relationship Age</AppText>
-              <AppText customStyle={{textTransform: 'capitalize'}}>
-                {userData?.relationshipDuration}
-              </AppText>
-            </View>
+            <View style={profileSummaryStyle.aboutContainer}>
+              <View style={universalStyle.flexBetween}>
+                <AppText fontType="medium">Relationship Info</AppText>
+                <AppPressable
+                  onPress={() => {
+                    handleEdit(2);
+                  }}>
+                  <AppText color={appColors.border}>Edit</AppText>
+                </AppPressable>
+              </View>
+              <View style={universalStyle.flexBetween}>
+                <AppText>Relationship Stage</AppText>
+                <AppText>{userData?.relationshipStage}</AppText>
+              </View>
+              <View style={universalStyle.flexBetween}>
+                <AppText>Relationship Age</AppText>
+                <AppText customStyle={{textTransform: 'capitalize'}}>
+                  {userData?.relationshipDuration}
+                </AppText>
+              </View>
 
-            <View style={universalStyle.flexBetween}>
-              <AppText>Relationship Desire</AppText>
-              <View
-                style={{
-                  width: '50%',
-                  alignItems: 'flex-end',
-                }}>
-                <AppText
-                  numLine={1}
-                  ellipsizeMode="tail"
-                  customStyle={{textTransform: 'capitalize'}}>
-                  {userData?.relationshipDesire}
-                </AppText>
+              <View style={universalStyle.flexBetween}>
+                <AppText>Relationship Desire</AppText>
+                <View
+                  style={{
+                    width: '50%',
+                    alignItems: 'flex-end',
+                  }}>
+                  <AppText
+                    numLine={1}
+                    ellipsizeMode="tail"
+                    customStyle={{textTransform: 'capitalize'}}>
+                    {userData?.relationshipDesire}
+                  </AppText>
+                </View>
+              </View>
+            </View>
+            <View style={profileSummaryStyle.aboutContainer}>
+              <View style={universalStyle.flexBetween}>
+                <AppText fontType="medium">Relationship Goal</AppText>
+                <AppPressable
+                  onPress={() => {
+                    handleEdit(3);
+                  }}>
+                  <AppText color={appColors.border}>Edit</AppText>
+                </AppPressable>
+              </View>
+              <View style={universalStyle.flexBetween}>
+                <AppText>Relationship goal</AppText>
+                <View
+                  style={{
+                    width: '50%',
+                    alignItems: 'flex-end',
+                  }}>
+                  <AppText numLine={1} ellipsizeMode="tail">
+                    {userData?.relationshipGoal}
+                  </AppText>
+                </View>
               </View>
             </View>
           </View>
-          <View style={profileSummaryStyle.aboutContainer}>
-            <View style={universalStyle.flexBetween}>
-              <AppText fontType="medium">Relationship Goal</AppText>
-              <AppPressable
-                onPress={() => {
-                  handleEdit(3);
-                }}>
-                <AppText color={appColors.border}>Edit</AppText>
-              </AppPressable>
-            </View>
-            <View style={universalStyle.flexBetween}>
-              <AppText>Relationship goal</AppText>
-              <View
-                style={{
-                  width: '50%',
-                  alignItems: 'flex-end',
-                }}>
-                <AppText numLine={1} ellipsizeMode="tail">
-                  {userData?.relationshipGoal}
-                </AppText>
-              </View>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
       {/* <View style={profileSummaryStyle.container}>
         <AppButton
           customViewStyle={{

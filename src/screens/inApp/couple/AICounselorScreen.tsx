@@ -10,7 +10,7 @@ import {AICounselorScreenProps} from '@/types/navigation/CoupleNavigationType';
 import {useMutation} from '@tanstack/react-query';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {Keyboard, TextInput, View} from 'react-native';
+import {Keyboard, TextInput, View, SafeAreaView} from 'react-native';
 
 interface Inputs {
   messageBody: string;
@@ -71,7 +71,7 @@ const AICounselorScreen = ({navigation}: AICounselorScreenProps) => {
 
   return (
     <>
-      <View style={aiCounselorStyle.wrapper}>
+      <SafeAreaView style={aiCounselorStyle.wrapper}>
         {/* Header */}
         <View style={aiCounselorStyle.header}>
           <HeaderComponent
@@ -126,7 +126,7 @@ const AICounselorScreen = ({navigation}: AICounselorScreenProps) => {
 
           <MicIcon opacity={0.4} />
         </View>
-      </View>
+      </SafeAreaView>
     </>
   );
 };
