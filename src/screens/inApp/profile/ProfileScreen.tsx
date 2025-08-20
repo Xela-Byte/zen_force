@@ -12,7 +12,8 @@ import DeleteAccountComponent from '@/components/profile/DeleteAccountComponent'
 import PlanComponent from '@/components/profile/PlanComponent';
 import ProfilePicture from '@/components/profile/ProfilePicture';
 import AppText from '@/components/text/AppText';
-import {useAppSelector} from '@/hooks/helpers/useRedux';
+import {useAppDispatch, useAppSelector} from '@/hooks/helpers/useRedux';
+import {logout} from '@/store/slices/appSlice';
 import {profileStyle} from '@/styles/profileStyle';
 import {appColors, sizeBlock} from '@/styles/universalStyle';
 import {
@@ -30,6 +31,8 @@ const languages = [
 ];
 
 const ProfileScreen = ({navigation}: ProfileScreenProps) => {
+  const dispatch = useAppDispatch();
+
   const navigateTo = <T extends keyof ProfileStackParamList>(
     route: T,
     params?: ProfileStackParamList[T],
@@ -40,6 +43,10 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
 
   const user = useAppSelector(state => state.app.user);
   const userData = user?.userInfo;
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <SafeAreaView style={profileStyle.wrapper}>
@@ -112,6 +119,24 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
             </AppPressable>
 
             <PlanComponent />
+
+            <AppPressable onPress={handleLogout}>
+              <View style={profileStyle.tab}>
+                <ArrowLeft
+                  style={{
+                    transform: [{rotate: '180deg'}],
+                    marginRight: sizeBlock.getWidthSize(10),
+                  }}
+                />
+                <AppText>Log Out</AppText>
+                <ArrowLeft
+                  style={{
+                    transform: [{rotate: '180deg'}],
+                    marginLeft: 'auto',
+                  }}
+                />
+              </View>
+            </AppPressable>
 
             <DeleteAccountComponent />
           </View>

@@ -20,17 +20,14 @@ export async function googleSignupFn() {
   }
 }
 
-export async function googleAuthFn(payload: {
-  idToken: string;
-  platform: string;
-}) {
+export async function googleAuthFn(payload: {idToken: string}) {
   try {
     const response = await ApiClient.post(`${API_URL}/auth/google`, payload);
     return response.data;
   } catch (error: any) {
     if (error.response) {
       // The request was made and the server responded with a status code outside the range 2xx
-      console.error('Error response:', error.response?.data?.message);
+      console.error('Error response:', error.response);
     } else if (error.request) {
       // The request was made but no response was received
       console.error('Error request:', error.request);

@@ -8,6 +8,10 @@ const getToken = async () => {
 
   const token =
     state.app.tempUser?.accessToken || state.app.user?.accessToken || '';
+
+  console.log('====================================');
+  console.log(token);
+  console.log('====================================');
   return token;
 };
 

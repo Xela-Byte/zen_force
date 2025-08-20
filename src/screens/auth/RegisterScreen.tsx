@@ -1,7 +1,13 @@
 import {useMutation} from '@tanstack/react-query';
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {ScrollView, StatusBar, View, SafeAreaView} from 'react-native';
+import {
+  ScrollView,
+  StatusBar,
+  View,
+  SafeAreaView,
+  Platform,
+} from 'react-native';
 
 import {registerFn} from '@/api/auth/register';
 import AppButton from '@/components/button/AppButton';
@@ -195,28 +201,33 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
             or sign up with
           </AppText>
 
-          <AppButton
-            buttonType="outlined"
-            title="Sign up with Google"
-            iconName="google"
-            disabled
-            bgColor={appColors.green}
-            onPress={() => {
-              navigateTo('GoogleAuthScreen');
-            }}
-            textColor={appColors.text}
-            customViewStyle={{marginBottom: sizeBlock.getHeightSize(10)}}
-          />
+          {Platform.OS === 'android' && (
+            <AppButton
+              buttonType="outlined"
+              title="Sign up with Google"
+              iconName="google"
+              disabled
+              bgColor={appColors.green}
+              onPress={() => {
+                navigateTo('GoogleAuthScreen');
+              }}
+              textColor={appColors.text}
+              customViewStyle={{marginBottom: sizeBlock.getHeightSize(10)}}
+            />
+          )}
 
-          <AppButton
-            buttonType="outlined"
-            iconName="apple"
-            textColor={appColors.text}
-            title="Sign up with Apple"
-            bgColor={appColors.green}
-            disabled
-            onPress={() => {}}
-          />
+          {Platform.OS === 'ios' && (
+            <AppButton
+              buttonType="outlined"
+              iconName="apple"
+              textColor={appColors.text}
+              title="Sign up with Apple"
+              bgColor={appColors.green}
+              disabled
+              onPress={() => {}}
+              customViewStyle={{marginBottom: sizeBlock.getHeightSize(10)}}
+            />
+          )}
 
           {/* Already Have an Account? */}
           <AppPressable onPress={() => navigateTo('LoginScreen')}>

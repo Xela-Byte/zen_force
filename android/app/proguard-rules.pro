@@ -32,3 +32,12 @@
 -keep class com.reactnativestripesdk.** { *; }
 -keep class com.reactnativestripesdk.StripeSdkPackage { *; }
 -keep class com.reactnativestripesdk.StripeSdkModule { *; }
+
+# Suppress warnings for missing Stripe push provisioning classes
+# These classes may not be available in all Stripe SDK configurations
+-dontwarn com.stripe.android.pushProvisioning.EphemeralKeyUpdateListener
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningActivity$g
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningActivityStarter$Args
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningActivityStarter$Error
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningActivityStarter
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningEphemeralKeyProvider

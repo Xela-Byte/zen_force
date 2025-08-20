@@ -197,7 +197,7 @@ export const uploadProfilePicture = async (file: Partial<File>) => {
 
   try {
     const response = await ApiClient.post(
-      'https://zen-force-backend.up.railway.app/auth/profile/upload',
+      `${API_URL}/auth/profile/upload`,
       formData,
       {
         headers: {
