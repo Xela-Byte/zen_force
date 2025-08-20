@@ -450,7 +450,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
               }}
             />
           )}
-
+          {/*  */}
           <AppPressable
             onPress={() => {
               navigateTo('RegisterScreen');
