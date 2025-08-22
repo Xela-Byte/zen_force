@@ -40,41 +40,42 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0030CA614FDC45A795C5686E /* Fredoka_SemiCondensed-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiCondensed-Medium.ttf"; path = "../src/assets/fonts/Fredoka_SemiCondensed-Medium.ttf"; sourceTree = "<group>"; };
-		065C917459964B33BC20DC7D /* Fredoka-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka-Regular.ttf"; path = "../src/assets/fonts/Fredoka-Regular.ttf"; sourceTree = "<group>"; };
-		0AEDD7C0BA8546FC8705EA46 /* Fredoka_SemiExpanded-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiExpanded-Bold.ttf"; path = "../src/assets/fonts/Fredoka_SemiExpanded-Bold.ttf"; sourceTree = "<group>"; };
-		1307FECC329949BF99E5AC45 /* Fredoka-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka-SemiBold.ttf"; path = "../src/assets/fonts/Fredoka-SemiBold.ttf"; sourceTree = "<group>"; };
+		0030CA614FDC45A795C5686E /* Fredoka_SemiCondensed-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiCondensed-Medium.ttf"; path = "../src/assets/fonts/Fredoka_SemiCondensed-Medium.ttf"; sourceTree = "<group>"; };
+		065C917459964B33BC20DC7D /* Fredoka-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka-Regular.ttf"; path = "../src/assets/fonts/Fredoka-Regular.ttf"; sourceTree = "<group>"; };
+		0AEDD7C0BA8546FC8705EA46 /* Fredoka_SemiExpanded-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiExpanded-Bold.ttf"; path = "../src/assets/fonts/Fredoka_SemiExpanded-Bold.ttf"; sourceTree = "<group>"; };
+		1307FECC329949BF99E5AC45 /* Fredoka-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka-SemiBold.ttf"; path = "../src/assets/fonts/Fredoka-SemiBold.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* zen_force.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zen_force.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = zen_force/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = zen_force/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = zen_force/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		170EAFEA8B734E1492541B54 /* Fredoka-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka-Light.ttf"; path = "../src/assets/fonts/Fredoka-Light.ttf"; sourceTree = "<group>"; };
-		1791445E4B3F4344A2F52F16 /* Fredoka_Condensed-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Condensed-Bold.ttf"; path = "../src/assets/fonts/Fredoka_Condensed-Bold.ttf"; sourceTree = "<group>"; };
-		337893FBB92F422393D17727 /* Fredoka_SemiExpanded-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiExpanded-Regular.ttf"; path = "../src/assets/fonts/Fredoka_SemiExpanded-Regular.ttf"; sourceTree = "<group>"; };
-		3962C281B78A4C9C96318FA3 /* Fredoka_SemiExpanded-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiExpanded-Medium.ttf"; path = "../src/assets/fonts/Fredoka_SemiExpanded-Medium.ttf"; sourceTree = "<group>"; };
+		170EAFEA8B734E1492541B54 /* Fredoka-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka-Light.ttf"; path = "../src/assets/fonts/Fredoka-Light.ttf"; sourceTree = "<group>"; };
+		1791445E4B3F4344A2F52F16 /* Fredoka_Condensed-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Condensed-Bold.ttf"; path = "../src/assets/fonts/Fredoka_Condensed-Bold.ttf"; sourceTree = "<group>"; };
+		337893FBB92F422393D17727 /* Fredoka_SemiExpanded-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiExpanded-Regular.ttf"; path = "../src/assets/fonts/Fredoka_SemiExpanded-Regular.ttf"; sourceTree = "<group>"; };
+		3962C281B78A4C9C96318FA3 /* Fredoka_SemiExpanded-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiExpanded-Medium.ttf"; path = "../src/assets/fonts/Fredoka_SemiExpanded-Medium.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-zen_force.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zen_force.debug.xcconfig"; path = "Target Support Files/Pods-zen_force/Pods-zen_force.debug.xcconfig"; sourceTree = "<group>"; };
-		3FF5657F24B847BB9FF751D1 /* Fredoka_Condensed-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Condensed-SemiBold.ttf"; path = "../src/assets/fonts/Fredoka_Condensed-SemiBold.ttf"; sourceTree = "<group>"; };
-		484DD4ACB97144E085C47476 /* Fredoka-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka-Bold.ttf"; path = "../src/assets/fonts/Fredoka-Bold.ttf"; sourceTree = "<group>"; };
+		3FF5657F24B847BB9FF751D1 /* Fredoka_Condensed-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Condensed-SemiBold.ttf"; path = "../src/assets/fonts/Fredoka_Condensed-SemiBold.ttf"; sourceTree = "<group>"; };
+		484DD4ACB97144E085C47476 /* Fredoka-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka-Bold.ttf"; path = "../src/assets/fonts/Fredoka-Bold.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-zen_force.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-zen_force.release.xcconfig"; path = "Target Support Files/Pods-zen_force/Pods-zen_force.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-zen_force.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-zen_force.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6592BEC91EAB4CED85033236 /* Fredoka_Condensed-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Condensed-Light.ttf"; path = "../src/assets/fonts/Fredoka_Condensed-Light.ttf"; sourceTree = "<group>"; };
-		721AEE3767CB426C997C9EDB /* Fredoka_Expanded-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Expanded-SemiBold.ttf"; path = "../src/assets/fonts/Fredoka_Expanded-SemiBold.ttf"; sourceTree = "<group>"; };
+		6592BEC91EAB4CED85033236 /* Fredoka_Condensed-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Condensed-Light.ttf"; path = "../src/assets/fonts/Fredoka_Condensed-Light.ttf"; sourceTree = "<group>"; };
+		721AEE3767CB426C997C9EDB /* Fredoka_Expanded-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Expanded-SemiBold.ttf"; path = "../src/assets/fonts/Fredoka_Expanded-SemiBold.ttf"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = zen_force/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = zen_force/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A0E1F66F4FB447B6BCD4749D /* Fredoka_Condensed-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Condensed-Regular.ttf"; path = "../src/assets/fonts/Fredoka_Condensed-Regular.ttf"; sourceTree = "<group>"; };
-		A812B4F93E96432E8215E9AC /* Fredoka_Expanded-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Expanded-Bold.ttf"; path = "../src/assets/fonts/Fredoka_Expanded-Bold.ttf"; sourceTree = "<group>"; };
-		AA6D08C5FFB54C5A8FDED857 /* Fredoka_SemiCondensed-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiCondensed-Bold.ttf"; path = "../src/assets/fonts/Fredoka_SemiCondensed-Bold.ttf"; sourceTree = "<group>"; };
-		B14560B18F8A4DD3A683F576 /* Fredoka_Condensed-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Condensed-Medium.ttf"; path = "../src/assets/fonts/Fredoka_Condensed-Medium.ttf"; sourceTree = "<group>"; };
-		BC42ABB3212E4D4099CEF184 /* Fredoka_SemiExpanded-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiExpanded-Light.ttf"; path = "../src/assets/fonts/Fredoka_SemiExpanded-Light.ttf"; sourceTree = "<group>"; };
-		D07FCCE82F5D4FE7A5F3FB57 /* Fredoka_SemiCondensed-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiCondensed-Regular.ttf"; path = "../src/assets/fonts/Fredoka_SemiCondensed-Regular.ttf"; sourceTree = "<group>"; };
-		D5B00C65389140C8B2B94214 /* Fredoka_Expanded-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Expanded-Medium.ttf"; path = "../src/assets/fonts/Fredoka_Expanded-Medium.ttf"; sourceTree = "<group>"; };
-		D922377A61874149A0EB660C /* Fredoka-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka-Medium.ttf"; path = "../src/assets/fonts/Fredoka-Medium.ttf"; sourceTree = "<group>"; };
-		DD8B58192DEC4951A53DA09B /* Fredoka_SemiCondensed-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiCondensed-Light.ttf"; path = "../src/assets/fonts/Fredoka_SemiCondensed-Light.ttf"; sourceTree = "<group>"; };
-		E966971DD3124716BF0DBB26 /* Fredoka_SemiCondensed-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiCondensed-SemiBold.ttf"; path = "../src/assets/fonts/Fredoka_SemiCondensed-SemiBold.ttf"; sourceTree = "<group>"; };
+		A0E1F66F4FB447B6BCD4749D /* Fredoka_Condensed-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Condensed-Regular.ttf"; path = "../src/assets/fonts/Fredoka_Condensed-Regular.ttf"; sourceTree = "<group>"; };
+		A812B4F93E96432E8215E9AC /* Fredoka_Expanded-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Expanded-Bold.ttf"; path = "../src/assets/fonts/Fredoka_Expanded-Bold.ttf"; sourceTree = "<group>"; };
+		AA6D08C5FFB54C5A8FDED857 /* Fredoka_SemiCondensed-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiCondensed-Bold.ttf"; path = "../src/assets/fonts/Fredoka_SemiCondensed-Bold.ttf"; sourceTree = "<group>"; };
+		B14560B18F8A4DD3A683F576 /* Fredoka_Condensed-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Condensed-Medium.ttf"; path = "../src/assets/fonts/Fredoka_Condensed-Medium.ttf"; sourceTree = "<group>"; };
+		BB8274942E57CB3500FC443F /* zen_force.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = zen_force.entitlements; path = zen_force/zen_force.entitlements; sourceTree = "<group>"; };
+		BC42ABB3212E4D4099CEF184 /* Fredoka_SemiExpanded-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiExpanded-Light.ttf"; path = "../src/assets/fonts/Fredoka_SemiExpanded-Light.ttf"; sourceTree = "<group>"; };
+		D07FCCE82F5D4FE7A5F3FB57 /* Fredoka_SemiCondensed-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiCondensed-Regular.ttf"; path = "../src/assets/fonts/Fredoka_SemiCondensed-Regular.ttf"; sourceTree = "<group>"; };
+		D5B00C65389140C8B2B94214 /* Fredoka_Expanded-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Expanded-Medium.ttf"; path = "../src/assets/fonts/Fredoka_Expanded-Medium.ttf"; sourceTree = "<group>"; };
+		D922377A61874149A0EB660C /* Fredoka-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka-Medium.ttf"; path = "../src/assets/fonts/Fredoka-Medium.ttf"; sourceTree = "<group>"; };
+		DD8B58192DEC4951A53DA09B /* Fredoka_SemiCondensed-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiCondensed-Light.ttf"; path = "../src/assets/fonts/Fredoka_SemiCondensed-Light.ttf"; sourceTree = "<group>"; };
+		E966971DD3124716BF0DBB26 /* Fredoka_SemiCondensed-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiCondensed-SemiBold.ttf"; path = "../src/assets/fonts/Fredoka_SemiCondensed-SemiBold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F1EC10D71C43424B90C7DBF3 /* Fredoka_Expanded-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Expanded-Regular.ttf"; path = "../src/assets/fonts/Fredoka_Expanded-Regular.ttf"; sourceTree = "<group>"; };
-		F5963C07780348F8AAB8008C /* Fredoka_Expanded-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Expanded-Light.ttf"; path = "../src/assets/fonts/Fredoka_Expanded-Light.ttf"; sourceTree = "<group>"; };
-		FE2A18512D6A4D7E95A50256 /* Fredoka_SemiExpanded-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiExpanded-SemiBold.ttf"; path = "../src/assets/fonts/Fredoka_SemiExpanded-SemiBold.ttf"; sourceTree = "<group>"; };
+		F1EC10D71C43424B90C7DBF3 /* Fredoka_Expanded-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Expanded-Regular.ttf"; path = "../src/assets/fonts/Fredoka_Expanded-Regular.ttf"; sourceTree = "<group>"; };
+		F5963C07780348F8AAB8008C /* Fredoka_Expanded-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_Expanded-Light.ttf"; path = "../src/assets/fonts/Fredoka_Expanded-Light.ttf"; sourceTree = "<group>"; };
+		FE2A18512D6A4D7E95A50256 /* Fredoka_SemiExpanded-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Fredoka_SemiExpanded-SemiBold.ttf"; path = "../src/assets/fonts/Fredoka_SemiExpanded-SemiBold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +93,7 @@
 		13B07FAE1A68108700A75B9A /* zen_force */ = {
 			isa = PBXGroup;
 			children = (
+				BB8274942E57CB3500FC443F /* zen_force.entitlements */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -140,7 +142,6 @@
 				FE2A18512D6A4D7E95A50256 /* Fredoka_SemiExpanded-SemiBold.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -300,9 +301,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-zen_force/Pods-zen_force-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-zen_force/Pods-zen_force-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -339,9 +344,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-zen_force/Pods-zen_force-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-zen_force/Pods-zen_force-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -368,9 +377,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = zen_force/zen_force.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UR58CA3979;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = zen_force/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Zen Force";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -382,7 +395,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.zen-force";
 				PRODUCT_NAME = zen_force;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -396,8 +409,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = zen_force/zen_force.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UR58CA3979;
 				INFOPLIST_FILE = zen_force/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Zen Force";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -409,7 +426,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.zen-force";
 				PRODUCT_NAME = zen_force;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -485,10 +502,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -557,10 +571,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

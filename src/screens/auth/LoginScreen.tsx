@@ -24,11 +24,11 @@ import {useMutation} from '@tanstack/react-query';
 import {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import {
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
   View,
-  Platform,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import appleAuth from '@invertase/react-native-apple-authentication';
@@ -50,17 +50,22 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
 
   // Configure Google Sign-In
   useEffect(() => {
-    try {
-      GoogleSignin.configure({
-        webClientId:
-          '989411520729-nbdmg5svp7vrok54c6ajdga4psa0ch6s.apps.googleusercontent.com', // required for getting the idToken on Android
-        offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-        hostedDomain: '', // specifies a hosted domain restriction
-        forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below
-      });
-      console.log('✅ Google Sign-In configuration successful');
-    } catch (error) {
-      console.error('❌ Google Sign-In configuration failed:', error);
+    // Only configure Google Sign-In on Android devices
+    if (Platform.OS === 'android') {
+      try {
+        GoogleSignin.configure({
+          webClientId:
+            '640380190205-puskkrjs4jdlemeuld1t32n3vgutc464.apps.googleusercontent.com', // required for getting the idToken on Android
+          offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+          hostedDomain: '', // specifies a hosted domain restriction
+          forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below
+        });
+        console.log('✅ Google Sign-In configuration successful');
+      } catch (error) {
+        console.error('❌ Google Sign-In configuration failed:', error);
+      }
+    } else {
+      console.log('ℹ️ Google Sign-In configuration skipped on iOS');
     }
   }, []);
 
@@ -162,6 +167,16 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
   };
 
   const signIn = async () => {
+    // Only allow Google Sign-In on Android devices
+    if (Platform.OS !== 'android') {
+      showToast({
+        text1: 'Google Sign-In not available',
+        text2: 'Google Sign-In is only available on Android',
+        type: 'info',
+      });
+      return;
+    }
+
     try {
       console.log('🚀 Starting Google Sign-In process...');
 
@@ -429,7 +444,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
               bgColor={appColors.green}
               onPress={signIn}
               textColor={appColors.text}
-              loading={googleAuthMutation.isPending}
+              disabled={Platform.OS !== 'android'}
               customViewStyle={{
                 marginBottom: sizeBlock.getHeightSize(10),
               }}
