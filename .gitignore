@@ -31,12 +31,8 @@ local.properties
 *.iml
 *.hprof
 .cxx/
-# *.keystore
+*.keystore
 !debug.keystore
-
-# Keystore properties (contains sensitive information)
-# keystore.properties
-# android/keystore.properties
 
 # node.js
 #
