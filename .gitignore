@@ -34,6 +34,10 @@ local.properties
 *.keystore
 !debug.keystore
 
+# Keystore properties (contains sensitive information)
+keystore.properties
+android/keystore.properties
+
 # node.js
 #
 node_modules/
