@@ -55,7 +55,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
       try {
         GoogleSignin.configure({
           webClientId:
-            '640380190205-puskkrjs4jdlemeuld1t32n3vgutc464.apps.googleusercontent.com', // required for getting the idToken on Android
+            '989411520729-nbdmg5svp7vrok54c6ajdga4psa0ch6s.apps.googleusercontent.com', // required for getting the idToken on Android
           offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
           hostedDomain: '', // specifies a hosted domain restriction
           forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below

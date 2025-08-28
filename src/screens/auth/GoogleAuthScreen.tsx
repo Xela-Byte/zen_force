@@ -1,16 +1,19 @@
 import {View, Text, SafeAreaView} from 'react-native';
 import React from 'react';
-import {useGoogleSignupQuery} from '@/hooks/queries/useGoogleSignupQuery';
+import AppText from '@/components/text/AppText';
 
 type Props = {};
 
 const GoogleAuthScreen = (props: Props) => {
-  const {data} = useGoogleSignupQuery();
-
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <View>
-        <Text>GoogleAuthScreen</Text>
+        <AppText>Google Authentication</AppText>
+        <AppText>
+          This screen is no longer used. Google signup is now handled directly
+          from the Register screen.
+        </AppText>
       </View>
     </SafeAreaView>
   );

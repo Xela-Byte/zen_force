@@ -1,8 +1,8 @@
 import ApiClient, {API_URL} from '../apiCliente';
 
-export async function googleSignupFn() {
+export async function googleSignupFn(payload: {idToken: string}) {
   try {
-    const response = await ApiClient.get(`${API_URL}/auth/signup/google`);
+    const response = await ApiClient.post(`${API_URL}/auth/google`, payload);
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -16,7 +16,7 @@ export async function googleSignupFn() {
       console.error('Error message:', error.message);
     }
 
-    throw new Error(error?.response?.data?.message || 'Login failed');
+    throw new Error(error?.response?.data?.message || 'Google signup failed');
   }
 }
 
