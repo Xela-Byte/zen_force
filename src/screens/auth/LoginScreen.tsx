@@ -277,9 +277,57 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
         appleAuthRequestResponse.user,
       );
 
-      if (credentialState === appleAuth.State.AUTHORIZED) {
-        console.log('✅ Apple credential authorized');
+      console.log('🔍 Apple credential state:', credentialState);
 
+      // Handle different credential states
+      console.log('✅ Apple credential authorized');
+
+      if (appleAuthRequestResponse.identityToken) {
+        console.log('🔄 Sending Apple token to backend...');
+
+        await appleAuthMutation.mutateAsync({
+          identityToken: appleAuthRequestResponse.identityToken,
+          user: appleAuthRequestResponse.user,
+          email: appleAuthRequestResponse.email,
+          fullName: appleAuthRequestResponse.fullName,
+        });
+      } else {
+        throw new Error('No identity token received from Apple');
+      }
+      if (credentialState === appleAuth.State.NOT_FOUND) {
+        console.log(
+          'ℹ️ Apple credential not found - proceeding with first-time sign-in',
+        );
+
+        // For first-time sign-ins, proceed even if credential state is NOT_FOUND
+        if (appleAuthRequestResponse.identityToken) {
+          console.log(
+            '🔄 Sending Apple token to backend for first-time user...',
+          );
+
+          await appleAuthMutation.mutateAsync({
+            identityToken: appleAuthRequestResponse.identityToken,
+            user: appleAuthRequestResponse.user,
+            email: appleAuthRequestResponse.email,
+            fullName: appleAuthRequestResponse.fullName,
+          });
+        } else {
+          throw new Error('No identity token received from Apple');
+        }
+      } else if (
+        !appleAuthRequestResponse.identityToken &&
+        credentialState === appleAuth.State.REVOKED
+      ) {
+        console.log('⚠️ Apple credential has been revoked');
+        showToast({
+          text1: 'Apple Sign-In Access Revoked',
+          text2: 'Please sign in with Apple again to continue',
+          type: 'error',
+        });
+        return;
+      } else {
+        console.log('⚠️ Unknown Apple credential state:', credentialState);
+        // Proceed with the sign-in attempt even for unknown states
         if (appleAuthRequestResponse.identityToken) {
           console.log('🔄 Sending Apple token to backend...');
 
@@ -292,8 +340,6 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
         } else {
           throw new Error('No identity token received from Apple');
         }
-      } else {
-        throw new Error('Apple credential not authorized');
       }
     } catch (error: any) {
       console.error('❌ Apple Sign-In error:', error);
@@ -331,6 +377,13 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           text1: 'Apple Sign-In failed',
           type: 'error',
           text2: 'Unknown error occurred',
+        });
+      } else if (error.message?.includes('revoked')) {
+        console.error('❌ Apple credential revoked');
+        showToast({
+          text1: 'Apple Sign-In Access Revoked',
+          text2: 'Please sign in with Apple again to continue',
+          type: 'error',
         });
       } else {
         console.error('❌ Unknown Apple Sign-In error:', {

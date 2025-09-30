@@ -6,7 +6,7 @@ interface InitiateSubscriptionResponse {
 }
 
 interface InitiateSubscriptionPayload {
-  planType: 'basic' | 'premium';
+  planType: 'standard' | 'premium' | 'elite';
 }
 
 export async function initiateSubscriptionFn({

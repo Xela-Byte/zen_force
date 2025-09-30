@@ -7,11 +7,24 @@ import AppText from '@/components/text/AppText';
 import {profileStyle} from '@/styles/profileStyle';
 import AbsoluteOverlay from '../background/AbsoluteOverlay';
 import PlanSelection from './PlanSelection';
+import {useAppSelector} from '@/hooks/helpers/useRedux';
+import {SUBSCRIPTION_PLANS} from '@/types/subscription';
 
 type Props = {};
 
 const PlanComponent = (props: Props) => {
   const [showBottomTab, setShowBottomTab] = useState(false);
+  const user = useAppSelector(state => state.app.user);
+  const userTier = user?.userInfo?.subscription?.tier || 'basic';
+  const userPlan = SUBSCRIPTION_PLANS[userTier];
+
+  // Format plan name to show "Basic (Free)" for basic tier
+  const getPlanDisplayName = () => {
+    if (userTier === 'basic') {
+      return 'Basic (Free)';
+    }
+    return userPlan.name;
+  };
 
   return (
     <>
@@ -21,7 +34,7 @@ const PlanComponent = (props: Props) => {
         }}>
         <View style={profileStyle.tab}>
           <EarthIcon />
-          <AppText>Plan: Free</AppText>
+          <AppText>Plan: {getPlanDisplayName()}</AppText>
           <ArrowLeft
             style={{
               transform: [{rotate: showBottomTab ? '90deg' : '180deg'}],

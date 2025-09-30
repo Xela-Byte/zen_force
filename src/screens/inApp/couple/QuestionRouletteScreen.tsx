@@ -8,7 +8,7 @@ import {
   FlatList,
   SafeAreaView,
 } from 'react-native';
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {questionRouletteStyle} from '@/styles/questionRouletteStyle';
 import HeaderComponent from '@/components/button/HeaderComponent';
 import {
@@ -28,6 +28,13 @@ import AppImage from '@/components/image/AppImage';
 import LinearGradient from 'react-native-linear-gradient';
 import AppPressable from '@/components/button/AppPressable';
 import {QuestionType} from '@/api/games';
+import {useAppSelector} from '@/hooks/helpers/useRedux';
+import {
+  hasActiveSubscription,
+  hasFeatureAccess,
+  getRequiredTierForFeature,
+} from '@/utils/subscriptionUtils';
+import SubscriptionRestrictionModal from '@/components/subscription/SubscriptionRestrictionModal';
 
 interface Stage {
   title: string;
@@ -76,6 +83,25 @@ const stages: Stage[] = [
 ];
 
 const QuestionRouletteScreen = ({navigation}: QuestionRouletteScreenProps) => {
+  const [restrictionModal, setRestrictionModal] = useState<{
+    visible: boolean;
+    currentTier: string;
+    requiredTier: string;
+    featureName: string;
+  }>({
+    visible: false,
+    currentTier: 'basic',
+    requiredTier: 'premium',
+    featureName: '',
+  });
+
+  // Get user subscription data at component level
+  const user = useAppSelector(state => state.app.user);
+  const currentTier = user?.userInfo?.subscription?.tier || 'basic';
+  const isSubscribed = user?.userInfo?.subscription?.isSubscribed || false;
+  const status = user?.userInfo?.subscription?.status || 'inactive';
+  const expired = user?.userInfo?.subscription?.expired || true;
+
   const navigateTo = <T extends keyof CoupleStackParamList>(
     route: T,
     params?: CoupleStackParamList[T],
@@ -84,13 +110,49 @@ const QuestionRouletteScreen = ({navigation}: QuestionRouletteScreenProps) => {
     navigation.navigate(route, params);
   };
 
+  const handleStagePress = (stage: Stage) => {
+    // Check if this is the premium romance section
+    if (stage.questionType === 'advance-romance-erotica') {
+      const requiredTier = getRequiredTierForFeature('romance_section');
+      const hasActiveSub = hasActiveSubscription(isSubscribed, status, expired);
+      const canAccess =
+        hasFeatureAccess(currentTier, requiredTier) && hasActiveSub;
+
+      if (canAccess) {
+        navigateTo('QuestionRouletteDetailScreen', {
+          stageType: stage.title,
+          questionType: stage.questionType,
+        });
+      } else {
+        setRestrictionModal({
+          visible: true,
+          currentTier,
+          requiredTier,
+          featureName: getFeatureDisplayName('romance_section'),
+        });
+      }
+    } else {
+      // Free stages, navigate directly
+      navigateTo('QuestionRouletteDetailScreen', {
+        stageType: stage.title,
+        questionType: stage.questionType,
+      });
+    }
+  };
+
+  const closeRestrictionModal = () => {
+    setRestrictionModal(prev => ({...prev, visible: false}));
+  };
+
+  const handleUpgrade = () => {
+    closeRestrictionModal();
+    navigation.navigate('Profile', {screen: 'ChoosePlanScreen'});
+  };
+
   const StageButton = memo(({stg}: {stg: Stage}) => {
     const handlePress = useCallback(() => {
-      navigateTo('QuestionRouletteDetailScreen', {
-        stageType: stg.title,
-        questionType: stg.questionType,
-      });
-    }, [stg.title]);
+      handleStagePress(stg);
+    }, [stg]);
 
     return (
       <AppPressable onPress={handlePress}>
@@ -155,8 +217,31 @@ const QuestionRouletteScreen = ({navigation}: QuestionRouletteScreenProps) => {
           </View>
         </View>
       </View>
+
+      <SubscriptionRestrictionModal
+        visible={restrictionModal.visible}
+        onClose={closeRestrictionModal}
+        onUpgrade={handleUpgrade}
+        currentTier={restrictionModal.currentTier as any}
+        requiredTier={restrictionModal.requiredTier as any}
+        featureName={restrictionModal.featureName}
+      />
     </SafeAreaView>
   );
+};
+
+const getFeatureDisplayName = (feature: string): string => {
+  const featureNames: Record<string, string> = {
+    unlimited_questions: 'Unlimited Questions',
+    analytics: 'Analytics & Progress Reports',
+    romance_section: 'Romance & Intimacy Section',
+    ai_coaching: 'AI-Powered Coaching',
+    expert_sessions: 'Expert Q&A Sessions',
+    priority_support: 'Priority Support',
+    early_access: 'Early Access Features',
+  };
+
+  return featureNames[feature] || feature;
 };
 
 export default QuestionRouletteScreen;

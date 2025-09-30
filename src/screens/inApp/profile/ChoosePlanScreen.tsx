@@ -18,10 +18,14 @@ import useToast from '@/hooks/helpers/useToast';
 import {useStripe} from '@stripe/stripe-react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/store/index';
+import {fetchUserProfile} from '@/api/profile';
+import {useAppDispatch} from '@/hooks/helpers/useRedux';
+import {setUser} from '@/store/slices/appSlice';
+import {store} from '@/store/index';
 
 const ChoosePlanScreen = ({navigation, route}: ChoosePlanScreenProps) => {
   const {params} = route;
-  const {plan} = params;
+  const {plan} = params || {};
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSettingUpPayment, setIsSettingUpPayment] = useState(false);
@@ -29,12 +33,60 @@ const ChoosePlanScreen = ({navigation, route}: ChoosePlanScreenProps) => {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const {showToast} = useToast();
   const {initPaymentSheet, presentPaymentSheet} = useStripe();
+  const dispatch = useAppDispatch();
 
   // Get user email from store
   const userEmail = useSelector((state: RootState) => state.app.user?.email);
 
+  // If no plan is provided, default to the first paid plan (Standard)
+  const defaultPlan =
+    plan || plans.find(p => p.planType !== 'basic') || plans[1];
+
+  // Function to refresh user profile after successful subscription
+  const refreshUserProfile = async () => {
+    try {
+      const updatedProfile = await fetchUserProfile();
+      if (updatedProfile?.data?.subscription) {
+        // Get current user from store
+        const currentUser = store.getState().app.user;
+
+        if (currentUser) {
+          // Update only the subscription data in userInfo
+          const updatedSubscription = {
+            tier: updatedProfile.data.subscription.subscriptionTier,
+            status: updatedProfile.data.subscription.subscriptionStatus,
+            isSubscribed: updatedProfile.data.subscription.isSubscribed,
+            expired: updatedProfile.data.subscription.subscriptionExpiryDate
+              ? new Date(
+                  updatedProfile.data.subscription.subscriptionExpiryDate,
+                ) < new Date()
+              : true,
+            expiryDate: updatedProfile.data.subscription.subscriptionExpiryDate,
+          };
+
+          const updatedUser = {
+            ...currentUser,
+            userInfo: {
+              ...currentUser.userInfo,
+              subscription: updatedSubscription,
+            },
+          };
+
+          console.log('Updated subscription only:', updatedSubscription);
+          console.log('Updated user (preserving all other data):', updatedUser);
+
+          // Update the user in the store
+          dispatch(setUser(updatedUser));
+        }
+        console.log('User subscription updated successfully');
+      }
+    } catch (error) {
+      console.error('Failed to refresh user profile:', error);
+    }
+  };
+
   const specificPlan = plans.find(item => {
-    return item.title === plan.title;
+    return item.title === defaultPlan.title;
   });
 
   if (!specificPlan) {
@@ -44,7 +96,8 @@ const ChoosePlanScreen = ({navigation, route}: ChoosePlanScreenProps) => {
 
   // Use planType from the plan object
   const planType = specificPlan.planType;
-  const isFreePlan = planType === 'free';
+  // Remove incorrect 'free' check; 'planType' does not include 'free'
+  const isFreePlan = planType === 'basic';
 
   // Payment mutation hook
   const initiateSubscriptionMutation = useInitiateSubscriptionMutation();
@@ -106,13 +159,21 @@ const ChoosePlanScreen = ({navigation, route}: ChoosePlanScreenProps) => {
           type: 'success',
         });
 
+        setTimeout(() => {
+          refreshUserProfile();
+        }, 2000);
+
         Alert.alert(
           'Payment Successful!',
           'Your subscription has been activated successfully.',
           [
             {
               text: 'OK',
-              onPress: () => navigation.goBack(),
+              onPress: () => {
+                // Refresh user profile after 2 seconds
+
+                navigation.goBack();
+              },
             },
           ],
         );
@@ -139,7 +200,13 @@ const ChoosePlanScreen = ({navigation, route}: ChoosePlanScreenProps) => {
       [
         {
           text: 'OK',
-          onPress: () => navigation.goBack(),
+          onPress: () => {
+            // Refresh user profile after 2 seconds
+            setTimeout(() => {
+              refreshUserProfile();
+            }, 2000);
+            navigation.goBack();
+          },
         },
       ],
     );
@@ -168,7 +235,7 @@ const ChoosePlanScreen = ({navigation, route}: ChoosePlanScreenProps) => {
       try {
         setIsProcessing(true);
         const result = await initiateSubscriptionMutation.mutateAsync({
-          planType: planType as 'basic' | 'premium',
+          planType: planType as 'standard' | 'premium' | 'elite',
         });
 
         // Handle successful payment intent creation

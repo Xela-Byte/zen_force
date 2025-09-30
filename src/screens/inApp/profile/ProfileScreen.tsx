@@ -42,7 +42,6 @@ const ProfileScreen = ({navigation}: ProfileScreenProps) => {
   };
 
   const user = useAppSelector(state => state.app.user);
-  const userData = user?.userInfo;
 
   const handleLogout = () => {
     dispatch(logout());

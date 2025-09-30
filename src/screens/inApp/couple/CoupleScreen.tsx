@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ScrollView, StatusBar, View, SafeAreaView} from 'react-native';
 import GraphIcon from '@/assets/images/graph_icon.svg';
 import ArrowLeft from '@/assets/svgsComponents/ArrowLeft';
@@ -12,6 +12,13 @@ import {
   CoupleScreenProps,
   CoupleStackParamList,
 } from '@/types/navigation/CoupleNavigationType';
+import {useAppSelector} from '@/hooks/helpers/useRedux';
+import {
+  hasActiveSubscription,
+  hasFeatureAccess,
+  getRequiredTierForFeature,
+} from '@/utils/subscriptionUtils';
+import SubscriptionRestrictionModal from '@/components/subscription/SubscriptionRestrictionModal';
 
 interface Game {
   title: string;
@@ -32,12 +39,12 @@ export const coupleGames: Game[] = [
   },
   {
     title: 'Couple Challenge',
-    description: 'Couple’s Game',
+    description: "Couple's Game",
     screen: 'CoupleChallengeScreen',
   },
   {
     title: 'Memory Lane',
-    description: 'Couple’s Game',
+    description: "Couple's Game",
     screen: 'MemoryLaneScreen',
   },
   {
@@ -47,12 +54,23 @@ export const coupleGames: Game[] = [
   },
 ];
 
+// Define subscription requirements for each game
+const gameSubscriptionRequirements: Record<string, string> = {
+  AICounselorScreen: 'ai_coaching',
+  QuestionRouletteScreen: 'unlimited_questions',
+  CoupleChallengeScreen: 'unlimited_questions',
+  MemoryLaneScreen: 'unlimited_questions',
+  ProgressTrackingScreen: 'analytics',
+};
+
 export const GamesComponent = ({
   navigateTo,
   slice = 0,
+  onGamePress,
 }: {
   navigateTo: any;
   slice?: number;
+  onGamePress?: (game: Game) => void;
 }) => (
   <View style={coupleStyle.coupleSectionTabWrapper}>
     {coupleGames.slice(slice).map((cog, index) => {
@@ -60,7 +78,11 @@ export const GamesComponent = ({
         <AppPressable
           key={index}
           onPress={() => {
-            cog.screen && navigateTo(cog.screen);
+            if (onGamePress) {
+              onGamePress(cog);
+            } else if (cog.screen) {
+              navigateTo(cog.screen);
+            }
           }}>
           <View style={coupleStyle.coupleSectionTab}>
             {index === 0 ? (
@@ -101,6 +123,26 @@ export const GamesComponent = ({
 );
 
 const CoupleScreen = ({navigation}: CoupleScreenProps) => {
+  const [restrictionModal, setRestrictionModal] = useState<{
+    visible: boolean;
+    currentTier: string;
+    requiredTier: string;
+    featureName: string;
+  }>({
+    visible: false,
+    currentTier: 'basic',
+    requiredTier: 'standard',
+    featureName: '',
+  });
+
+  // Get user subscription data at component level
+  const user = useAppSelector(state => state.app.user);
+  const currentTier = user?.userInfo?.subscription?.tier || 'basic';
+  const isSubscribed = user?.userInfo?.subscription?.isSubscribed || false;
+  const status = user?.userInfo?.subscription?.status || 'inactive';
+  const expired = user?.userInfo?.subscription?.expired || true;
+  const expiryDate = user?.userInfo?.subscription?.expiryDate;
+
   const navigateTo = <T extends keyof CoupleStackParamList>(
     route: T,
     params?: CoupleStackParamList[T],
@@ -108,6 +150,67 @@ const CoupleScreen = ({navigation}: CoupleScreenProps) => {
     // @ts-ignore
     navigation.navigate(route, params);
   };
+
+  const handleGamePress = (game: Game) => {
+    if (!game.screen) return;
+
+    const requiredFeature = gameSubscriptionRequirements[game.screen];
+    if (!requiredFeature) {
+      // No subscription required, navigate directly
+      navigateTo(game.screen);
+      return;
+    }
+
+    // Check subscription for this feature using utility functions
+    const requiredTier = getRequiredTierForFeature(requiredFeature);
+    const hasActiveSub = hasActiveSubscription(
+      isSubscribed,
+      status,
+      expired,
+      expiryDate,
+    );
+    const canAccess =
+      hasFeatureAccess(currentTier, requiredTier) && hasActiveSub;
+
+    // Debug logging
+    console.log('=== COUPLE SCREEN SUBSCRIPTION DEBUG ===');
+    console.log('Game Screen:', game.screen);
+    console.log('Feature:', requiredFeature);
+    console.log('Current Tier:', currentTier);
+    console.log('Required Tier:', requiredTier);
+    console.log('Is Subscribed:', isSubscribed);
+    console.log('Status:', status);
+    console.log('Expired:', expired);
+    console.log('Expiry Date:', expiryDate);
+    console.log('Has Active Sub:', hasActiveSub);
+    console.log(
+      'Has Feature Access:',
+      hasFeatureAccess(currentTier, requiredTier),
+    );
+    console.log('Can Access:', canAccess);
+    console.log('========================================');
+
+    if (canAccess) {
+      navigateTo(game.screen);
+    } else {
+      setRestrictionModal({
+        visible: true,
+        currentTier,
+        requiredTier,
+        featureName: getFeatureDisplayName(requiredFeature),
+      });
+    }
+  };
+
+  const closeRestrictionModal = () => {
+    setRestrictionModal(prev => ({...prev, visible: false}));
+  };
+
+  const handleUpgrade = () => {
+    closeRestrictionModal();
+    navigation.getParent()?.navigate('Profile', {screen: 'ChoosePlanScreen'});
+  };
+
   return (
     <SafeAreaView style={coupleStyle.wrapper}>
       <StatusBar backgroundColor={appColors.green} barStyle={'light-content'} />
@@ -123,11 +226,37 @@ const CoupleScreen = ({navigation}: CoupleScreenProps) => {
           Couple
         </AppText>
         <View style={coupleStyle.container}>
-          <GamesComponent navigateTo={navigateTo} />
+          <GamesComponent
+            navigateTo={navigateTo}
+            onGamePress={handleGamePress}
+          />
         </View>
       </ScrollView>
+
+      <SubscriptionRestrictionModal
+        visible={restrictionModal.visible}
+        onClose={closeRestrictionModal}
+        onUpgrade={handleUpgrade}
+        currentTier={restrictionModal.currentTier as any}
+        requiredTier={restrictionModal.requiredTier as any}
+        featureName={restrictionModal.featureName}
+      />
     </SafeAreaView>
   );
+};
+
+const getFeatureDisplayName = (feature: string): string => {
+  const featureNames: Record<string, string> = {
+    unlimited_questions: 'Unlimited Questions',
+    analytics: 'Analytics & Progress Reports',
+    romance_section: 'Romance & Intimacy Section',
+    ai_coaching: 'AI-Powered Coaching',
+    expert_sessions: 'Expert Q&A Sessions',
+    priority_support: 'Priority Support',
+    early_access: 'Early Access Features',
+  };
+
+  return featureNames[feature] || feature;
 };
 
 export default CoupleScreen;

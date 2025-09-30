@@ -19,7 +19,7 @@ const BottomTabNavigator = () => {
         tabBar={props => <BottomTabComponent {...props} />}>
         <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="Couple" component={CoupleStack} />
-        <Tab.Screen name="Explore" component={ExploreStack} />
+        {/* <Tab.Screen name="Explore" component={ExploreStack} /> */}
         <Tab.Screen name="Profile" component={ProfileStack} />
       </Tab.Navigator>
     </>

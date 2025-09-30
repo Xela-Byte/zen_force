@@ -41,6 +41,13 @@ export interface UserProfile {
     relationshipGoal: string;
     relationshipStage: string;
     profileImage: string;
+    subscription: {
+      expired: boolean;
+      isSubscribed: boolean;
+      status: 'active' | 'inactive' | 'cancelled';
+      tier: 'basic' | 'standard' | 'premium' | 'elite';
+      expiryDate?: string;
+    };
   };
 }
 
@@ -112,11 +119,26 @@ const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    updateUser: (state, action: any) => {
-      state.user = {
-        ...state.user,
-        userInfo: action.payload,
-      };
+    updateUser: (state, action: PayloadAction<UserProfile['userInfo']>) => {
+      if (state.user) {
+        state.user.userInfo = action.payload;
+      }
+    },
+    updateSubscription: (
+      state,
+      action: PayloadAction<{
+        tier: 'basic' | 'standard' | 'premium' | 'elite';
+        isSubscribed: boolean;
+        status: 'active' | 'inactive' | 'cancelled';
+        expired: boolean;
+      }>,
+    ) => {
+      if (state.user) {
+        state.user.userInfo.subscription = {
+          ...state.user.userInfo.subscription,
+          ...action.payload,
+        };
+      }
     },
     setUser: (state, action: PayloadAction<UserProfile>) => {
       state.user = action.payload;
@@ -161,6 +183,7 @@ export const {
   setCurrentVettingStep,
   resetVetting,
   updateUser,
+  updateSubscription,
 } = appSlice.actions;
 
 export default appSlice.reducer;

@@ -14,9 +14,10 @@ This function calls the backend to create a payment intent for subscription plan
 
 **Parameters:**
 
-- `planType`: 'basic' | 'premium'
-  - 'basic' corresponds to the $9.99 plan
+- `planType`: 'standard' | 'premium' | 'elite'
+  - 'standard' corresponds to the $9.99 plan
   - 'premium' corresponds to the $19.99 plan
+  - 'elite' corresponds to the $29.99 plan
 
 **Returns:**
 
@@ -28,7 +29,7 @@ This function calls the backend to create a payment intent for subscription plan
 import {initiateSubscriptionFn} from '@/api/payment';
 
 const result = await initiateSubscriptionFn({
-  planType: 'basic',
+  planType: 'standard',
 });
 
 console.log('Client secret:', result.clientSecret);
@@ -41,7 +42,7 @@ The function calls the backend endpoint:
 - **URL**: `https://zen-force-backend.onrender.com/subscriptions/initiate`
 - **Method**: POST
 - **Headers**: Authorization Bearer token (automatically added by ApiClient)
-- **Body**: `{ "planType": "basic" | "premium" }`
+- **Body**: `{ "planType": "standard" | "premium" | "elite" }`
 
 **Response:**
 
@@ -75,7 +76,7 @@ const MyComponent = () => {
   const handlePayment = async () => {
     try {
       const result = await mutation.mutateAsync({
-        planType: 'basic'
+        planType: 'standard'
       });
 
       // Use result.clientSecret with Stripe PaymentSheet

@@ -5,8 +5,7 @@ import {
 import React from 'react';
 
 // Replace with your actual Stripe publishable key
-const STRIPE_PUBLISHABLE_KEY =
-  'pk_test_51RcoVUHYaQCiZu2x6RYxG4xFIXBPDnilOEkFDJKegL5UUOnBUyOZ9iMZZ0rmeN3odckhpo4ZjoCvEMSdMFvhsNsD00NiDq7gc1';
+const STRIPE_PUBLISHABLE_KEY = process.env.STRIPE_PUBLISHABLE_KEY!;
 
 export const initializeStripe = async () => {
   try {

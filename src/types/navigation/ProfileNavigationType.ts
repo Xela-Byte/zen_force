@@ -4,7 +4,7 @@ export type ProfileStackParamList = {
   ProfileScreen: undefined;
   ProfileSummaryScreen: undefined;
   ChoosePlanScreen: {
-    plan: any;
+    plan?: any;
   };
   CreateNewPasswordScreen: undefined;
   DetailsScreen: undefined;

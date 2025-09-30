@@ -11,6 +11,13 @@ import {useMutation} from '@tanstack/react-query';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {Keyboard, TextInput, View, SafeAreaView} from 'react-native';
+import {useAppSelector} from '@/hooks/helpers/useRedux';
+import {
+  hasActiveSubscription,
+  hasFeatureAccess,
+  getRequiredTierForFeature,
+} from '@/utils/subscriptionUtils';
+import SubscriptionRestrictionModal from '@/components/subscription/SubscriptionRestrictionModal';
 
 interface Inputs {
   messageBody: string;
@@ -21,7 +28,25 @@ const AICounselorScreen = ({navigation}: AICounselorScreenProps) => {
   const messageBody = watch('messageBody');
   const [pendingMessage, setPendingMessage] = useState('');
   const [inputInFocus, setInputInFocus] = useState(false);
+  const [restrictionModal, setRestrictionModal] = useState<{
+    visible: boolean;
+    currentTier: string;
+    requiredTier: string;
+    featureName: string;
+  }>({
+    visible: false,
+    currentTier: 'basic',
+    requiredTier: 'elite',
+    featureName: '',
+  });
   const invalidateQuery = useInvalidateQuery();
+
+  // Get user subscription data at component level
+  const user = useAppSelector(state => state.app.user);
+  const currentTier = user?.userInfo?.subscription?.tier || 'basic';
+  const isSubscribed = user?.userInfo?.subscription?.isSubscribed || false;
+  const status = user?.userInfo?.subscription?.status || 'inactive';
+  const expired = user?.userInfo?.subscription?.expired || true;
 
   const sendMessageMutation = useMutation({
     mutationFn: sendMessageFn,
@@ -39,6 +64,22 @@ const AICounselorScreen = ({navigation}: AICounselorScreenProps) => {
   }, [messageBody]);
 
   const sendMessage = useCallback(async () => {
+    // Check subscription before sending message
+    const requiredTier = getRequiredTierForFeature('ai_coaching');
+    const hasActiveSub = hasActiveSubscription(isSubscribed, status, expired);
+    const canAccess =
+      hasFeatureAccess(currentTier, requiredTier) && hasActiveSub;
+
+    if (!canAccess) {
+      setRestrictionModal({
+        visible: true,
+        currentTier,
+        requiredTier,
+        featureName: getFeatureDisplayName('ai_coaching'),
+      });
+      return;
+    }
+
     const messageToSend = messageBody.trim();
     setPendingMessage(messageToSend);
     setValue('messageBody', '');
@@ -46,7 +87,7 @@ const AICounselorScreen = ({navigation}: AICounselorScreenProps) => {
     await sendMessageMutation.mutateAsync({
       prompt: messageToSend,
     });
-  }, [messageBody]);
+  }, [messageBody, currentTier, isSubscribed, status, expired]);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -127,8 +168,36 @@ const AICounselorScreen = ({navigation}: AICounselorScreenProps) => {
           <MicIcon opacity={0.4} />
         </View>
       </SafeAreaView>
+
+      <SubscriptionRestrictionModal
+        visible={restrictionModal.visible}
+        onClose={() => setRestrictionModal(prev => ({...prev, visible: false}))}
+        onUpgrade={() => {
+          setRestrictionModal(prev => ({...prev, visible: false}));
+          navigation
+            .getParent()
+            ?.navigate('Profile', {screen: 'ChoosePlanScreen'});
+        }}
+        currentTier={restrictionModal.currentTier as any}
+        requiredTier={restrictionModal.requiredTier as any}
+        featureName={restrictionModal.featureName}
+      />
     </>
   );
+};
+
+const getFeatureDisplayName = (feature: string): string => {
+  const featureNames: Record<string, string> = {
+    unlimited_questions: 'Unlimited Questions',
+    analytics: 'Analytics & Progress Reports',
+    romance_section: 'Romance & Intimacy Section',
+    ai_coaching: 'AI-Powered Coaching',
+    expert_sessions: 'Expert Q&A Sessions',
+    priority_support: 'Priority Support',
+    early_access: 'Early Access Features',
+  };
+
+  return featureNames[feature] || feature;
 };
 
 export default AICounselorScreen;

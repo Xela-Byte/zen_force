@@ -12,7 +12,7 @@ import {
 } from '@/styles/universalStyle';
 
 interface PaymentExampleProps {
-  planType: 'basic' | 'premium';
+  planType: 'standard' | 'premium' | 'elite';
   onSuccess?: (clientSecret: string) => void;
   onError?: (error: string) => void;
 }
@@ -66,9 +66,9 @@ const PaymentExample: React.FC<PaymentExampleProps> = ({
 
   const getPlanDetails = () => {
     switch (planType) {
-      case 'basic':
+      case 'standard':
         return {
-          name: 'Basic Plan',
+          name: 'Standard Plan',
           price: '$9.99/month',
           description: 'Unlimited access to questionnaires and prompts',
         };
@@ -77,6 +77,13 @@ const PaymentExample: React.FC<PaymentExampleProps> = ({
           name: 'Premium Plan',
           price: '$19.99/month',
           description: 'Full access to all features and priority support',
+        };
+      case 'elite':
+        return {
+          name: 'Elite Plan',
+          price: '$29.99/month',
+          description:
+            'Premium features plus exclusive content and priority support',
         };
       default:
         return {

@@ -8,6 +8,7 @@ import SunIcon from '@/assets/images/sun_icon.svg';
 import AppButton from '@/components/button/AppButton';
 import AppPressable from '@/components/button/AppPressable';
 import AppImage from '@/components/image/AppImage';
+import SubscriptionRestrictionModal from '@/components/subscription/SubscriptionRestrictionModal';
 import AppText from '@/components/text/AppText';
 import useHexToRGBA from '@/hooks/helpers/useHexToRGBA';
 import {useAppSelector} from '@/hooks/helpers/useRedux';
@@ -20,65 +21,113 @@ import {
   universalStyle,
 } from '@/styles/universalStyle';
 import {HomeScreenProps} from '@/types/navigation/HomeStackNavigationType';
+import {
+  getRequiredTierForFeature,
+  hasActiveSubscription,
+  hasFeatureAccess,
+} from '@/utils/subscriptionUtils';
 import React, {useMemo, useState} from 'react';
-import {ScrollView, StatusBar, View, SafeAreaView} from 'react-native';
+import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
 import ProgressPie from 'react-native-progress/Pie';
 import {GamesComponent} from '../couple/CoupleScreen';
 
 const HomeScreen = ({navigation}: HomeScreenProps) => {
-  // const dispatch = useAppDispatch();
-  // const authToken = useAppSelector(state => state.app.user?.accessToken);
-
-  // const isTokenValid = (token: string): boolean => {
-  //   try {
-  //     if (!token) return false;
-
-  //     const parts = token.split('.');
-  //     if (parts.length !== 3) return false; // Ensure token has 3 parts (header, payload, signature)
-
-  //     const payload = JSON.parse(
-  //       Buffer.from(
-  //         parts[1].replace(/-/g, '+').replace(/_/g, '/'),
-  //         'base64',
-  //       ).toString(),
-  //     );
-
-  //     if (!payload.iat) return false; // Ensure iat exists
-
-  //     const currentTime = Math.floor(Date.now() / 1000);
-  //     console.log(payload.iat, currentTime);
-
-  //     return payload.iat > currentTime; // Return true if token is still valid
-  //   } catch (error) {
-  //     return false; // Return false if any error occurs (invalid token)
-  //   }
-  // };
-
-  // const validToken = isTokenValid(authToken ?? '');
-  // const {showToast} = useToast();
-
-  // useEffect(() => {
-  //   if (!validToken) {
-  //     showToast({
-  //       text1: 'Session expired',
-  //       type: 'info',
-  //       text2: 'Please log in to continue using the app',
-  //     });
-
-  //     dispatch(logout());
-  //   }
-  // }, [authToken]);
-
   const navigateTo = (route: any, screenName?: any) => {
     navigation.navigate(route, {screen: screenName});
   };
 
   const [progress, setProgress] = useState(0.65);
+  const [restrictionModal, setRestrictionModal] = useState<{
+    visible: boolean;
+    currentTier: string;
+    requiredTier: string;
+    featureName: string;
+  }>({
+    visible: false,
+    currentTier: 'basic',
+    requiredTier: 'standard',
+    featureName: '',
+  });
 
+  // Get user subscription data at component level
   const user = useAppSelector(state => state.app.user);
+  const currentTier = user?.userInfo?.subscription?.tier || 'basic';
+  const isSubscribed = user?.userInfo?.subscription?.isSubscribed || false;
+  const status = user?.userInfo?.subscription?.status || 'inactive';
+  const expired = user?.userInfo?.subscription?.expired || true;
+  const expiryDate = user?.userInfo?.subscription?.expiryDate;
+
   const userData = useMemo(() => {
     return user?.userInfo;
   }, [user]);
+
+  const handleGamePress = (game: any) => {
+    if (!game.screen) return;
+
+    // Define subscription requirements for games
+    const gameSubscriptionRequirements: Record<string, string> = {
+      AICounselorScreen: 'ai_coaching',
+      QuestionRouletteScreen: 'unlimited_questions',
+      CoupleChallengeScreen: 'unlimited_questions',
+      MemoryLaneScreen: 'unlimited_questions',
+      ProgressTrackingScreen: 'analytics',
+    };
+
+    const requiredFeature = gameSubscriptionRequirements[game.screen];
+    if (!requiredFeature) {
+      // No subscription required, navigate directly
+      navigateTo('Couple', game.screen);
+      return;
+    }
+
+    // Check subscription for this feature using utility functions
+    const requiredTier = getRequiredTierForFeature(requiredFeature);
+    const hasActiveSub = hasActiveSubscription(
+      isSubscribed,
+      status,
+      expired,
+      expiryDate,
+    );
+    const canAccess =
+      hasFeatureAccess(currentTier, requiredTier) && hasActiveSub;
+
+    // Debug logging
+    console.log('=== SUBSCRIPTION DEBUG ===');
+    console.log('Feature:', requiredFeature);
+    console.log('Current Tier:', currentTier);
+    console.log('Required Tier:', requiredTier);
+    console.log('Is Subscribed:', isSubscribed);
+    console.log('Status:', status);
+    console.log('Expired:', expired);
+    console.log('Expiry Date:', expiryDate);
+    console.log('Has Active Sub:', hasActiveSub);
+    console.log(
+      'Has Feature Access:',
+      hasFeatureAccess(currentTier, requiredTier),
+    );
+    console.log('Can Access:', canAccess);
+    console.log('========================');
+
+    if (canAccess) {
+      navigateTo('Couple', game.screen);
+    } else {
+      setRestrictionModal({
+        visible: true,
+        currentTier,
+        requiredTier,
+        featureName: getFeatureDisplayName(requiredFeature),
+      });
+    }
+  };
+
+  const closeRestrictionModal = () => {
+    setRestrictionModal(prev => ({...prev, visible: false}));
+  };
+
+  const handleUpgrade = () => {
+    closeRestrictionModal();
+    navigation.getParent()?.navigate('Profile', {screen: 'ChoosePlanScreen'});
+  };
 
   return (
     <SafeAreaView style={homeStyle.wrapper}>
@@ -305,11 +354,35 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
             navigateTo={(screen: string) => {
               navigateTo('Couple', screen);
             }}
+            onGamePress={handleGamePress}
           />
         </View>
       </ScrollView>
+
+      <SubscriptionRestrictionModal
+        visible={restrictionModal.visible}
+        onClose={closeRestrictionModal}
+        onUpgrade={handleUpgrade}
+        currentTier={restrictionModal.currentTier as any}
+        requiredTier={restrictionModal.requiredTier as any}
+        featureName={restrictionModal.featureName}
+      />
     </SafeAreaView>
   );
+};
+
+const getFeatureDisplayName = (feature: string): string => {
+  const featureNames: Record<string, string> = {
+    unlimited_questions: 'Unlimited Questions',
+    analytics: 'Analytics & Progress Reports',
+    romance_section: 'Romance & Intimacy Section',
+    ai_coaching: 'AI-Powered Coaching',
+    expert_sessions: 'Expert Q&A Sessions',
+    priority_support: 'Priority Support',
+    early_access: 'Early Access Features',
+  };
+
+  return featureNames[feature] || feature;
 };
 
 export default HomeScreen;

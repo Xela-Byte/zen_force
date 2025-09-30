@@ -2,7 +2,7 @@ import {useMutation} from '@tanstack/react-query';
 import {initiateSubscriptionFn} from '@/api/payment';
 
 interface InitiateSubscriptionPayload {
-  planType: 'basic' | 'premium';
+  planType: 'standard' | 'premium' | 'elite';
 }
 
 interface InitiateSubscriptionResponse {

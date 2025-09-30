@@ -73,7 +73,7 @@ const App = () => {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <StripeProvider
-        publishableKey="pk_test_51RcoW6Qgpj6klgusuiOzSVHaPXKJo5pBYuHm89g0WmqFHTFI1rz9lhPICs3AJsqqD9IztRtuq8CJtvIK44kWi6nV00bMOUAfNz"
+        publishableKey={process.env.STRIPE_PUBLISHABLE_KEY!}
         merchantIdentifier="merchant.com.zenforce"
         urlScheme="zenforce://">
         <WithSplashScreen isAppReady={isAppReady}>
