@@ -44,9 +44,12 @@ const AICounselorScreen = ({navigation}: AICounselorScreenProps) => {
   // Get user subscription data at component level
   const user = useAppSelector(state => state.app.user);
   const currentTier = user?.userInfo?.subscription?.tier || 'basic';
-  const isSubscribed = user?.userInfo?.subscription?.isSubscribed || false;
+  const isSubscribed = user?.userInfo?.subscription?.isSubscribed ?? false;
   const status = user?.userInfo?.subscription?.status || 'inactive';
-  const expired = user?.userInfo?.subscription?.expired || true;
+  const expired = user?.userInfo?.subscription?.expired ?? false;
+  const expiryDate = user?.userInfo?.subscription?.expiryDate as
+    | string
+    | undefined;
 
   const sendMessageMutation = useMutation({
     mutationFn: sendMessageFn,
@@ -66,7 +69,12 @@ const AICounselorScreen = ({navigation}: AICounselorScreenProps) => {
   const sendMessage = useCallback(async () => {
     // Check subscription before sending message
     const requiredTier = getRequiredTierForFeature('ai_coaching');
-    const hasActiveSub = hasActiveSubscription(isSubscribed, status, expired);
+    const hasActiveSub = hasActiveSubscription(
+      isSubscribed,
+      status as any,
+      expired,
+      expiryDate,
+    );
     const canAccess =
       hasFeatureAccess(currentTier, requiredTier) && hasActiveSub;
 

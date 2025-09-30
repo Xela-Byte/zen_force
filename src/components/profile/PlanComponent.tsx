@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {View} from 'react-native';
 import EarthIcon from '@/assets/profileIcons/earth.svg';
 import ArrowLeft from '@/assets/svgsComponents/ArrowLeft';
@@ -9,6 +9,7 @@ import AbsoluteOverlay from '../background/AbsoluteOverlay';
 import PlanSelection from './PlanSelection';
 import {useAppSelector} from '@/hooks/helpers/useRedux';
 import {SUBSCRIPTION_PLANS} from '@/types/subscription';
+import SubscriptionListener from './SubscriptionListener';
 
 type Props = {};
 
@@ -17,6 +18,7 @@ const PlanComponent = (props: Props) => {
   const user = useAppSelector(state => state.app.user);
   const userTier = user?.userInfo?.subscription?.tier || 'basic';
   const userPlan = SUBSCRIPTION_PLANS[userTier];
+  const token = useMemo(() => user?.accessToken || '', [user?.accessToken]);
 
   // Format plan name to show "Basic (Free)" for basic tier
   const getPlanDisplayName = () => {
@@ -28,6 +30,7 @@ const PlanComponent = (props: Props) => {
 
   return (
     <>
+      {!!token && <SubscriptionListener token={token} />}
       <AppPressable
         onPress={() => {
           setShowBottomTab(true);

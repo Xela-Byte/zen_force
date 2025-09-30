@@ -32,6 +32,7 @@ import {
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import appleAuth from '@invertase/react-native-apple-authentication';
+import {API_URL} from '@/api/apiCliente';
 
 interface Inputs {
   email: string;
@@ -44,9 +45,6 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const canGoBack = navigation.canGoBack();
-
-  //   client id for android : 640380190205-r733gdlkak5ag3qqalp1tn0t0jlmk7pa.apps.googleusercontent.com
-  // [11/08, 7:57 pm] Khalid: 640380190205-puskkrjs4jdlemeuld1t32n3vgutc464.apps.googleusercontent.com
 
   // Configure Google Sign-In
   useEffect(() => {

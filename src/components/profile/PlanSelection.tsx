@@ -20,12 +20,21 @@ import AppButton from '../button/AppButton';
 import {useAppSelector} from '@/hooks/helpers/useRedux';
 import {useCancelSubscriptionMutation} from '@/hooks/mutations/useCancelSubscriptionMutation';
 
+type PlanType = 'basic' | 'standard' | 'premium' | 'elite' | 'cancel';
+type PlanOption = {
+  title: string;
+  price: string;
+  description: string;
+  planType: PlanType;
+  benefits?: string[];
+};
+
 type Props = {
   showBottomTab: boolean;
   setShowBottomTab: (value: boolean) => void;
 };
 
-export const plans = [
+export const plans: PlanOption[] = [
   {
     title: 'BASIC',
     price: 'Free',
@@ -82,13 +91,45 @@ export const plans = [
 
 const PlanSelection = ({setShowBottomTab, showBottomTab}: Props) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const [selectedPlan, setSelectedPlan] = useState(plans[0]);
+  const [selectedPlan, setSelectedPlan] = useState<PlanOption>(plans[0]);
   const navigation = useNavigation<any>();
 
   // Get user subscription data
   const user = useAppSelector(state => state.app.user);
   const userTier = user?.userInfo?.subscription?.tier || 'basic';
   const isSubscribed = user?.userInfo?.subscription?.isSubscribed || false;
+
+  // Separate cancel option (not tied to the free plan)
+  const cancelOption = useMemo<PlanOption>(
+    () => ({
+      title: 'Cancel Subscription',
+      price: '',
+      description: 'Downgrade to Basic (Free)',
+      planType: 'cancel' as const,
+    }),
+    [],
+  );
+
+  // Build the list of options conditionally (include cancel for subscribed paid users)
+  const planOptions = useMemo<PlanOption[]>(() => {
+    let base: PlanOption[] = [...plans];
+    // Hide Basic plan when user's tier is higher than Basic
+    if (userTier !== 'basic') {
+      base = base.filter(p => p.planType !== 'basic');
+    }
+    if (userTier !== 'basic' && isSubscribed) {
+      base.push(cancelOption);
+    }
+    return base;
+  }, [isSubscribed, userTier, cancelOption]);
+
+  // Keep selected plan valid if it gets filtered out (e.g., Basic hidden)
+  useEffect(() => {
+    const stillExists = planOptions.some(p => p.title === selectedPlan.title);
+    if (!stillExists && planOptions.length > 0) {
+      setSelectedPlan(planOptions[0]);
+    }
+  }, [planOptions, selectedPlan.title]);
 
   // Cancel subscription mutation
   const cancelSubscriptionMutation = useCancelSubscriptionMutation();
@@ -139,9 +180,10 @@ const PlanSelection = ({setShowBottomTab, showBottomTab}: Props) => {
 
   // Determine if selected plan is basic (free)
   const isFreePlan = selectedPlan.planType === 'basic';
-  const isCurrentPlan = selectedPlan.planType === userTier;
-  // Fix: Only show cancel option if user is on a paid tier (not basic) and selecting basic plan
-  const isDowngrading = userTier !== 'basic' && isFreePlan;
+  const isCurrentPlan =
+    selectedPlan.planType !== 'cancel' && selectedPlan.planType === userTier;
+  // Only cancel when explicit cancel option is selected
+  const isCancelSelected = selectedPlan.planType === 'cancel';
 
   // Debug logging
   console.log('PlanSelection - User data:', {
@@ -151,7 +193,6 @@ const PlanSelection = ({setShowBottomTab, showBottomTab}: Props) => {
     selectedPlan: selectedPlan.planType,
     isFreePlan,
     isCurrentPlan,
-    isDowngrading,
   });
 
   // Get button title and color based on plan type and user status
@@ -159,10 +200,8 @@ const PlanSelection = ({setShowBottomTab, showBottomTab}: Props) => {
     if (isCurrentPlan) {
       return 'Current Plan';
     }
-    if (isDowngrading) {
-      if (cancelSubscriptionMutation.isPending) {
-        return 'Cancelling...';
-      }
+    if (isCancelSelected) {
+      if (cancelSubscriptionMutation.isPending) return 'Cancelling...';
       return 'Cancel Subscription';
     }
     if (isFreePlan) {
@@ -175,11 +214,9 @@ const PlanSelection = ({setShowBottomTab, showBottomTab}: Props) => {
     if (isCurrentPlan) {
       return appColors.grey;
     }
-    if (isDowngrading) {
-      if (cancelSubscriptionMutation.isPending) {
-        return appColors.grey; // Grey during loading
-      }
-      return '#FF4444'; // Red color for cancellation
+    if (isCancelSelected) {
+      if (cancelSubscriptionMutation.isPending) return appColors.grey;
+      return '#FF4444';
     }
     if (isFreePlan) {
       return appColors.grey;
@@ -189,6 +226,7 @@ const PlanSelection = ({setShowBottomTab, showBottomTab}: Props) => {
 
   // Check if a plan should be disabled
   const isPlanDisabled = (plan: any) => {
+    if (plan.planType === 'cancel') return false;
     return plan.planType === userTier;
   };
 
@@ -202,11 +240,12 @@ const PlanSelection = ({setShowBottomTab, showBottomTab}: Props) => {
         isCurrent: true,
       };
     }
-    if (isSubscribed && plan.planType === 'free') {
+    if (plan.planType === 'cancel') {
       return {
         title: plan.title,
-        price: 'Cancel Subscription',
-        description: 'Downgrade to free plan',
+        price: '',
+        description: 'Downgrade to Basic (Free)',
+        isCurrent: false,
         isCancel: true,
       };
     }
@@ -255,7 +294,7 @@ const PlanSelection = ({setShowBottomTab, showBottomTab}: Props) => {
                   paddingVertical: sizeBlock.getHeightSize(10),
                 }}>
                 <View style={styles.radioBtnWrapper}>
-                  {plans.map((plan, index) => {
+                  {planOptions.map((plan, index) => {
                     const planInfo = getPlanDisplayInfo(plan);
                     const isDisabled = isPlanDisabled(plan);
                     const isSelected = selectedPlan.title === plan.title;
@@ -324,7 +363,7 @@ const PlanSelection = ({setShowBottomTab, showBottomTab}: Props) => {
                     // Do nothing for current plan
                     return;
                   }
-                  if (isDowngrading) {
+                  if (isCancelSelected) {
                     // Handle subscription cancellation
                     try {
                       await cancelSubscriptionMutation.mutateAsync();
