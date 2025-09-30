@@ -57,7 +57,7 @@ export const coupleGames: Game[] = [
 // Define subscription requirements for each game
 const gameSubscriptionRequirements: Record<string, string> = {
   AICounselorScreen: 'ai_coaching',
-  QuestionRouletteScreen: 'unlimited_questions',
+  QuestionRouletteScreen: 'questions',
   CoupleChallengeScreen: 'unlimited_questions',
   MemoryLaneScreen: 'unlimited_questions',
   ProgressTrackingScreen: 'analytics',
@@ -170,7 +170,8 @@ const CoupleScreen = ({navigation}: CoupleScreenProps) => {
       expiryDate,
     );
     const canAccess =
-      hasFeatureAccess(currentTier, requiredTier) && hasActiveSub;
+      hasFeatureAccess(currentTier, requiredTier) &&
+      (requiredTier === 'basic' ? true : hasActiveSub);
 
     // Debug logging
     console.log('=== COUPLE SCREEN SUBSCRIPTION DEBUG ===');

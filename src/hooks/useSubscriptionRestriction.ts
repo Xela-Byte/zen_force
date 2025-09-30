@@ -43,7 +43,9 @@ export const useSubscriptionRestriction = ({
     expired,
     expiryDate,
   );
-  const canAccess = hasFeatureAccess(currentTier, requiredTier) && hasActiveSub;
+  const canAccess =
+    hasFeatureAccess(currentTier, requiredTier) &&
+    (requiredTier === 'basic' ? true : hasActiveSub);
 
   const openRestrictionModal = () => {
     setShowRestrictionModal(true);
