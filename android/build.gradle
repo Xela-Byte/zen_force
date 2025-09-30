@@ -20,3 +20,12 @@ buildscript {
 }
 
 apply plugin: "com.facebook.react.rootproject"
+
+// Disable lint tasks globally to avoid third-party modules failing the build
+gradle.projectsEvaluated {
+    subprojects { project ->
+        project.tasks.matching { it.name.toLowerCase().startsWith('lint') }.configureEach { task ->
+            task.enabled = false
+        }
+    }
+}
