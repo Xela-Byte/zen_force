@@ -15,13 +15,13 @@ export const questionRouletteStyle = StyleSheet.create({
     paddingTop: sizeBlock.getHeightSize(10),
   },
   container: {
-    paddingVertical: sizeBlock.getHeightSize(20),
+    paddingTop: sizeBlock.getHeightSize(20),
+    paddingBottom: sizeBlock.getHeightSize(40),
     paddingHorizontal: sizeBlock.getWidthSize(20),
     borderTopLeftRadius: borderRadius.medium * 2,
     borderTopRightRadius: borderRadius.medium * 2,
     backgroundColor: appColors.white,
     marginTop: sizeBlock.getHeightSize(20),
-    height: '100%',
   },
   gameTabWrapper: {
     paddingTop: sizeBlock.getHeightSize(15),
@@ -46,11 +46,12 @@ export const questionRouletteStyle = StyleSheet.create({
   },
   gameTabTag: {
     position: 'absolute',
-    padding: sizeBlock.getWidthSize(10),
     borderRadius: borderRadius.medium + 5,
     borderTopRightRadius: 0,
     bottom: 0,
     right: 0,
+    height: sizeBlock.getHeightSize(40),
+    ...universalStyle.centering,
   },
   questionCard: {
     width: '100%',

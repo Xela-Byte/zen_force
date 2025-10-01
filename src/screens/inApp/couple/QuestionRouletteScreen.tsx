@@ -176,12 +176,15 @@ const QuestionRouletteScreen = ({navigation}: QuestionRouletteScreenProps) => {
           </View>
 
           {/* Price tag */}
+
           <LinearGradient
             style={questionRouletteStyle.gameTabTag}
             colors={['#3BA700', '#6FCB03']}>
-            <AppText fontSize={fontSize.small - 3} color={appColors.white}>
-              {stg.status}
-            </AppText>
+            <View style={{paddingHorizontal: sizeBlock.getWidthSize(10)}}>
+              <AppText fontSize={fontSize.small} color={appColors.white}>
+                {stg.status}
+              </AppText>
+            </View>
           </LinearGradient>
         </View>
       </AppPressable>

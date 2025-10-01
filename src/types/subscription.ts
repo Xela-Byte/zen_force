@@ -38,7 +38,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
     restrictions: {
       maxQuestions: 10,
       maxChallenges: 1,
-      hasAnalytics: false,
+      hasAnalytics: true,
       hasRomanceSection: false,
       hasAICoaching: false,
       hasExpertSessions: false,

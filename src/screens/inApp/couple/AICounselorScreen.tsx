@@ -8,6 +8,8 @@ import {aiCounselorStyle} from '@/styles/aiCounselorStyle';
 import {appColors} from '@/styles/universalStyle';
 import {AICounselorScreenProps} from '@/types/navigation/CoupleNavigationType';
 import {useMutation} from '@tanstack/react-query';
+import {useDispatch} from 'react-redux';
+import {incrementAISession} from '@/store/slices/progressSlice';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {Keyboard, TextInput, View, SafeAreaView} from 'react-native';
@@ -51,11 +53,13 @@ const AICounselorScreen = ({navigation}: AICounselorScreenProps) => {
     | string
     | undefined;
 
+  const dispatch = useDispatch();
   const sendMessageMutation = useMutation({
     mutationFn: sendMessageFn,
     onSuccess: result => {
       setPendingMessage('');
       invalidateQuery('chats');
+      dispatch(incrementAISession());
     },
     onError: (error: any) => {
       console.error('login error:', error);

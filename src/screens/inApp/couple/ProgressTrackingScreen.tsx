@@ -11,6 +11,8 @@ import {
 } from '@/styles/universalStyle';
 import ChestIcon from '@/assets/images/chest.svg';
 import {ProgressTrackingScreenProps} from '@/types/navigation/CoupleNavigationType';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/store/rootReducer';
 
 const ProgressCard = ({
   title,
@@ -65,6 +67,21 @@ const ProgressCard = ({
 };
 
 const ProgressTrackingScreen = ({navigation}: ProgressTrackingScreenProps) => {
+  const progress = useSelector((state: RootState) => state.progress);
+
+  // Derive dynamic percentages
+  const communicationPct = (() => {
+    const totalStages = 4; // based on 4 Question Roulette categories
+    const completed = Object.keys(progress.questionRouletteCompleted).length;
+    return Math.min(100, Math.round((completed / totalStages) * 100));
+  })();
+
+  const relationshipHealthPct = (() => {
+    const totalChallenges = 4; // based on 4 challenge categories
+    const completed = Object.keys(progress.challengesCompleted).length;
+    return Math.min(100, Math.round((completed / totalChallenges) * 100));
+  })();
+
   return (
     <SafeAreaView style={[universalStyle.container]}>
       <LinearGradient
@@ -81,12 +98,12 @@ const ProgressTrackingScreen = ({navigation}: ProgressTrackingScreenProps) => {
             rowGap: sizeBlock.getHeightSize(30),
           }}>
           <ProgressCard
-            progress={25}
+            progress={communicationPct}
             title="Communication"
             subtitle="Measure communication improvements"
           />
           <ProgressCard
-            progress={5}
+            progress={relationshipHealthPct}
             title="Relationship Health"
             subtitle="Measure communication improvements"
           />

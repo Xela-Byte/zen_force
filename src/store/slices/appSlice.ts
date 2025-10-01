@@ -104,6 +104,7 @@ export interface AppState {
   isLoggedIn: boolean;
   vettingData: VettingData | null;
   currentVettingStep: number;
+  sessionExpired: boolean;
 }
 
 const initialState: AppState = {
@@ -113,6 +114,7 @@ const initialState: AppState = {
   tempUser: null,
   vettingData: null,
   currentVettingStep: 0,
+  sessionExpired: false,
 };
 
 const appSlice = createSlice({
@@ -155,6 +157,9 @@ const appSlice = createSlice({
       state.user = null;
       state.isLoggedIn = false;
     },
+    setSessionExpired: (state, action: PayloadAction<boolean>) => {
+      state.sessionExpired = action.payload;
+    },
     markInstalled: state => {
       state.isNewInstall = false;
     },
@@ -178,6 +183,7 @@ export const {
   setUser,
   setTempUser,
   logout,
+  setSessionExpired,
   markInstalled,
   setVettingData,
   setCurrentVettingStep,

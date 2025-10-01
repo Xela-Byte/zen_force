@@ -1,4 +1,3 @@
-import LottieView from 'lottie-react-native';
 import React, {useMemo, useRef, useState} from 'react';
 import {SafeAreaView, ScrollView, StatusBar, View} from 'react-native';
 import PulseIcon from '@/assets/images/pulse.svg';
@@ -20,6 +19,8 @@ import {QuestionRouletteDetailScreenProps} from '@/types/navigation/CoupleNaviga
 import {useFetchQuestionRouletteQuery} from '@/hooks/queries/useFetchQuestionRouletteQuery';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {QuestionType} from '@/api/games';
+import {useDispatch} from 'react-redux';
+import {markQuestionRouletteCompleted} from '@/store/slices/progressSlice';
 
 // const questions = [
 //   {
@@ -194,6 +195,7 @@ const QuestionRouletteDetailScreen = ({
   navigation,
   route,
 }: QuestionRouletteDetailScreenProps) => {
+  const dispatch = useDispatch();
   const {
     params: {stageType, questionType},
   } = route;
@@ -246,6 +248,7 @@ const QuestionRouletteDetailScreen = ({
         <PopupComponent
           title="Completed"
           onDone={() => {
+            dispatch(markQuestionRouletteCompleted(questionType));
             resetState();
             navigation.goBack();
           }}
@@ -326,7 +329,7 @@ const QuestionRouletteDetailScreen = ({
 
             <AppButton
               bgColor={appColors.green}
-              customViewStyle={{marginTop: sizeBlock.getHeightSize(50)}}
+              customViewStyle={{marginVertical: sizeBlock.getHeightSize(50)}}
               title={
                 currentQuestionIndex === memoizedQuestions.length - 1
                   ? 'Finish'

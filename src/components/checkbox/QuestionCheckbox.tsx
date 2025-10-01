@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   appColors,
@@ -25,9 +25,10 @@ const QuestionCheckbox: React.FC<QuestionCheckboxProps> = ({
   selected,
   onPress,
 }) => {
+  const isAndroid = Platform.OS === 'android';
   return (
     <AppPressable onPress={onPress}>
-      {selected ? (
+      {selected && isAndroid ? (
         <LinearGradient
           style={styles.selectedOption}
           colors={['#3BA700', '#6FCB03']}>
@@ -36,6 +37,19 @@ const QuestionCheckbox: React.FC<QuestionCheckboxProps> = ({
           <AppText color={appColors.white}>{label}</AppText>
           <CheckCircleIcon style={{marginLeft: 'auto'}} />
         </LinearGradient>
+      ) : selected && !isAndroid ? (
+        <View
+          style={[
+            styles.option,
+            {
+              backgroundColor: appColors.green,
+            },
+          ]}>
+          <AppText color={appColors.white}>{optionKey}</AppText>
+          <View style={styles.line} />
+          <AppText color={appColors.white}>{label}</AppText>
+          <CheckCircleIcon style={{marginLeft: 'auto'}} />
+        </View>
       ) : (
         <View style={styles.option}>
           <AppText color={appColors.textGrey}>{optionKey}</AppText>

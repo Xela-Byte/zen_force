@@ -7,11 +7,14 @@ import Toast, {
   BaseToastProps,
   ErrorToast,
 } from 'react-native-toast-message';
-import {Provider} from 'react-redux';
+import {Provider, useDispatch, useSelector} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {StripeProvider} from '@stripe/stripe-react-native';
 import {WithSplashScreen} from './src/components/splashScreen/SplashScreen';
 import {persistor, store} from './src/store';
+import {RootState} from './src/store/rootReducer';
+import {logout, setSessionExpired} from './src/store/slices/appSlice';
+import PopupComponent from './src/components/popup/PopupComponent';
 import {queryClient} from './src/store/queryClient';
 import {fontFamily, fontSize} from './src/styles/universalStyle';
 
@@ -81,6 +84,7 @@ const App = () => {
             <PersistGate loading={null} persistor={persistor}>
               <QueryClientProvider client={queryClient}>
                 <Navigator />
+                <SessionExpiredModal />
                 <Toast config={toastConfig} />
               </QueryClientProvider>
             </PersistGate>
@@ -92,3 +96,22 @@ const App = () => {
 };
 
 export default App;
+
+const SessionExpiredModal = () => {
+  const dispatch = useDispatch();
+  const visible = useSelector((state: RootState) => state.app.sessionExpired);
+
+  if (!visible) return null;
+
+  return (
+    <PopupComponent
+      title={'Session expired'}
+      content={'Your session has expired. Please log in again.'}
+      confirmBtnTitle={'OK'}
+      onDone={() => {
+        dispatch(setSessionExpired(false));
+        dispatch(logout());
+      }}
+    />
+  );
+};

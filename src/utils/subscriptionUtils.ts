@@ -83,7 +83,7 @@ export const hasReachedQuestionLimit = (
  * Check if user can access analytics
  */
 export const canAccessAnalytics = (userTier: SubscriptionTier): boolean => {
-  return hasFeatureAccess(userTier, 'standard');
+  return hasFeatureAccess(userTier, 'basic');
 };
 
 /**
@@ -136,7 +136,7 @@ export const getRequiredTierForFeature = (
   const featureMap: Record<string, SubscriptionTier> = {
     unlimited_questions: 'standard',
     questions: 'basic', // Basic users can access questions with limits
-    analytics: 'standard',
+    analytics: 'basic',
     romance_section: 'premium',
     ai_coaching: 'elite',
     expert_sessions: 'elite',

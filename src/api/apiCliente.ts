@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {store} from '../store';
+import {logout, setSessionExpired} from '../store/slices/appSlice';
 
 export const API_URL = process.env.API_URL;
 
@@ -30,6 +31,22 @@ ApiClient.interceptors.request.use(
   },
 );
 
+ApiClient.interceptors.response.use(
+  response => response,
+  async error => {
+    const status = error?.response?.status;
+    const dataString = JSON.stringify(error?.response?.data || '');
+    const isTokenIssue =
+      /expired|invalid/i.test(dataString) && /(token|jwt)/i.test(dataString);
+
+    if (status === 401 && isTokenIssue) {
+      store.dispatch(setSessionExpired(true));
+    }
+
+    return Promise.reject(error);
+  },
+);
+
 export default ApiClient;
 
 export const ApiFileClient = axios.create({
@@ -47,6 +64,22 @@ ApiFileClient.interceptors.request.use(
     return config;
   },
   error => {
+    return Promise.reject(error);
+  },
+);
+
+ApiFileClient.interceptors.response.use(
+  response => response,
+  async error => {
+    const status = error?.response?.status;
+    const dataString = JSON.stringify(error?.response?.data || '');
+    const isTokenIssue =
+      /expired|invalid/i.test(dataString) && /(token|jwt)/i.test(dataString);
+
+    if (status === 401 && isTokenIssue) {
+      store.dispatch(setSessionExpired(true));
+    }
+
     return Promise.reject(error);
   },
 );

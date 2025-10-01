@@ -13,7 +13,9 @@ import {
   universalStyle,
 } from '@/styles/universalStyle';
 import {CoupleChallengeDetailScreenProps} from '@/types/navigation/CoupleNavigationType';
-import {memo, useCallback, useMemo, useRef, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {markChallengeCompleted} from '@/store/slices/progressSlice';
+import {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -27,6 +29,7 @@ const CoupleChallengeDetailScreen = ({
   navigation,
   route,
 }: CoupleChallengeDetailScreenProps) => {
+  const dispatch = useDispatch();
   const {params} = route;
   const {challengeType, questionType} = params;
 
@@ -47,6 +50,16 @@ const CoupleChallengeDetailScreen = ({
       setCurrentIndex(viewableItems[0].index);
     }
   }).current;
+
+  // When user reaches the last item, mark this challenge type as completed
+  useEffect(() => {
+    if (
+      memoizedQuestions.length > 0 &&
+      currentIndex === memoizedQuestions.length - 1
+    ) {
+      dispatch(markChallengeCompleted(challengeType));
+    }
+  }, [currentIndex, memoizedQuestions.length, challengeType, dispatch]);
 
   const LoadingComponent = () => {
     return (
@@ -198,9 +211,15 @@ const CoupleChallengeDetailScreen = ({
                 {currentIndex + 1} of {memoizedQuestions.length}
               </AppText>
             </View>
+            {currentIndex + 1 === memoizedQuestions.length && (
+              <View style={{paddingVertical: sizeBlock.getHeightSize(20)}}>
+                <AppText fontType="medium">Completed!</AppText>
+              </View>
+            )}
           </>
         )}
       </ScrollView>
+      {/* On screen unmount or when reaching the end, mark as completed */}
     </SafeAreaView>
   );
 };

@@ -9,13 +9,18 @@ export type QuestionType =
 
 export const fetchQuestionRouletteFn = async ({
   questionType,
+  personalityTypes,
 }: {
   questionType: QuestionType;
+  personalityTypes?: string;
 }) => {
   try {
-    const response = await ApiClient.get(
-      `${API_URL}/games/question/roulette/${questionType}`,
-    );
+    const url = new URL(`${API_URL}/games/question/roulette/${questionType}`);
+    if (personalityTypes && personalityTypes.trim().length > 0) {
+      url.searchParams.set('personalityTypes', personalityTypes);
+    }
+
+    const response = await ApiClient.get(url.toString());
 
     return response.data;
   } catch (error: any) {
@@ -37,9 +42,14 @@ export const fetchQuestionRouletteFn = async ({
   }
 };
 
-export const fetchMemoryLaneFn = async () => {
+export const fetchMemoryLaneFn = async (personalityTypes?: string) => {
   try {
-    const response = await ApiClient.get(`${API_URL}/games/memory/lane`);
+    const url = new URL(`${API_URL}/games/memory/lane`);
+    if (personalityTypes && personalityTypes.trim().length > 0) {
+      url.searchParams.set('personalityTypes', personalityTypes);
+    }
+
+    const response = await ApiClient.get(url.toString());
 
     return response.data;
   } catch (error: any) {
